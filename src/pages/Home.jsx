@@ -51,7 +51,8 @@ export default function Home() {
         />
       </section>
 
-      <section className="px-4 sm:px-8 md:px-12 lg:px-20 py-16 bg-gray-50 min-h-screen">
+      <section 
+      className="px-4 sm:px-8 md:px-12 lg:px-20 py-16 bg-gray-50 min-h-screen">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-extrabold text-gray-900 mb-10 text-center">
             Auto disponibili
