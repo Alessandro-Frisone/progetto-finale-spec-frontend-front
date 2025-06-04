@@ -1,14 +1,12 @@
 export default function ProductCard({ car }) {
   return (
-    <div>
-      <h2>{car.title}</h2>
-      <p><strong>Marca:</strong> {car.brand || 'N/D'}</p>
-      <p><strong>Modello:</strong> {car.model || 'N/D'}</p>
-      <p><strong>Categoria:</strong> {car.category}</p>
-      <p><strong>Anno:</strong> {car.year || 'N/D'}</p>
-      <p><strong>Chilometri:</strong> {car.km || 'N/D'} km</p>
-      <p><strong>Prezzo:</strong> € {car.price || 'N/D'}</p>
-      <img src={car.imageUrl} alt={car.title} className="w-full h-48 object-cover" />
+    <div className="border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-300 bg-white text-center">
+      <h2 className="text-xl font-bold text-gray-800 mb-2 truncate text-center">
+        {car.title}
+      </h2>
+      <span className="inline-block bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
+        {car.category}
+      </span>
     </div>
   );
 }

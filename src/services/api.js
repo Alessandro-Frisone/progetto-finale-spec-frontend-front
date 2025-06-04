@@ -18,7 +18,7 @@ export async function fetchCarById(id) {
     const res = await fetch(`${API_URL}/cars/${id}`);
     if (!res.ok) throw new Error(`Auto con ID ${id} non trovata`);
     const data = await res.json();
-    return data.car; // dipende da come il backend risponde
+    return data; // dipende da come il backend risponde
   } catch (err) {
     console.error("Errore in fetchCarById:", err);
     return null;
