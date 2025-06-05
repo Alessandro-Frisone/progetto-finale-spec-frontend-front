@@ -18,7 +18,7 @@ const CarCarousel = () => {
     setCurrent((prev) => (prev - 1 + images.length) % images.length);
 
   return (
-    <div className="relative w-full mb-16 mt-28">
+    <div className="relative w-full mb-16">
       {/* Frecce esterne */}
       <button
         onClick={prev}

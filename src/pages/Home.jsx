@@ -19,7 +19,7 @@ export default function Home() {
   if (error) return <p>Errore: {error}</p>;
 
   return (
-    <div className="px-6 py-8 bg-gray-50 min-h-screen">
+    <div className="bg-gradient-to-b from-gray-200 via-gray-100 via-white to-white pt-28">
       <CarCarousel />
       <section className="relative bg-white px-6 pt-16 pb-42 overflow-hidden">
         <div className="max-w-5xl mx-auto text-left z-10 relative">
@@ -31,8 +31,8 @@ export default function Home() {
             esperto che mette al primo posto la tua tranquillità. Ogni veicolo è
             accuratamente controllato e certificato, i prezzi sono tra i più
             competitivi del mercato e offriamo soluzioni di finanziamento su
-            misura. Dal primo contatto fino all’assistenza post-vendita, siamo
-            sempre al tuo fianco per garantirti un’esperienza d’acquisto
+            misura. Dal primo contatto fino all'assistenza post-vendita, siamo
+            sempre al tuo fianco per garantirti un'esperienza d'acquisto
             semplice, trasparente e sicura. Il nostro obiettivo è costruire
             fiducia, offrendo un servizio moderno e accessibile. Grazie al
             nostro approccio diretto e trasparente, ci siamo affermati
@@ -51,7 +51,7 @@ export default function Home() {
         />
       </section>
 
-      <section className="relative bg-gradient-to-br from-orange-50 via-white to-gray-50 py-20 px-4 sm:px-8 md:px-12 lg:px-20 min-h-screen">
+      <section className="relative bg-gradient-to-b from-orange-200 via-white to-orange-50 py-20 min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Titolo con animazione */}
           <div className="text-center mb-12">
