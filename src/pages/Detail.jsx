@@ -1,20 +1,41 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchCarById } from "../services/api";
+import { useFavorites } from "../contexts/FavoritesContext";
 
 export default function Detail() {
   const { id } = useParams();
-  const [car, setCar] = useState(null);
+const [car, setCar] = useState(null);
+const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
 
-  useEffect(() => {
-    async function loadCar() {
-      const data = await fetchCarById(id);
-      setCar(data);
-    }
-    loadCar();
-  }, [id]);
+useEffect(() => {
+  async function loadCar() {
+    const data = await fetchCarById(id);
+    setCar(data);
+  }
+  loadCar();
+}, [id]);
 
-  if (!car) return <p>Caricamento in corso...</p>;
+// Proteggi l'accesso a car.id
+const isCarFavorite = car ? isFavorite(car.id) : false;
+
+const handleFavoriteClick = () => {
+  if (!car) return; // opzionale: evita azioni premature
+  if (isCarFavorite) {
+    removeFromFavorites(car.id);
+  } else {
+    addToFavorites(car);
+  }
+};
+if (!car) {
+  return (
+    <div className="flex justify-center items-center py-20">
+      <span className="text-orange-600 font-semibold">Caricamento auto...</span>
+    </div>
+  );
+}
+
+
 
   return (
     <div className="max-w-auto mx-auto mt-10 space-y-8 px-4">
@@ -53,11 +74,28 @@ export default function Detail() {
 
           {/* Dettagli a destra */}
           <div className="p-6 flex flex-col justify-between relative">
-            {/* Prezzo visibile in alto a destra */}
-            <div className="absolute top-6 right-6">
+            {/* Prezzo e cuore in alto a destra */}
+            <div className="absolute top-6 right-6 flex items-center gap-3">
               <span className="bg-orange-100 text-orange-600 text-3xl font-extrabold px-5 py-3 rounded-xl shadow-lg">
                 € {car.price.toLocaleString("it-IT")}
               </span>
+              
+              {/* Bottone cuore */}
+              <button
+                onClick={handleFavoriteClick}
+                aria-label={
+                  isCarFavorite ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"
+                }
+                className={`text-2xl cursor-pointer focus:outline-none transform transition-all duration-200 p-2 rounded-full
+                ${
+                  isCarFavorite
+                    ? "text-orange-500 hover:text-orange-600 bg-orange-50 hover:bg-orange-100"
+                    : "text-gray-400 hover:text-orange-400 bg-gray-50 hover:bg-orange-50"
+                } 
+                hover:scale-110 shadow-sm`}
+              >
+                <i className={isCarFavorite ? "fas fa-heart" : "far fa-heart"}></i>
+              </button>
             </div>
 
             <h1 className="text-3xl font-bold text-orange-600 mb-6 text-center md:text-left mt-20 md:mt-0">
