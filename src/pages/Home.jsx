@@ -29,17 +29,22 @@ export default function Home() {
     applyFiltersAndSort();
   }, [cars, searchTerm, selectedCategory]);
 
-  
-
-  // AGGIORNATA: Funzione semplificata per applicare filtri
+  // CORRETTA: Funzione per applicare filtri con ricerca migliorata
   const applyFiltersAndSort = () => {
     let filtered = [...cars];
 
-    // Applica filtro per titolo
+    // Applica filtro per ricerca (cerca in più campi)
     if (searchTerm.trim()) {
-      filtered = filtered.filter((car) =>
-        car.title.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter((car) => {
+        // Cerca in title, brand, model e category
+        return (
+          (car.title && car.title.toLowerCase().includes(searchLower)) ||
+          (car.brand && car.brand.toLowerCase().includes(searchLower)) ||
+          (car.model && car.model.toLowerCase().includes(searchLower)) ||
+          (car.category && car.category.toLowerCase().includes(searchLower))
+        );
+      });
     }
 
     // Applica filtro per categoria
@@ -57,7 +62,6 @@ export default function Home() {
   const handleCategoryFilter = (category) => {
     setSelectedCategory(category);
   };
-
 
   if (loading) return <p>Caricamento...</p>;
   if (error) return <p>Errore: {error}</p>;
@@ -114,7 +118,10 @@ export default function Home() {
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Barra di ricerca - più larga */}
               <div className="flex-1">
-                <SearchBar onSearch={handleSearch} />
+                <SearchBar 
+                  onSearch={handleSearch} 
+                  placeholder="Cerca per marca, modello, titolo o categoria..."
+                />
               </div>
 
               {/* Filtro categoria e ordinamento affiancati */}
