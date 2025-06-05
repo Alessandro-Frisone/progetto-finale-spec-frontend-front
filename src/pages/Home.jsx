@@ -19,7 +19,7 @@ export default function Home() {
   if (error) return <p>Errore: {error}</p>;
 
   return (
-    <div className="bg-gradient-to-b from-gray-200 via-gray-100 via-white to-white pt-28">
+    <div className="bg-gradient-to-b from-gray-200 via-gray-100 via-white to-white pt-16">
       <CarCarousel />
 
       <section className="relative bg-white px-6 pt-16 pb-56 overflow-hidden">
