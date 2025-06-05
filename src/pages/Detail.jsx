@@ -36,7 +36,9 @@ export default function Detail() {
   if (!car) {
     return (
       <div className="flex justify-center items-center py-20">
-        <span className="text-orange-600 font-semibold">Caricamento auto...</span>
+        <span className="text-orange-600 font-semibold">
+          Caricamento auto...
+        </span>
       </div>
     );
   }
@@ -83,12 +85,14 @@ export default function Detail() {
               <span className="bg-orange-100 text-orange-600 text-3xl font-extrabold px-5 py-3 rounded-xl shadow-lg">
                 € {car.price.toLocaleString("it-IT")}
               </span>
-              
+
               {/* Bottone cuore */}
               <button
                 onClick={handleFavoriteClick}
                 aria-label={
-                  isCarFavorite ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"
+                  isCarFavorite
+                    ? "Rimuovi dai preferiti"
+                    : "Aggiungi ai preferiti"
                 }
                 className={`text-2xl cursor-pointer focus:outline-none transform transition-all duration-200 p-2 rounded-full
                 ${
@@ -98,7 +102,9 @@ export default function Detail() {
                 } 
                 hover:scale-110 shadow-sm`}
               >
-                <i className={isCarFavorite ? "fas fa-heart" : "far fa-heart"}></i>
+                <i
+                  className={isCarFavorite ? "fas fa-heart" : "far fa-heart"}
+                ></i>
               </button>
             </div>
 
@@ -156,60 +162,78 @@ export default function Detail() {
                 className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-semibold rounded-full hover:bg-orange-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
               >
                 {isExpanded ? "Mostra meno" : "Scopri di più"}
-                <i className={`fas fa-chevron-${isExpanded ? "up" : "down"} transition-transform duration-300`}></i>
+                <i
+                  className={`fas fa-chevron-${
+                    isExpanded ? "up" : "down"
+                  } transition-transform duration-300`}
+                ></i>
               </button>
             </div>
           </div>
         </div>
 
         {/* Sezioni espandibili - Descrizione e Punti Chiave */}
-        <div className={`transition-all duration-500 ease-in-out overflow-hidden ${
-          isExpanded ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        }`}>
+        <div
+          className={`transition-all duration-500 ease-in-out overflow-hidden ${
+            isExpanded ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+          }`}
+        >
           <div className="flex flex-col lg:flex-row gap-8 px-4 lg:px-12 py-12">
-
-  {/* Sezione Descrizione */}
-  <section className="bg-[#fdfdfc] border-t border-gray-200 py-14 px-6 md:px-12 rounded-2xl flex-1">
-    <div className="max-w-full text-left">
-      <h2 className="text-3xl font-semibold text-orange-500 mb-6 text-center">Descrizione</h2>
-      <p className="text-gray-800 text-lg leading-8 tracking-normal font-light text-center">
-        {car.description ||
-          "Un'auto pensata per chi cerca comfort, prestazioni ed eleganza. Linee scolpite, interni curati nei minimi dettagli e un motore che garantisce reattività in ogni condizione. Perfetta per la città ma anche per i lunghi viaggi."}
-      </p>
-    </div>
-  </section>
-
-  {/* Sezione Punti Chiave */}
-  <section className="bg-white border-t border-gray-200 py-12 px-6 flex-1 rounded-2xl">
-    <div className="max-w-full">
-      <h2 className="text-3xl font-extrabold text-orange-600 mb-10 text-center tracking-tight">
-        Punti Chiave
-      </h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-        {[
-          { label: "Potenza", value: car.horsepower ? `${car.horsepower} HP` : "--" },
-          { label: "Cilindrata", value: car.displacement ? `${car.displacement} cc` : "--" },
-          { label: "Porte", value: car.doors ?? "--" },
-          { label: "Posti", value: car.seats ?? "--" },
-          { label: "Consumo", value: car.consumption ? `${car.consumption} km/l` : "--" },
-          { label: "Classe Emissioni", value: car.emissionClass ?? "--" },
-        ].map((item, index) => (
-          <div
-            key={index}
-            className="flex flex-col items-center justify-center p-6 bg-orange-50 border border-orange-100 rounded-xl shadow-sm hover:shadow-md transition-shadow"
-          >
-            <span className="text-2xl font-bold text-orange-600">{item.value}</span>
-            <span className="text-sm text-gray-600 mt-1 tracking-wide">{item.label}</span>
+            {/* Sezione Punti Chiave */}
+            <section className="bg-white border-t border-gray-200 py-12 px-6 flex-1 rounded-2xl">
+              <div className="max-w-full">
+                <h2 className="text-3xl font-extrabold text-orange-600 mb-10 text-center tracking-tight">
+                  Punti Chiave
+                </h2>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+                  {[
+                    {
+                      label: "Potenza",
+                      value: car.horsepower ? `${car.horsepower} HP` : "--",
+                    },
+                    {
+                      label: "Cilindrata",
+                      value: car.displacement ? `${car.displacement} cc` : "--",
+                    },
+                    { label: "Porte", value: car.doors ?? "--" },
+                    { label: "Posti", value: car.seats ?? "--" },
+                    {
+                      label: "Consumo",
+                      value: car.consumption ? `${car.consumption} km/l` : "--",
+                    },
+                    {
+                      label: "Classe Emissioni",
+                      value: car.emissionClass ?? "--",
+                    },
+                  ].map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col items-center justify-center p-6 bg-orange-50 border border-orange-100 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+                    >
+                      <span className="text-2xl font-bold text-orange-600">
+                        {item.value}
+                      </span>
+                      <span className="text-sm text-gray-600 mt-1 tracking-wide">
+                        {item.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+            {/* Sezione Descrizione */}
+            <section className="bg-[#fdfdfc] border-t border-gray-200 py-14 px-6 md:px-12 rounded-2xl flex-1">
+              <div className="max-w-full text-left">
+                <h2 className="text-3xl font-semibold text-orange-500 mb-6 text-center">
+                  Descrizione
+                </h2>
+                <p className="text-gray-800 text-lg leading-8 tracking-normal font-light text-center">
+                  {car.description ||
+                    "Un'auto pensata per chi cerca comfort, prestazioni ed eleganza. Linee scolpite, interni curati nei minimi dettagli e un motore che garantisce reattività in ogni condizione. Perfetta per la città ma anche per i lunghi viaggi."}
+                </p>
+              </div>
+            </section>
           </div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-</div>
-
-
-
         </div>
       </div>
     </div>
