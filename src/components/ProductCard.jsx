@@ -1,4 +1,5 @@
 import { useFavorites } from "../contexts/FavoritesContext";
+import { Link } from "react-router-dom";
 
 export default function ProductCard({ car }) {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
@@ -33,6 +34,7 @@ export default function ProductCard({ car }) {
   };
 
   return (
+    <Link to={`/detail/${car.id}`}>
     <div className="relative w-full max-w-md mx-auto rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-shadow duration-300 hover:shadow-md">
       {/* Bottone cuore in alto a destra */}
       <div className="absolute top-4 right-4">
@@ -71,5 +73,6 @@ export default function ProductCard({ car }) {
         </span>
       </div>
     </div>
+    </Link>
   );
 }
