@@ -10,6 +10,10 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  
+  // Stati per l'ordinamento
+  const [sortBy, setSortBy] = useState("none"); // "none", "title", "category"
+  const [sortOrder, setSortOrder] = useState("asc"); // "asc", "desc"
 
   useEffect(() => {
     fetchCars()
@@ -25,17 +29,57 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Filter cars when category selection changes
+  // Filter and sort cars when category selection or sorting changes
   useEffect(() => {
-    if (selectedCategory === "all") {
-      setFilteredCars(cars);
-    } else {
-      setFilteredCars(cars.filter(car => car.category === selectedCategory));
+    let result = cars;
+    
+    // Apply category filter
+    if (selectedCategory !== "all") {
+      result = result.filter(car => car.category === selectedCategory);
     }
-  }, [selectedCategory, cars]);
+    
+    // Apply sorting
+    if (sortBy !== "none") {
+      result = [...result].sort((a, b) => {
+        let valueA, valueB;
+        
+        if (sortBy === "title") {
+          valueA = a.title.toLowerCase();
+          valueB = b.title.toLowerCase();
+        } else if (sortBy === "category") {
+          valueA = a.category.toLowerCase();
+          valueB = b.category.toLowerCase();
+        }
+        
+        if (sortOrder === "asc") {
+          return valueA.localeCompare(valueB);
+        } else {
+          return valueB.localeCompare(valueA);
+        }
+      });
+    }
+    
+    setFilteredCars(result);
+  }, [selectedCategory, cars, sortBy, sortOrder]);
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
+  };
+
+  const handleSortChange = (newSortBy) => {
+    if (sortBy === newSortBy) {
+      // Se è già selezionato lo stesso criterio, inverti l'ordine
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      // Se è un nuovo criterio, imposta come ascendente
+      setSortBy(newSortBy);
+      setSortOrder("asc");
+    }
+  };
+
+  const resetSort = () => {
+    setSortBy("none");
+    setSortOrder("asc");
   };
 
   // Function to get category icon (same as in ProductCard)
@@ -56,6 +100,22 @@ export default function Home() {
       default:
         return "fas fa-car";
     }
+  };
+
+  // Function to get sort button classes
+  const getSortButtonClasses = (sortType) => {
+    const isActive = sortBy === sortType;
+    return `inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+      isActive
+        ? "bg-orange-500 text-white shadow-lg"
+        : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+    }`;
+  };
+
+  // Function to get sort icon
+  const getSortIcon = (sortType) => {
+    if (sortBy !== sortType) return "fas fa-sort";
+    return sortOrder === "asc" ? "fas fa-sort-alpha-down" : "fas fa-sort-alpha-up";
   };
 
   if (loading) return <p>Caricamento...</p>;
@@ -143,6 +203,64 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Sorting Section */}
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              Ordina per
+            </h3>
+            
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
+              {/* No Sort Button */}
+              <button
+                onClick={resetSort}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  sortBy === "none"
+                    ? "bg-orange-500 text-white shadow-lg"
+                    : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                }`}
+              >
+                <i className="fas fa-list"></i>
+                Nessun ordine
+              </button>
+
+              {/* Sort by Title Button */}
+              <button
+                onClick={() => handleSortChange("title")}
+                className={getSortButtonClasses("title")}
+              >
+                <i className={getSortIcon("title")}></i>
+                Nome {sortBy === "title" && (sortOrder === "asc" ? "(A-Z)" : "(Z-A)")}
+              </button>
+
+              {/* Sort by Category Button */}
+              <button
+                onClick={() => handleSortChange("category")}
+                className={getSortButtonClasses("category")}
+              >
+                <i className={getSortIcon("category")}></i>
+                Categoria {sortBy === "category" && (sortOrder === "asc" ? "(A-Z)" : "(Z-A)")}
+              </button>
+            </div>
+
+            {/* Sort Info */}
+            {sortBy !== "none" && (
+              <div className="text-center">
+                <p className="text-sm text-gray-600">
+                  <i className="fas fa-info-circle text-orange-500 mr-1"></i>
+                  Ordinamento per{" "}
+                  <span className="font-semibold text-orange-600">
+                    {sortBy === "title" ? "nome" : "categoria"}
+                  </span>{" "}
+                  in ordine{" "}
+                  <span className="font-semibold text-orange-600">
+                    {sortOrder === "asc" ? "crescente (A-Z)" : "decrescente (Z-A)"}
+                  </span>
+                  . Clicca nuovamente per invertire l'ordine.
+                </p>
+              </div>
+            )}
+          </div>
+
           <div className="text-center mb-6">
             <p className="text-gray-600">
               {selectedCategory === "all" ? (
@@ -158,6 +276,15 @@ export default function Home() {
                     {filteredCars.length}
                   </span>{" "}
                   auto nella categoria <span className="font-semibold text-orange-600">{selectedCategory}</span>
+                </>
+              )}
+              {sortBy !== "none" && (
+                <>
+                  {" "}
+                  - ordinate per{" "}
+                  <span className="font-semibold text-orange-600">
+                    {sortBy === "title" ? "nome" : "categoria"}
+                  </span>
                 </>
               )}
             </p>
