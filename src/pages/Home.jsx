@@ -10,7 +10,7 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  
+
   // Stati per l'ordinamento - ora solo per titolo
   const [sortBy, setSortBy] = useState("none"); // "none", "title"
   const [sortOrder, setSortOrder] = useState("asc"); // "asc", "desc"
@@ -20,9 +20,9 @@ export default function Home() {
       .then((data) => {
         setCars(data);
         setFilteredCars(data);
-        
+
         // Extract unique categories from cars
-        const uniqueCategories = [...new Set(data.map(car => car.category))];
+        const uniqueCategories = [...new Set(data.map((car) => car.category))];
         setCategories(uniqueCategories);
       })
       .catch((err) => setError(err.message))
@@ -32,18 +32,18 @@ export default function Home() {
   // Filter and sort cars when category selection or sorting changes
   useEffect(() => {
     let result = cars;
-    
+
     // Apply category filter
     if (selectedCategory !== "all") {
-      result = result.filter(car => car.category === selectedCategory);
+      result = result.filter((car) => car.category === selectedCategory);
     }
-    
+
     // Apply sorting - solo per titolo
     if (sortBy === "title") {
       result = [...result].sort((a, b) => {
         const valueA = a.title.toLowerCase();
         const valueB = b.title.toLowerCase();
-        
+
         if (sortOrder === "asc") {
           return valueA.localeCompare(valueB);
         } else {
@@ -51,7 +51,7 @@ export default function Home() {
         }
       });
     }
-    
+
     setFilteredCars(result);
   }, [selectedCategory, cars, sortBy, sortOrder]);
 
@@ -59,20 +59,21 @@ export default function Home() {
     setSelectedCategory(category);
   };
 
-  const handleSortChange = (newSortBy) => {
-    if (sortBy === newSortBy) {
-      // Se è già selezionato lo stesso criterio, inverti l'ordine
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      // Se è un nuovo criterio, imposta come ascendente
-      setSortBy(newSortBy);
-      setSortOrder("asc");
-    }
-  };
-
   const resetSort = () => {
     setSortBy("none");
     setSortOrder("asc");
+  };
+
+  // Funzione per ordinare direttamente A-Z
+  const handleSortAZ = () => {
+    setSortBy("title");
+    setSortOrder("asc");
+  };
+
+  // Funzione per ordinare direttamente Z-A
+  const handleSortZA = () => {
+    setSortBy("title");
+    setSortOrder("desc");
   };
 
   // Function to get category icon (same as in ProductCard)
@@ -95,35 +96,19 @@ export default function Home() {
     }
   };
 
-  // Function to get sort button classes
-  const getSortButtonClasses = (sortType) => {
-    const isActive = sortBy === sortType;
-    return `inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-      isActive
-        ? "bg-orange-500 text-white shadow-lg"
-        : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
-    }`;
-  };
-
-  // Function to get sort icon
-  const getSortIcon = (sortType) => {
-    if (sortBy !== sortType) return "fas fa-sort";
-    return sortOrder === "asc" ? "fas fa-sort-alpha-down" : "fas fa-sort-alpha-up";
-  };
-
   if (loading) return <p>Caricamento...</p>;
   if (error) return <p>Errore: {error}</p>;
 
   return (
-    <div className="bg-gradient-to-b from-gray-200 via-gray-100 via-white to-white pt-16">
+    <div className="bg-orange-50 pt-16">
       <CarCarousel />
 
-      <section className="relative bg-white px-6 pt-16 pb-56 overflow-hidden">
-        <div className="max-w-5xl mx-auto text-left z-10 relative">
-          <h2 className="text-4xl font-bold text-gray-800 mb-6 text-center">
+      <section className="relative w-full bg-gradient-to-t from-orange-200 via-white to-orange-50 px-6 pt-28 pb-75 overflow-hidden">
+        <div className="max-w-5xl mx-auto text-center z-10 relative">
+          <h2 className="text-5xl font-bold text-gray-800 mb-8">
             Perché scegliere noi
           </h2>
-          <p className="text-lg text-gray-700 leading-relaxed mb-4 text-center">
+          <p className="text-xl text-gray-700 leading-relaxed">
             Scegliere <strong>AutoDeal</strong> significa affidarsi a un team
             esperto che mette al primo posto la tua tranquillità. Ogni veicolo è
             accuratamente controllato e certificato, i prezzi sono tra i più
@@ -131,15 +116,16 @@ export default function Home() {
             misura...
           </p>
         </div>
+
         <img
-          src="/auto-esposizione.jpg"
+          src="/auto_senza_sfondo.png"
           alt="Auto in esposizione"
-          className="absolute top-32 right-0 w-[550px] max-w-full object-contain pointer-events-none select-none"
+          className="absolute top-32 left-0 w-[45%] max-w-none object-contain pointer-events-none select-none scale-x-[-1] z-0"
         />
         <img
-          src="/auto-esposizione.jpg"
+          src="/auto_senza_sfondo.png"
           alt="Auto in esposizione"
-          className="absolute top-32 left-0 w-[550px] max-w-full object-contain pointer-events-none select-none scale-x-[-1]"
+          className="absolute top-32 right-0 w-[45%] max-w-none object-contain pointer-events-none select-none z-0"
         />
       </section>
 
@@ -147,7 +133,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-8">
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
-              🚗 Auto <span className="text-orange-500">disponibili</span>
+              🚗 Auto in <span className="text-orange-500">pronta consegna</span>
             </h1>
             <p className="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
               Scopri la nostra selezione esclusiva di auto usate, accuratamente
@@ -160,7 +146,7 @@ export default function Home() {
             <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
               Filtra per categoria
             </h3>
-            
+
             <div className="flex flex-wrap justify-center gap-3 mb-6">
               {/* All Categories Button */}
               <button
@@ -177,7 +163,9 @@ export default function Home() {
 
               {/* Individual Category Buttons */}
               {categories.map((category) => {
-                const categoryCount = cars.filter(car => car.category === category).length;
+                const categoryCount = cars.filter(
+                  (car) => car.category === category
+                ).length;
                 return (
                   <button
                     key={category}
@@ -188,7 +176,9 @@ export default function Home() {
                         : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
                     }`}
                   >
-                    <i className={`${getCategoryIcon(category)} text-orange-400`}></i>
+                    <i
+                      className={`${getCategoryIcon(category)} text-orange-400`}
+                    ></i>
                     {category} ({categoryCount})
                   </button>
                 );
@@ -196,12 +186,12 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Sorting Section - Solo per titolo */}
+          {/* Sorting Section - Migliorato con pulsanti separati */}
           <div className="mb-8">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
               Ordina per nome
             </h3>
-            
+
             <div className="flex flex-wrap justify-center gap-3 mb-6">
               {/* No Sort Button */}
               <button
@@ -216,13 +206,30 @@ export default function Home() {
                 Nessun ordine
               </button>
 
-              {/* Sort by Title Button */}
+              {/* Sort A-Z Button */}
               <button
-                onClick={() => handleSortChange("title")}
-                className={getSortButtonClasses("title")}
+                onClick={handleSortAZ}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  sortBy === "title" && sortOrder === "asc"
+                    ? "bg-orange-500 text-white shadow-lg"
+                    : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                }`}
               >
-                <i className={getSortIcon("title")}></i>
-                Nome {sortBy === "title" && (sortOrder === "asc" ? "(A-Z)" : "(Z-A)")}
+                <i className="fas fa-sort-alpha-down"></i>
+                Nome (A-Z)
+              </button>
+
+              {/* Sort Z-A Button */}
+              <button
+                onClick={handleSortZA}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  sortBy === "title" && sortOrder === "desc"
+                    ? "bg-orange-500 text-white shadow-lg"
+                    : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                }`}
+              >
+                <i className="fas fa-sort-alpha-up"></i>
+                Nome (Z-A)
               </button>
             </div>
 
@@ -231,13 +238,14 @@ export default function Home() {
               <div className="text-center">
                 <p className="text-sm text-gray-600">
                   <i className="fas fa-info-circle text-orange-500 mr-1"></i>
-                  Ordinamento per{" "}
-                  <span className="font-semibold text-orange-600">nome</span>{" "}
-                  in ordine{" "}
+                  Auto ordinate per{" "}
+                  <span className="font-semibold text-orange-600">nome</span> in
+                  ordine{" "}
                   <span className="font-semibold text-orange-600">
-                    {sortOrder === "asc" ? "crescente (A-Z)" : "decrescente (Z-A)"}
+                    {sortOrder === "asc"
+                      ? "crescente (A-Z)"
+                      : "decrescente (Z-A)"}
                   </span>
-                  . Clicca nuovamente per invertire l'ordine.
                 </p>
               </div>
             )}
@@ -257,10 +265,12 @@ export default function Home() {
                   <span className="font-semibold text-orange-600">
                     {filteredCars.length}
                   </span>{" "}
-                  auto nella categoria <span className="font-semibold text-orange-600">{selectedCategory}</span>
+                  auto nella categoria{" "}
+                  <span className="font-semibold text-orange-600">
+                    {selectedCategory}
+                  </span>
                 </>
               )}
-              
             </p>
           </div>
 
@@ -280,16 +290,14 @@ export default function Home() {
                 />
               </svg>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                {selectedCategory === "all" 
+                {selectedCategory === "all"
                   ? "Nessun risultato disponibile"
-                  : `Nessuna auto trovata nella categoria "${selectedCategory}"`
-                }
+                  : `Nessuna auto trovata nella categoria "${selectedCategory}"`}
               </h3>
               <p className="text-gray-500">
                 {selectedCategory === "all"
                   ? "Al momento non ci sono auto da mostrare."
-                  : "Prova a selezionare una categoria diversa."
-                }
+                  : "Prova a selezionare una categoria diversa."}
               </p>
               {selectedCategory !== "all" && (
                 <button

@@ -30,7 +30,18 @@ export default function Detail() {
   };
 
   const toggleExpanded = () => {
-    setIsExpanded(!isExpanded);
+    const newValue = !isExpanded;
+    setIsExpanded(newValue);
+
+    if (!newValue) return; // se stai chiudendo, non serve scrollare
+
+    // aspetta leggermente per far apparire il contenuto, poi scrolla
+    setTimeout(() => {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 200); // puoi regolare questo valore se il contenuto è pesante
   };
 
   if (!car) {

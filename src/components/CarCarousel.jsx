@@ -18,7 +18,7 @@ const CarCarousel = () => {
     setCurrent((prev) => (prev - 1 + images.length) % images.length);
 
   return (
-    <div className="relative w-full mb-16">
+    <div className="relative w-full mb-2">
       {/* Frecce esterne */}
       <button
         onClick={prev}
@@ -34,7 +34,7 @@ const CarCarousel = () => {
       </button>
 
       {/* Carosello */}
-      <div className="max-w-7xl mx-auto overflow-hidden rounded-2xl shadow-xl">
+      <div className="max-w-7xl mx-auto overflow-hidden rounded-2xl">
         <div
           className="flex transition-transform duration-700"
           style={{ transform: `translateX(-${current * 100}%)` }}
