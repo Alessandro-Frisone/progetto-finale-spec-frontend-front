@@ -1,13 +1,12 @@
 import { createContext, useContext, useState } from 'react';
-import { useNotification } from './NotificationContext';
 
 // Creiamo il Context per i favoriti - questo ci permette di condividere i dati tra componenti
 const FavoritesContext = createContext();
 
 // Provider Component: avvolge l'app e fornisce i dati dei favoriti a tutti i componenti figli
 export const FavoritesProvider = ({ children }) => {
+  
   const [favorites, setFavorites] = useState([]);
-  const { addNotification } = useNotification();
 
   // Funzione per aggiungere un'auto ai favoriti
   const addToFavorites = (car) => {
@@ -16,10 +15,6 @@ export const FavoritesProvider = ({ children }) => {
       if (prev.find(fav => fav.id === car.id)) {
         return prev; 
       }
-      
-      // Aggiungi notifica di successo
-      addNotification(`${car.title} aggiunta ai preferiti! ❤️`, 'success');
-      
       // Usa lo spread operator per creare un nuovo array con l'auto aggiunta
       return [...prev, car];
     });
@@ -27,27 +22,13 @@ export const FavoritesProvider = ({ children }) => {
 
   // Funzione per rimuovere un'auto dai favoriti usando l'ID
   const removeFromFavorites = (carId) => {
-    // Trova l'auto da rimuovere per mostrare il nome nella notifica
-    const carToRemove = favorites.find(car => car.id === carId);
-    
     // Filtriamo l'array mantenendo solo le auto con ID diverso da quello da rimuovere
     setFavorites(prev => prev.filter(car => car.id !== carId));
-    
-    // Aggiungi notifica di rimozione
-    if (carToRemove) {
-      addNotification(`${carToRemove.title} rimossa dai preferiti`, 'info');
-    }
   };
 
   // Funzione per eliminare tutti i favoriti
   const clearAllFavorites = () => {
-    const count = favorites.length;
     setFavorites([]);
-    
-    // Notifica per la cancellazione di tutti i preferiti
-    if (count > 0) {
-      addNotification(`Rimoss${count === 1 ? 'a' : 'e'} ${count} auto dai preferiti`, 'warning');
-    }
   };
 
   // Funzione helper per verificare se un'auto è già nei favoriti
