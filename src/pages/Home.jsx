@@ -5,15 +5,58 @@ import CarCarousel from "../components/CarCarousel";
 
 export default function Home() {
   const [cars, setCars] = useState([]);
+  const [filteredCars, setFilteredCars] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     fetchCars()
-      .then((data) => setCars(data))
+      .then((data) => {
+        setCars(data);
+        setFilteredCars(data);
+        
+        // Extract unique categories from cars
+        const uniqueCategories = [...new Set(data.map(car => car.category))];
+        setCategories(uniqueCategories);
+      })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
+
+  // Filter cars when category selection changes
+  useEffect(() => {
+    if (selectedCategory === "all") {
+      setFilteredCars(cars);
+    } else {
+      setFilteredCars(cars.filter(car => car.category === selectedCategory));
+    }
+  }, [selectedCategory, cars]);
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+  };
+
+  // Function to get category icon (same as in ProductCard)
+  const getCategoryIcon = (category) => {
+    switch (category.toLowerCase()) {
+      case "suv":
+        return "fas fa-car";
+      case "berlina":
+        return "fas fa-car-side";
+      case "coupé":
+        return "fas fa-car-alt";
+      case "station wagon":
+        return "fas fa-shuttle-van";
+      case "cabrio":
+        return "fas fa-wind";
+      case "plug-in hybrid":
+        return "fas fa-charging-station";
+      default:
+        return "fas fa-car";
+    }
+  };
 
   if (loading) return <p>Caricamento...</p>;
   if (error) return <p>Errore: {error}</p>;
@@ -59,16 +102,68 @@ export default function Home() {
             </p>
           </div>
 
+          {/* Category Filter Section */}
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+              Filtra per categoria
+            </h3>
+            
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
+              {/* All Categories Button */}
+              <button
+                onClick={() => handleCategoryChange("all")}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  selectedCategory === "all"
+                    ? "bg-orange-500 text-white shadow-lg transform scale-105"
+                    : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                }`}
+              >
+                <i className="fas fa-th-large"></i>
+                Tutte ({cars.length})
+              </button>
+
+              {/* Individual Category Buttons */}
+              {categories.map((category) => {
+                const categoryCount = cars.filter(car => car.category === category).length;
+                return (
+                  <button
+                    key={category}
+                    onClick={() => handleCategoryChange(category)}
+                    className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                      selectedCategory === category
+                        ? "bg-orange-500 text-white shadow-lg transform scale-105"
+                        : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                    }`}
+                  >
+                    <i className={`${getCategoryIcon(category)} text-orange-400`}></i>
+                    {category} ({categoryCount})
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="text-center mb-6">
             <p className="text-gray-600">
-              <span className="font-semibold text-orange-600">
-                {cars.length}
-              </span>{" "}
-              auto disponibili
+              {selectedCategory === "all" ? (
+                <>
+                  <span className="font-semibold text-orange-600">
+                    {filteredCars.length}
+                  </span>{" "}
+                  auto disponibili
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold text-orange-600">
+                    {filteredCars.length}
+                  </span>{" "}
+                  auto nella categoria <span className="font-semibold text-orange-600">{selectedCategory}</span>
+                </>
+              )}
             </p>
           </div>
 
-          {cars.length === 0 ? (
+          {filteredCars.length === 0 ? (
             <div className="text-center py-12">
               <svg
                 className="h-16 w-16 text-gray-300 mx-auto mb-4"
@@ -84,15 +179,29 @@ export default function Home() {
                 />
               </svg>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                Nessun risultato disponibile
+                {selectedCategory === "all" 
+                  ? "Nessun risultato disponibile"
+                  : `Nessuna auto trovata nella categoria "${selectedCategory}"`
+                }
               </h3>
               <p className="text-gray-500">
-                Al momento non ci sono auto da mostrare.
+                {selectedCategory === "all"
+                  ? "Al momento non ci sono auto da mostrare."
+                  : "Prova a selezionare una categoria diversa."
+                }
               </p>
+              {selectedCategory !== "all" && (
+                <button
+                  onClick={() => handleCategoryChange("all")}
+                  className="mt-4 inline-block bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-full transition-colors duration-200"
+                >
+                  Mostra tutte le auto
+                </button>
+              )}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 animate-fade-in">
-              {cars.map((car, index) => (
+              {filteredCars.map((car, index) => (
                 <div
                   key={car.id}
                   className="animate-slide-up"
