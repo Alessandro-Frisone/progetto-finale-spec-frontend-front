@@ -51,16 +51,32 @@ export default function Home() {
         />
       </section>
 
-      <section 
-      className="px-4 sm:px-8 md:px-12 lg:px-20 py-16 bg-gray-50 min-h-screen">
+      <section className="relative bg-gradient-to-br from-orange-50 via-white to-gray-50 py-20 px-4 sm:px-8 md:px-12 lg:px-20 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-10 text-center">
-            Auto disponibili
-          </h1>
+          {/* Titolo con animazione */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
+              🚗 Auto <span className="text-orange-500">disponibili</span>
+            </h1>
+            <p className="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
+              Scopri la nostra selezione esclusiva di auto usate, accuratamente
+              scelte per te.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
-            {cars.map((car) => (
-              <ProductCard key={car.id} car={car} />
+          {/* Griglia con animazione su scroll */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 animate-fade-in">
+            {cars.map((car, index) => (
+              <div
+                key={car.id}
+                className="animate-slide-up"
+                style={{
+                  animationDelay: `${index * 0.05}s`,
+                  animationFillMode: "both",
+                }}
+              >
+                <ProductCard car={car} />
+              </div>
             ))}
           </div>
         </div>

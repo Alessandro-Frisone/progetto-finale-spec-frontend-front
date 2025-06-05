@@ -26,6 +26,11 @@ export const FavoritesProvider = ({ children }) => {
     setFavorites(prev => prev.filter(car => car.id !== carId));
   };
 
+  // Funzione per eliminare tutti i favoriti
+  const clearAllFavorites = () => {
+    setFavorites([]);
+  };
+
   // Funzione helper per verificare se un'auto è già nei favoriti
   const isFavorite = (carId) => {
     // Usa .some() per verificare se almeno un elemento soddisfa la condizione
@@ -38,6 +43,7 @@ export const FavoritesProvider = ({ children }) => {
       favorites,
       addToFavorites,
       removeFromFavorites,
+      clearAllFavorites,
       isFavorite
     }}>
       {children}
