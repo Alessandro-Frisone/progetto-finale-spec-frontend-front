@@ -4,7 +4,7 @@ export default function SortFilter({ onSortChange, selectedSort }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Opzioni di ordinamento disponibili (solo per title)
+  // Opzioni di ordinamento disponibili
   const sortOptions = [
     { value: "", label: "Ordinamento predefinito", icon: "fas fa-sort" },
     { value: "title-asc", label: "Titolo A-Z", icon: "fas fa-sort-alpha-down" },
@@ -29,7 +29,9 @@ export default function SortFilter({ onSortChange, selectedSort }) {
   const currentOption = sortOptions.find(option => option.value === selectedSort) || sortOptions[0];
 
   const handleSortSelect = (sortValue) => {
-    onSortChange(sortValue);
+    if (typeof onSortChange === 'function') {
+      onSortChange(sortValue);
+    }
     setIsOpen(false);
   };
 
@@ -81,7 +83,7 @@ export default function SortFilter({ onSortChange, selectedSort }) {
         {isOpen && (
           <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 overflow-hidden">
             {sortOptions.map((option, index) => (
-              <div key={option.value}>
+              <div key={option.value || 'default'}>
                 <button
                   onClick={() => handleSortSelect(option.value)}
                   className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-orange-50 transition-colors duration-150 ${

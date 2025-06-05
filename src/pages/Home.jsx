@@ -13,77 +13,51 @@ export default function Home() {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedSort, setSelectedSort] = useState("");
 
   useEffect(() => {
     fetchCars()
       .then((data) => {
         setCars(data);
-        setFilteredCars(data); // Inizialmente mostra tutte le auto
+        setFilteredCars(data);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
-  // Funzione per ordinare le auto (solo per title)
-  const sortCars = (carsToSort, sortValue) => {
-    if (!sortValue) return carsToSort;
+  // AGGIORNATO: useEffect per applicare filtri quando cambiano gli stati
+  useEffect(() => {
+    applyFiltersAndSort();
+  }, [cars, searchTerm, selectedCategory]);
 
-    const sortedCars = [...carsToSort];
+  
 
-    switch (sortValue) {
-      case "title-asc":
-        return sortedCars.sort((a, b) => a.title.localeCompare(b.title));
-      case "title-desc":
-        return sortedCars.sort((a, b) => b.title.localeCompare(a.title));
-      default:
-        return sortedCars;
-    }
-  };
-
-  // Funzione per applicare tutti i filtri e ordinamenti
-  const applyFiltersAndSort = (
-    searchValue = searchTerm,
-    categoryValue = selectedCategory,
-    sortValue = selectedSort
-  ) => {
-    let filtered = cars;
+  // AGGIORNATA: Funzione semplificata per applicare filtri
+  const applyFiltersAndSort = () => {
+    let filtered = [...cars];
 
     // Applica filtro per titolo
-    if (searchValue.trim()) {
-      filtered = filtered.filter(car =>
-        car.title.toLowerCase().includes(searchValue.toLowerCase())
+    if (searchTerm.trim()) {
+      filtered = filtered.filter((car) =>
+        car.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     // Applica filtro per categoria
-    if (categoryValue) {
-      filtered = filtered.filter(car => car.category === categoryValue);
+    if (selectedCategory) {
+      filtered = filtered.filter((car) => car.category === selectedCategory);
     }
-
-    // Applica ordinamento
-    filtered = sortCars(filtered, sortValue);
-
     setFilteredCars(filtered);
   };
 
-  // Funzione per gestire la ricerca
+  // AGGIORNATE: Funzioni semplificate per gestire i cambi di stato
   const handleSearch = (term) => {
     setSearchTerm(term);
-    applyFiltersAndSort(term, selectedCategory, selectedSort);
   };
 
-  // Funzione per gestire il filtro categoria
   const handleCategoryFilter = (category) => {
     setSelectedCategory(category);
-    applyFiltersAndSort(searchTerm, category, selectedSort);
   };
 
-  // Funzione per gestire l'ordinamento
-  const handleSortChange = (sortValue) => {
-    setSelectedSort(sortValue);
-    applyFiltersAndSort(searchTerm, selectedCategory, sortValue);
-  };
 
   if (loading) return <p>Caricamento...</p>;
   if (error) return <p>Errore: {error}</p>;
@@ -91,7 +65,7 @@ export default function Home() {
   return (
     <div className="bg-gradient-to-b from-gray-200 via-gray-100 via-white to-white pt-28">
       <CarCarousel />
-      
+
       <section className="relative bg-white px-6 pt-16 pb-42 overflow-hidden">
         <div className="max-w-5xl mx-auto text-left z-10 relative">
           <h2 className="text-4xl font-bold text-gray-800 mb-6 text-center">
@@ -142,22 +116,19 @@ export default function Home() {
               <div className="flex-1">
                 <SearchBar onSearch={handleSearch} />
               </div>
-              
+
               {/* Filtro categoria e ordinamento affiancati */}
               <div className="flex flex-col sm:flex-row gap-4 lg:w-auto">
                 <div className="w-full sm:w-48">
-                  <CategoryFilter 
+                  <CategoryFilter
                     cars={cars}
                     onFilterChange={handleCategoryFilter}
                     selectedCategory={selectedCategory}
                   />
                 </div>
-                
+
                 <div className="w-full sm:w-56">
-                  <SortFilter 
-                    onSortChange={handleSortChange}
-                    selectedSort={selectedSort}
-                  />
+                  <SortFilter />
                 </div>
               </div>
             </div>
@@ -171,18 +142,12 @@ export default function Home() {
                 Categoria: {selectedCategory}
               </span>
             )}
-            {selectedSort && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
-                <i className="fas fa-sort mr-2"></i>
-                {selectedSort === 'title-asc' ? 'Titolo A-Z' : selectedSort === 'title-desc' ? 'Titolo Z-A' : 'Ordinamento attivo'}
-              </span>
-            )}
           </div>
 
           {/* Risultati della ricerca */}
           <div className="text-center mb-6">
             <p className="text-gray-600">
-              {(searchTerm || selectedCategory) ? (
+              {searchTerm || selectedCategory ? (
                 <>
                   <span className="font-semibold text-orange-600">
                     {filteredCars.length}
@@ -224,12 +189,12 @@ export default function Home() {
               <p className="text-gray-500 mb-4">
                 Non ci sono auto che corrispondono ai filtri selezionati.
               </p>
-              
+
               {/* Pulsanti per rimuovere i filtri */}
               <div className="flex flex-wrap justify-center gap-3">
                 {searchTerm && (
                   <button
-                    onClick={() => handleSearch('')}
+                    onClick={() => handleSearch("")}
                     className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors duration-200"
                   >
                     <i className="fas fa-times mr-2"></i>
@@ -238,20 +203,11 @@ export default function Home() {
                 )}
                 {selectedCategory && (
                   <button
-                    onClick={() => handleCategoryFilter('')}
+                    onClick={() => handleCategoryFilter("")}
                     className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors duration-200"
                   >
                     <i className="fas fa-times mr-2"></i>
                     Rimuovi filtro categoria
-                  </button>
-                )}
-                {selectedSort && (
-                  <button
-                    onClick={() => handleSortChange('')}
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
-                  >
-                    <i className="fas fa-times mr-2"></i>
-                    Rimuovi ordinamento
                   </button>
                 )}
               </div>
