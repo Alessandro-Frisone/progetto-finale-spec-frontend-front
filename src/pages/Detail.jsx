@@ -5,37 +5,41 @@ import { useFavorites } from "../contexts/FavoritesContext";
 
 export default function Detail() {
   const { id } = useParams();
-const [car, setCar] = useState(null);
-const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  const [car, setCar] = useState(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
 
-useEffect(() => {
-  async function loadCar() {
-    const data = await fetchCarById(id);
-    setCar(data);
+  useEffect(() => {
+    async function loadCar() {
+      const data = await fetchCarById(id);
+      setCar(data);
+    }
+    loadCar();
+  }, [id]);
+
+  // Proteggi l'accesso a car.id
+  const isCarFavorite = car ? isFavorite(car.id) : false;
+
+  const handleFavoriteClick = () => {
+    if (!car) return; // opzionale: evita azioni premature
+    if (isCarFavorite) {
+      removeFromFavorites(car.id);
+    } else {
+      addToFavorites(car);
+    }
+  };
+
+  const toggleExpanded = () => {
+    setIsExpanded(!isExpanded);
+  };
+
+  if (!car) {
+    return (
+      <div className="flex justify-center items-center py-20">
+        <span className="text-orange-600 font-semibold">Caricamento auto...</span>
+      </div>
+    );
   }
-  loadCar();
-}, [id]);
-
-// Proteggi l'accesso a car.id
-const isCarFavorite = car ? isFavorite(car.id) : false;
-
-const handleFavoriteClick = () => {
-  if (!car) return; // opzionale: evita azioni premature
-  if (isCarFavorite) {
-    removeFromFavorites(car.id);
-  } else {
-    addToFavorites(car);
-  }
-};
-if (!car) {
-  return (
-    <div className="flex justify-center items-center py-20">
-      <span className="text-orange-600 font-semibold">Caricamento auto...</span>
-    </div>
-  );
-}
-
-
 
   return (
     <div className="max-w-auto mx-auto mt-10 space-y-8 px-4">
@@ -144,65 +148,70 @@ if (!car) {
                 </li>
               )}
             </ul>
+
+            {/* Bottone Scopri di più */}
+            <div className="mt-6 text-center">
+              <button
+                onClick={toggleExpanded}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-semibold rounded-full hover:bg-orange-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+              >
+                {isExpanded ? "Mostra meno" : "Scopri di più"}
+                <i className={`fas fa-chevron-${isExpanded ? "up" : "down"} transition-transform duration-300`}></i>
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Sezione Descrizione */}
-        <section className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
-          <h2 className="text-2xl font-semibold mb-4 text-orange-600">
-            Descrizione
-          </h2>
-          <p className="text-gray-700 leading-relaxed">
-            {car.description ||
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vel velit sit amet libero efficitur laoreet. Vivamus posuere bibendum sapien, vitae suscipit nibh sodales quis."}
-          </p>
-        </section>
+        {/* Sezioni espandibili - Descrizione e Punti Chiave */}
+        <div className={`transition-all duration-500 ease-in-out overflow-hidden ${
+          isExpanded ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
+        }`}>
+          <div className="flex flex-col lg:flex-row gap-8 px-4 lg:px-12 py-12">
+
+  {/* Sezione Descrizione */}
+  <section className="bg-[#fdfdfc] border-t border-gray-200 py-14 px-6 md:px-12 rounded-2xl flex-1">
+    <div className="max-w-full text-left">
+      <h2 className="text-3xl font-semibold text-orange-500 mb-6 text-center">Descrizione</h2>
+      <p className="text-gray-800 text-lg leading-8 tracking-normal font-light text-center">
+        {car.description ||
+          "Un'auto pensata per chi cerca comfort, prestazioni ed eleganza. Linee scolpite, interni curati nei minimi dettagli e un motore che garantisce reattività in ogni condizione. Perfetta per la città ma anche per i lunghi viaggi."}
+      </p>
+    </div>
+  </section>
+
+  {/* Sezione Punti Chiave */}
+  <section className="bg-white border-t border-gray-200 py-12 px-6 flex-1 rounded-2xl">
+    <div className="max-w-full">
+      <h2 className="text-3xl font-extrabold text-orange-600 mb-10 text-center tracking-tight">
+        Punti Chiave
+      </h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+        {[
+          { label: "Potenza", value: car.horsepower ? `${car.horsepower} HP` : "--" },
+          { label: "Cilindrata", value: car.displacement ? `${car.displacement} cc` : "--" },
+          { label: "Porte", value: car.doors ?? "--" },
+          { label: "Posti", value: car.seats ?? "--" },
+          { label: "Consumo", value: car.consumption ? `${car.consumption} km/l` : "--" },
+          { label: "Classe Emissioni", value: car.emissionClass ?? "--" },
+        ].map((item, index) => (
+          <div
+            key={index}
+            className="flex flex-col items-center justify-center p-6 bg-orange-50 border border-orange-100 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+          >
+            <span className="text-2xl font-bold text-orange-600">{item.value}</span>
+            <span className="text-sm text-gray-600 mt-1 tracking-wide">{item.label}</span>
+          </div>
+        ))}
       </div>
+    </div>
+  </section>
 
-      {/* Sezione Punti Chiave */}
-      <section className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
-        <h2 className="text-2xl font-semibold mb-4 text-orange-600">
-          Punti Chiave
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <div className="flex flex-col items-center p-4 border rounded-lg">
-            <span className="text-3xl font-bold text-orange-600">
-              {car.horsepower ?? "--"} HP
-            </span>
-            <span className="text-sm text-gray-600 mt-1">Potenza</span>
-          </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg">
-            <span className="text-3xl font-bold text-orange-600">
-              {car.displacement ?? "--"} cc
-            </span>
-            <span className="text-sm text-gray-600 mt-1">Cilindrata</span>
-          </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg">
-            <span className="text-3xl font-bold text-orange-600">
-              {car.doors ?? "--"}
-            </span>
-            <span className="text-sm text-gray-600 mt-1">Porte</span>
-          </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg">
-            <span className="text-3xl font-bold text-orange-600">
-              {car.seats ?? "--"}
-            </span>
-            <span className="text-sm text-gray-600 mt-1">Posti</span>
-          </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg">
-            <span className="text-3xl font-bold text-orange-600">
-              {car.consumption ?? "--"} km/l
-            </span>
-            <span className="text-sm text-gray-600 mt-1">Consumo</span>
-          </div>
-          <div className="flex flex-col items-center p-4 border rounded-lg">
-            <span className="text-3xl font-bold text-orange-600">
-              {car.emissionClass ?? "--"}
-            </span>
-            <span className="text-sm text-gray-600 mt-1">Classe Emissioni</span>
-          </div>
+</div>
+
+
+
         </div>
-      </section>
+      </div>
     </div>
   );
 }
