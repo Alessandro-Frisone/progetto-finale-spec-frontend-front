@@ -22,7 +22,7 @@ export default function Home() {
     <div className="bg-gradient-to-b from-gray-200 via-gray-100 via-white to-white pt-28">
       <CarCarousel />
 
-      <section className="relative bg-white px-6 pt-16 pb-42 overflow-hidden">
+      <section className="relative bg-white px-6 pt-16 pb-56 overflow-hidden">
         <div className="max-w-5xl mx-auto text-left z-10 relative">
           <h2 className="text-4xl font-bold text-gray-800 mb-6 text-center">
             Perché scegliere noi
@@ -86,7 +86,9 @@ export default function Home() {
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
                 Nessun risultato disponibile
               </h3>
-              <p className="text-gray-500">Al momento non ci sono auto da mostrare.</p>
+              <p className="text-gray-500">
+                Al momento non ci sono auto da mostrare.
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 animate-fade-in">
