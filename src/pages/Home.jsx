@@ -4,6 +4,7 @@ import ProductCard from "../components/ProductCard";
 import CarCarousel from "../components/CarCarousel";
 import SearchBar from "../components/SearchBar";
 import CategoryFilter from "../components/CategoryFilter";
+import SortFilter from "../components/SortFilter";
 
 export default function Home() {
   const [cars, setCars] = useState([]);
@@ -12,6 +13,7 @@ export default function Home() {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSort, setSelectedSort] = useState("");
 
   useEffect(() => {
     fetchCars()
@@ -23,8 +25,28 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Funzione per applicare tutti i filtri
-  const applyFilters = (searchValue = searchTerm, categoryValue = selectedCategory) => {
+  // Funzione per ordinare le auto (solo per title)
+  const sortCars = (carsToSort, sortValue) => {
+    if (!sortValue) return carsToSort;
+
+    const sortedCars = [...carsToSort];
+
+    switch (sortValue) {
+      case "title-asc":
+        return sortedCars.sort((a, b) => a.title.localeCompare(b.title));
+      case "title-desc":
+        return sortedCars.sort((a, b) => b.title.localeCompare(a.title));
+      default:
+        return sortedCars;
+    }
+  };
+
+  // Funzione per applicare tutti i filtri e ordinamenti
+  const applyFiltersAndSort = (
+    searchValue = searchTerm,
+    categoryValue = selectedCategory,
+    sortValue = selectedSort
+  ) => {
     let filtered = cars;
 
     // Applica filtro per titolo
@@ -39,19 +61,28 @@ export default function Home() {
       filtered = filtered.filter(car => car.category === categoryValue);
     }
 
+    // Applica ordinamento
+    filtered = sortCars(filtered, sortValue);
+
     setFilteredCars(filtered);
   };
 
   // Funzione per gestire la ricerca
   const handleSearch = (term) => {
     setSearchTerm(term);
-    applyFilters(term, selectedCategory);
+    applyFiltersAndSort(term, selectedCategory, selectedSort);
   };
 
   // Funzione per gestire il filtro categoria
   const handleCategoryFilter = (category) => {
     setSelectedCategory(category);
-    applyFilters(searchTerm, category);
+    applyFiltersAndSort(searchTerm, category, selectedSort);
+  };
+
+  // Funzione per gestire l'ordinamento
+  const handleSortChange = (sortValue) => {
+    setSelectedSort(sortValue);
+    applyFiltersAndSort(searchTerm, selectedCategory, sortValue);
   };
 
   if (loading) return <p>Caricamento...</p>;
@@ -104,34 +135,49 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Contenitore per barra di ricerca e filtro categoria affiancati */}
-          <div className="max-w-2xl mx-auto mb-8">
-            <div className="flex flex-col sm:flex-row gap-4">
+          {/* Contenitore per controlli di ricerca, filtro e ordinamento */}
+          <div className="max-w-4xl mx-auto mb-8">
+            <div className="flex flex-col lg:flex-row gap-4">
               {/* Barra di ricerca - più larga */}
               <div className="flex-1">
                 <SearchBar onSearch={handleSearch} />
               </div>
               
-              {/* Filtro categoria - più piccolo */}
-              <div className="w-full sm:w-48">
-                <CategoryFilter 
-                  cars={cars}
-                  onFilterChange={handleCategoryFilter}
-                  selectedCategory={selectedCategory}
-                />
+              {/* Filtro categoria e ordinamento affiancati */}
+              <div className="flex flex-col sm:flex-row gap-4 lg:w-auto">
+                <div className="w-full sm:w-48">
+                  <CategoryFilter 
+                    cars={cars}
+                    onFilterChange={handleCategoryFilter}
+                    selectedCategory={selectedCategory}
+                  />
+                </div>
+                
+                <div className="w-full sm:w-56">
+                  <SortFilter 
+                    onSortChange={handleSortChange}
+                    selectedSort={selectedSort}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Indicatore categoria selezionata (se presente) */}
-          {selectedCategory && (
-            <div className="text-center mb-4 -mt-2">
+          {/* Indicatori filtri attivi */}
+          <div className="flex flex-wrap justify-center gap-2 mb-4 -mt-2">
+            {selectedCategory && (
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-800">
-                <i className={`fas fa-list mr-2`}></i>
-                Filtrando per: {selectedCategory}
+                <i className="fas fa-list mr-2"></i>
+                Categoria: {selectedCategory}
               </span>
-            </div>
-          )}
+            )}
+            {selectedSort && (
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+                <i className="fas fa-sort mr-2"></i>
+                {selectedSort === 'title-asc' ? 'Titolo A-Z' : selectedSort === 'title-desc' ? 'Titolo Z-A' : 'Ordinamento attivo'}
+              </span>
+            )}
+          </div>
 
           {/* Risultati della ricerca */}
           <div className="text-center mb-6">
@@ -197,6 +243,15 @@ export default function Home() {
                   >
                     <i className="fas fa-times mr-2"></i>
                     Rimuovi filtro categoria
+                  </button>
+                )}
+                {selectedSort && (
+                  <button
+                    onClick={() => handleSortChange('')}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
+                  >
+                    <i className="fas fa-times mr-2"></i>
+                    Rimuovi ordinamento
                   </button>
                 )}
               </div>
