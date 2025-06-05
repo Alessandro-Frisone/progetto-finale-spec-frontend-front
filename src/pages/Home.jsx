@@ -11,8 +11,8 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   
-  // Stati per l'ordinamento
-  const [sortBy, setSortBy] = useState("none"); // "none", "title", "category"
+  // Stati per l'ordinamento - ora solo per titolo
+  const [sortBy, setSortBy] = useState("none"); // "none", "title"
   const [sortOrder, setSortOrder] = useState("asc"); // "asc", "desc"
 
   useEffect(() => {
@@ -38,18 +38,11 @@ export default function Home() {
       result = result.filter(car => car.category === selectedCategory);
     }
     
-    // Apply sorting
-    if (sortBy !== "none") {
+    // Apply sorting - solo per titolo
+    if (sortBy === "title") {
       result = [...result].sort((a, b) => {
-        let valueA, valueB;
-        
-        if (sortBy === "title") {
-          valueA = a.title.toLowerCase();
-          valueB = b.title.toLowerCase();
-        } else if (sortBy === "category") {
-          valueA = a.category.toLowerCase();
-          valueB = b.category.toLowerCase();
-        }
+        const valueA = a.title.toLowerCase();
+        const valueB = b.title.toLowerCase();
         
         if (sortOrder === "asc") {
           return valueA.localeCompare(valueB);
@@ -203,10 +196,10 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Sorting Section */}
+          {/* Sorting Section - Solo per titolo */}
           <div className="mb-8">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-              Ordina per
+              Ordina per nome
             </h3>
             
             <div className="flex flex-wrap justify-center gap-3 mb-6">
@@ -231,26 +224,15 @@ export default function Home() {
                 <i className={getSortIcon("title")}></i>
                 Nome {sortBy === "title" && (sortOrder === "asc" ? "(A-Z)" : "(Z-A)")}
               </button>
-
-              {/* Sort by Category Button */}
-              <button
-                onClick={() => handleSortChange("category")}
-                className={getSortButtonClasses("category")}
-              >
-                <i className={getSortIcon("category")}></i>
-                Categoria {sortBy === "category" && (sortOrder === "asc" ? "(A-Z)" : "(Z-A)")}
-              </button>
             </div>
 
             {/* Sort Info */}
-            {sortBy !== "none" && (
+            {sortBy === "title" && (
               <div className="text-center">
                 <p className="text-sm text-gray-600">
                   <i className="fas fa-info-circle text-orange-500 mr-1"></i>
                   Ordinamento per{" "}
-                  <span className="font-semibold text-orange-600">
-                    {sortBy === "title" ? "nome" : "categoria"}
-                  </span>{" "}
+                  <span className="font-semibold text-orange-600">nome</span>{" "}
                   in ordine{" "}
                   <span className="font-semibold text-orange-600">
                     {sortOrder === "asc" ? "crescente (A-Z)" : "decrescente (Z-A)"}
@@ -278,15 +260,7 @@ export default function Home() {
                   auto nella categoria <span className="font-semibold text-orange-600">{selectedCategory}</span>
                 </>
               )}
-              {sortBy !== "none" && (
-                <>
-                  {" "}
-                  - ordinate per{" "}
-                  <span className="font-semibold text-orange-600">
-                    {sortBy === "title" ? "nome" : "categoria"}
-                  </span>
-                </>
-              )}
+              
             </p>
           </div>
 
