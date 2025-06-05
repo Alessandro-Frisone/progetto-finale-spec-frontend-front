@@ -65,15 +65,7 @@ export default function CategoryFilter({
   }
 
   return (
-    <div className="max-w-md mx-auto mb-8">
-      {/* Titolo */}
-      <div className="text-center mb-4">
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">
-          Filtra per categoria
-        </h3>
-        <div className="h-1 w-16 bg-orange-300 rounded-full mx-auto"></div>
-      </div>
-
+    <div className="w-full">
       {/* Dropdown Container */}
       <div className="relative" ref={dropdownRef}>
         {/* Pulsante Dropdown */}
@@ -91,18 +83,18 @@ export default function CategoryFilter({
                     selectedCategory
                   )} text-orange-400`}
                 ></i>
-                <span>{selectedCategory}</span>
+                <span className="truncate">{selectedCategory}</span>
               </>
             ) : (
               <>
                 <i className="fas fa-list text-orange-400"></i>
-                <span>Tutte le categorie</span>
+                <span>Categoria</span>
               </>
             )}
           </div>
 
           {/* Freccia dropdown */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 ml-2">
             {selectedCategory && (
               <button
                 onClick={(e) => {
@@ -136,7 +128,7 @@ export default function CategoryFilter({
               }`}
             >
               <i className="fas fa-list text-orange-400 w-4"></i>
-              <span className="font-medium">Tutte le categorie</span>
+              <span className="font-medium">Tutte</span>
               {selectedCategory === "" && (
                 <i className="fas fa-check text-orange-500 ml-auto"></i>
               )}
@@ -159,7 +151,7 @@ export default function CategoryFilter({
                 <i
                   className={`${getCategoryIcon(category)} text-orange-400 w-4`}
                 ></i>
-                <span>{category}</span>
+                <span className="truncate">{category}</span>
                 {selectedCategory === category && (
                   <i className="fas fa-check text-orange-500 ml-auto"></i>
                 )}
@@ -168,16 +160,6 @@ export default function CategoryFilter({
           </div>
         )}
       </div>
-
-      {/* Indicatore categoria selezionata (opzionale, per maggiore chiarezza) */}
-      {selectedCategory && (
-        <div className="text-center mt-4">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-800">
-            <i className={`${getCategoryIcon(selectedCategory)} mr-2`}></i>
-            Filtrando per: {selectedCategory}
-          </span>
-        </div>
-      )}
     </div>
   );
 }

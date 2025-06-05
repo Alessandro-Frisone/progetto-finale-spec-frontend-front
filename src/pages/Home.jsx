@@ -104,15 +104,34 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Barra di ricerca */}
-          <SearchBar onSearch={handleSearch} />
+          {/* Contenitore per barra di ricerca e filtro categoria affiancati */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="flex flex-col sm:flex-row gap-4">
+              {/* Barra di ricerca - più larga */}
+              <div className="flex-1">
+                <SearchBar onSearch={handleSearch} />
+              </div>
+              
+              {/* Filtro categoria - più piccolo */}
+              <div className="w-full sm:w-48">
+                <CategoryFilter 
+                  cars={cars}
+                  onFilterChange={handleCategoryFilter}
+                  selectedCategory={selectedCategory}
+                />
+              </div>
+            </div>
+          </div>
 
-          {/* Filtro per categoria */}
-          <CategoryFilter 
-            cars={cars}
-            onFilterChange={handleCategoryFilter}
-            selectedCategory={selectedCategory}
-          />
+          {/* Indicatore categoria selezionata (se presente) */}
+          {selectedCategory && (
+            <div className="text-center mb-4 -mt-2">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-800">
+                <i className={`fas fa-list mr-2`}></i>
+                Filtrando per: {selectedCategory}
+              </span>
+            </div>
+          )}
 
           {/* Risultati della ricerca */}
           <div className="text-center mb-6">
