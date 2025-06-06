@@ -103,22 +103,7 @@ export default function SearchBar({ onSearch, totalCars, filteredCount }) {
         </div>
       )}
 
-      {/* Suggerimenti quando non ci sono risultati */}
-      {searchTerm && filteredCount === 0 && (
-        <div className="text-center mt-4">
-          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 max-w-md mx-auto">
-            <i className="fas fa-lightbulb text-gray-400 text-2xl mb-2"></i>
-            <p className="text-gray-600 text-sm">
-              <strong>Suggerimenti:</strong>
-            </p>
-            <ul className="text-gray-500 text-sm mt-2 space-y-1">
-              <li>• Controlla l'ortografia</li>
-              <li>• Usa termini più generici (es. "BMW" invece di "BMW Serie 3")</li>
-              <li>• Prova a cercare solo la marca o il modello</li>
-            </ul>
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 }

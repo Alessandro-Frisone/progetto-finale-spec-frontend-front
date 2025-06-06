@@ -146,7 +146,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-8">
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
-              🚗 Auto in <span className="text-orange-500">pronta consegna</span>
+              🚗 Auto in{" "}
+              <span className="text-orange-500">pronta consegna</span>
             </h1>
             <p className="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
               Scopri la nostra selezione esclusiva di auto usate, accuratamente
@@ -154,21 +155,79 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Search Bar Section */}
-          <SearchBar 
-            onSearch={handleSearch}
-            totalCars={cars.length}
-            filteredCount={filteredCars.length}
-          />
+          {/* Search & Sort Section */}
+          <div className="flex flex-wrap gap-6 items-start w-full mb-8">
+            {/* SearchBar */}
+            <div className="flex-1 min-w-[280px]">
+              <SearchBar
+                onSearch={handleSearch}
+                totalCars={cars.length}
+                filteredCount={filteredCars.length}
+              />
+            </div>
 
-          {/* Category Filter Section */}
+            {/* Sort Buttons */}
+            <div className="flex-1 min-w-[280px]">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center sm:text-left">
+                Ordina per nome
+              </h3>
+              <div className="flex flex-wrap justify-center sm:justify-start gap-3 mb-4">
+                <button
+                  onClick={resetSort}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    sortBy === "none"
+                      ? "bg-orange-500 text-white shadow-lg"
+                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                  }`}
+                >
+                  <i className="fas fa-list"></i>
+                  Nessun ordine
+                </button>
+                <button
+                  onClick={handleSortAZ}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    sortBy === "title" && sortOrder === "asc"
+                      ? "bg-orange-500 text-white shadow-lg"
+                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                  }`}
+                >
+                  <i className="fas fa-sort-alpha-down"></i>
+                  Nome (A-Z)
+                </button>
+                <button
+                  onClick={handleSortZA}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    sortBy === "title" && sortOrder === "desc"
+                      ? "bg-orange-500 text-white shadow-lg"
+                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                  }`}
+                >
+                  <i className="fas fa-sort-alpha-up"></i>
+                  Nome (Z-A)
+                </button>
+              </div>
+              {sortBy === "title" && (
+                <p className="text-sm text-gray-600 text-center sm:text-left">
+                  <i className="fas fa-info-circle text-orange-500 mr-1"></i>
+                  Auto ordinate per{" "}
+                  <span className="font-semibold text-orange-600">nome</span> in
+                  ordine
+                  <span className="font-semibold text-orange-600">
+                    {sortOrder === "asc"
+                      ? " crescente (A-Z)"
+                      : " decrescente (Z-A)"}
+                  </span>
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Category Filter */}
           <div className="mb-8">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
               Filtra per categoria
             </h3>
-
             <div className="flex flex-wrap justify-center gap-3 mb-6">
-              {/* All Categories Button */}
               <button
                 onClick={() => handleCategoryChange("all")}
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
@@ -180,8 +239,6 @@ export default function Home() {
                 <i className="fas fa-th-large"></i>
                 Tutte ({cars.length})
               </button>
-
-              {/* Individual Category Buttons */}
               {categories.map((category) => {
                 const categoryCount = cars.filter(
                   (car) => car.category === category
@@ -206,71 +263,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Sorting Section - Migliorato con pulsanti separati */}
-          <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-              Ordina per nome
-            </h3>
-
-            <div className="flex flex-wrap justify-center gap-3 mb-6">
-              {/* No Sort Button */}
-              <button
-                onClick={resetSort}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  sortBy === "none"
-                    ? "bg-orange-500 text-white shadow-lg"
-                    : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
-                }`}
-              >
-                <i className="fas fa-list"></i>
-                Nessun ordine
-              </button>
-
-              {/* Sort A-Z Button */}
-              <button
-                onClick={handleSortAZ}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  sortBy === "title" && sortOrder === "asc"
-                    ? "bg-orange-500 text-white shadow-lg"
-                    : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
-                }`}
-              >
-                <i className="fas fa-sort-alpha-down"></i>
-                Nome (A-Z)
-              </button>
-
-              {/* Sort Z-A Button */}
-              <button
-                onClick={handleSortZA}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  sortBy === "title" && sortOrder === "desc"
-                    ? "bg-orange-500 text-white shadow-lg"
-                    : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
-                }`}
-              >
-                <i className="fas fa-sort-alpha-up"></i>
-                Nome (Z-A)
-              </button>
-            </div>
-
-            {/* Sort Info */}
-            {sortBy === "title" && (
-              <div className="text-center">
-                <p className="text-sm text-gray-600">
-                  <i className="fas fa-info-circle text-orange-500 mr-1"></i>
-                  Auto ordinate per{" "}
-                  <span className="font-semibold text-orange-600">nome</span> in
-                  ordine{" "}
-                  <span className="font-semibold text-orange-600">
-                    {sortOrder === "asc"
-                      ? "crescente (A-Z)"
-                      : "decrescente (Z-A)"}
-                  </span>
-                </p>
-              </div>
-            )}
-          </div>
-
           <div className="text-center mb-6">
             <p className="text-gray-600">
               {selectedCategory === "all" && !searchTerm ? (
@@ -285,10 +277,12 @@ export default function Home() {
                   <span className="font-semibold text-orange-600">
                     {filteredCars.length}
                   </span>{" "}
-                  auto {searchTerm && `con "${searchTerm}"`} 
+                  auto
+                  {searchTerm && ` con "${searchTerm}"`}
                   {selectedCategory !== "all" && (
                     <>
-                      {" "}nella categoria{" "}
+                      {" "}
+                      nella categoria{" "}
                       <span className="font-semibold text-orange-600">
                         {selectedCategory}
                       </span>
@@ -315,22 +309,18 @@ export default function Home() {
                 />
               </svg>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                {searchTerm ? (
-                  <>Nessun risultato per "{searchTerm}"</>
-                ) : selectedCategory === "all" ? (
-                  "Nessun risultato disponibile"
-                ) : (
-                  `Nessuna auto trovata nella categoria "${selectedCategory}"`
-                )}
+                {searchTerm
+                  ? `Nessun risultato per "${searchTerm}"`
+                  : selectedCategory === "all"
+                  ? "Nessun risultato disponibile"
+                  : `Nessuna auto trovata nella categoria "${selectedCategory}"`}
               </h3>
               <p className="text-gray-500">
-                {searchTerm ? (
-                  "Prova a modificare i termini di ricerca o usa filtri diversi."
-                ) : selectedCategory === "all" ? (
-                  "Al momento non ci sono auto da mostrare."
-                ) : (
-                  "Prova a selezionare una categoria diversa."
-                )}
+                {searchTerm
+                  ? "Prova a modificare i termini di ricerca o usa filtri diversi."
+                  : selectedCategory === "all"
+                  ? "Al momento non ci sono auto da mostrare."
+                  : "Prova a selezionare una categoria diversa."}
               </p>
               {(searchTerm || selectedCategory !== "all") && (
                 <div className="mt-4 space-x-3">
