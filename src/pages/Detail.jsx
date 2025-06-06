@@ -33,15 +33,24 @@ export default function Detail() {
     const newValue = !isExpanded;
     setIsExpanded(newValue);
 
-    if (!newValue) return; // se stai chiudendo, non serve scrollare
+    if (!newValue) {
+      // Se stai chiudendo, scrolla verso l'alto
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0, // posizione a cui tornare (puoi metterla a 0 o regolare)
+          behavior: "smooth",
+        });
+      }, 100); // attende un po’ per non interferire con la chiusura
+      return;
+    }
 
-    // aspetta leggermente per far apparire il contenuto, poi scrolla
+    // Se stai aprendo, scrolla in basso ma non troppo
     setTimeout(() => {
       window.scrollTo({
-        top: document.body.scrollHeight,
+        top: 600, // verso il basso ma con margine
         behavior: "smooth",
       });
-    }, 200); // puoi regolare questo valore se il contenuto è pesante
+    }, 200);
   };
 
   if (!car) {
@@ -74,7 +83,7 @@ export default function Detail() {
       </div>
 
       {/* Card principale con immagine e dettagli */}
-      <div className="max-w-12xl bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden w-full">
+      <div className="max-w-12xl bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden w-full mb-24">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {/* Immagine a sinistra */}
           {car.imageUrl ? (
@@ -91,32 +100,11 @@ export default function Detail() {
 
           {/* Dettagli a destra */}
           <div className="p-6 flex flex-col justify-between relative">
-            {/* Prezzo e cuore in alto a destra */}
-            <div className="absolute top-6 right-6 flex items-center gap-3">
+            {/* Prezzo in alto a destra */}
+            <div className="absolute top-6 right-6">
               <span className="bg-orange-100 text-orange-600 text-3xl font-extrabold px-5 py-3 rounded-xl shadow-lg">
                 € {car.price.toLocaleString("it-IT")}
               </span>
-
-              {/* Bottone cuore */}
-              <button
-                onClick={handleFavoriteClick}
-                aria-label={
-                  isCarFavorite
-                    ? "Rimuovi dai preferiti"
-                    : "Aggiungi ai preferiti"
-                }
-                className={`text-2xl cursor-pointer focus:outline-none transform transition-all duration-200 p-2 rounded-full
-                ${
-                  isCarFavorite
-                    ? "text-orange-500 hover:text-orange-600 bg-orange-50 hover:bg-orange-100"
-                    : "text-gray-400 hover:text-orange-400 bg-gray-50 hover:bg-orange-50"
-                } 
-                hover:scale-110 shadow-sm`}
-              >
-                <i
-                  className={isCarFavorite ? "fas fa-heart" : "far fa-heart"}
-                ></i>
-              </button>
             </div>
 
             <h1 className="text-3xl font-bold text-orange-600 mb-6 text-center md:text-left mt-20 md:mt-0">
@@ -166,8 +154,8 @@ export default function Detail() {
               )}
             </ul>
 
-            {/* Bottone Scopri di più */}
-            <div className="mt-6 text-center">
+            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+              {/* Bottone "Scopri di più" */}
               <button
                 onClick={toggleExpanded}
                 className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-semibold rounded-full hover:bg-orange-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
@@ -177,6 +165,26 @@ export default function Detail() {
                   className={`fas fa-chevron-${
                     isExpanded ? "up" : "down"
                   } transition-transform duration-300`}
+                ></i>
+              </button>
+
+              {/* Bottone "Preferiti" con icona a destra */}
+              <button
+                onClick={handleFavoriteClick}
+                className={`inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold rounded-full transition-all duration-300 transform shadow-lg
+      ${
+        isCarFavorite
+          ? "bg-white text-orange-600 border border-orange-600 hover:bg-orange-50"
+          : "bg-orange-600 text-white hover:bg-orange-700"
+      } hover:scale-105`}
+              >
+                {isCarFavorite
+                  ? "Rimuovi dai preferiti"
+                  : "Aggiungi ai preferiti"}
+                <i
+                  className={`${
+                    isCarFavorite ? "fas fa-heart-broken" : "far fa-heart"
+                  } text-lg`}
                 ></i>
               </button>
             </div>
@@ -190,7 +198,7 @@ export default function Detail() {
           }`}
         >
           <div className="flex flex-col lg:flex-row gap-8 px-4 lg:px-12 py-12">
-            {/* Sezione Punti Chiave */}
+            {/* Punti Chiave */}
             <section className="bg-white border-t border-gray-200 py-12 px-6 flex-1 rounded-2xl">
               <div className="max-w-full">
                 <h2 className="text-3xl font-extrabold text-orange-600 mb-10 text-center tracking-tight">
@@ -232,7 +240,8 @@ export default function Detail() {
                 </div>
               </div>
             </section>
-            {/* Sezione Descrizione */}
+
+            {/* Descrizione */}
             <section className="bg-[#fdfdfc] border-t border-gray-200 py-14 px-6 md:px-12 rounded-2xl flex-1">
               <div className="max-w-full text-left">
                 <h2 className="text-3xl font-semibold text-orange-500 mb-6 text-center">
