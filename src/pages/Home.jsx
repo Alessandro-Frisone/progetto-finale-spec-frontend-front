@@ -5,91 +5,129 @@ import CarCarousel from "../components/CarCarousel";
 import SearchBar from "../components/SearchBar";
 
 export default function Home() {
-  const [cars, setCars] = useState([]);
-  const [filteredCars, setFilteredCars] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  // ========================================================================================================================
+  // ========================================GESTIONE DELLO STATO DELL'APPLICAZIONE==========================================
+  // ========================================================================================================================
 
-  // Stati per l'ordinamento - ora solo per titolo
-  const [sortBy, setSortBy] = useState("none"); // "none", "title"
-  const [sortOrder, setSortOrder] = useState("asc"); // "asc", "desc"
+  // Stati principali per la gestione delle auto
+  const [cars, setCars] = useState([]); // Array con tutte le auto caricate dal server
+  const [filteredCars, setFilteredCars] = useState([]); // Array con le auto filtrate da mostrare
 
+  // Stati per il filtro per categoria
+  const [selectedCategory, setSelectedCategory] = useState("all"); // Categoria attualmente selezionata
+  const [categories, setCategories] = useState([]); // Lista delle categorie disponibili
+
+  // Stati per il caricamento e gli errori
+  const [loading, setLoading] = useState(true); // Indica se i dati sono in caricamento
+  const [error, setError] = useState(""); // Messaggio di errore in caso di problemi
+
+  // Stato per la ricerca testuale
+  const [searchTerm, setSearchTerm] = useState(""); // Termine di ricerca inserito dall'utente
+
+  // Stati per l'ordinamento delle auto (attualmente solo per titolo)
+  const [sortBy, setSortBy] = useState("none"); // Campo per cui ordinare: "none" o "title"
+  const [sortOrder, setSortOrder] = useState("asc"); // Ordine di ordinamento: "asc" (crescente) o "desc" (decrescente)
+
+  // ========================================================================================================================
+  // ============================================CARICAMENTO INIZIALE DEI DATI===============================================
+  // ========================================================================================================================
+
+  // Effetto che si esegue al primo caricamento del componente
   useEffect(() => {
-    fetchCars()
+    fetchCars() // Chiamata API per ottenere l'elenco delle auto
       .then((data) => {
-        setCars(data);
-        setFilteredCars(data);
+        setCars(data); // Salva tutte le auto nello stato
+        setFilteredCars(data); // Inizialmente mostra tutte le auto
 
-        // Extract unique categories from cars
+        // Estrae le categorie uniche dalle auto ricevute per creare i filtri
         const uniqueCategories = [...new Set(data.map((car) => car.category))];
         setCategories(uniqueCategories);
       })
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
-  }, []);
+      .catch((err) => setError(err.message)) // In caso di errore, salva il messaggio
+      .finally(() => setLoading(false)); // Al termine (successo o errore) disattiva il loading
+  }, []); // Array vuoto = esegue solo al primo mount del componente
 
-  // Filter and sort cars when category selection, search term, or sorting changes
+  // ========================================================================================================================
+  // ============================================LOGICA DI FILTRO E ORDINAMENTO==============================================
+  // ========================================================================================================================
+
+  // Effetto che ricalcola le auto da mostrare ogni volta che cambia:
+  // - la categoria selezionata
+  // - il termine di ricerca
+  // - i criteri di ordinamento
+  // - l'array originale delle auto
   useEffect(() => {
-    let result = cars;
+    let result = cars; // Parte da tutte le auto disponibili
 
-    // Apply search filter first
+    // PRIMO PASSO: Applica il filtro di ricerca per testo
     if (searchTerm.trim()) {
       result = result.filter((car) =>
         car.title.toLowerCase().includes(searchTerm.toLowerCase().trim())
       );
     }
 
-    // Apply category filter
+    // SECONDO PASSO: Applica il filtro per categoria
     if (selectedCategory !== "all") {
       result = result.filter((car) => car.category === selectedCategory);
     }
 
-    // Apply sorting - solo per titolo
+    // TERZO PASSO: Applica l'ordinamento (attualmente solo per titolo)
     if (sortBy === "title") {
       result = [...result].sort((a, b) => {
-        const valueA = a.title.toLowerCase();
+        // Crea una copia per non modificare l'originale
+        const valueA = a.title.toLowerCase(); // Confronto case-insensitive
         const valueB = b.title.toLowerCase();
 
         if (sortOrder === "asc") {
-          return valueA.localeCompare(valueB);
+          return valueA.localeCompare(valueB); // Ordine alfabetico crescente (A-Z)
         } else {
-          return valueB.localeCompare(valueA);
+          return valueB.localeCompare(valueA); // Ordine alfabetico decrescente (Z-A)
         }
       });
     }
 
+    // Aggiorna lo stato con le auto filtrate e ordinate
     setFilteredCars(result);
-  }, [selectedCategory, cars, sortBy, sortOrder, searchTerm]);
+  }, [selectedCategory, cars, sortBy, sortOrder, searchTerm]); // Si riesegue quando cambiano questi valori
 
+  // ========================================================================================================================
+  // ============================================FUNZIONI PER GESTIRE GLI EVENTI UTENTE======================================
+  // ========================================================================================================================
+
+  // Gestisce il cambio di categoria quando l'utente clicca su un filtro
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
 
+  // Gestisce l'inserimento di un termine di ricerca dalla SearchBar
   const handleSearch = (term) => {
     setSearchTerm(term);
   };
 
+  // Rimuove l'ordinamento e torna all'ordine originale
   const resetSort = () => {
     setSortBy("none");
     setSortOrder("asc");
   };
 
-  // Funzione per ordinare direttamente A-Z
+  // Imposta l'ordinamento alfabetico crescente (A-Z) per il titolo
   const handleSortAZ = () => {
     setSortBy("title");
     setSortOrder("asc");
   };
 
-  // Funzione per ordinare direttamente Z-A
+  // Imposta l'ordinamento alfabetico decrescente (Z-A) per il titolo
   const handleSortZA = () => {
     setSortBy("title");
     setSortOrder("desc");
   };
 
-  // Function to get category icon (same as in ProductCard)
+  // ========================================================================================================================
+  // =================================================FUNZIONI DI UTILITÀ====================================================
+  // ========================================================================================================================
+
+  // Restituisce l'icona Font Awesome appropriata per ogni categoria di auto
+  // Utilizzata sia nei filtri che nelle card delle auto per coerenza visiva
   const getCategoryIcon = (category) => {
     switch (category.toLowerCase()) {
       case "suv":
@@ -105,17 +143,28 @@ export default function Home() {
       case "plug-in hybrid":
         return "fas fa-charging-station";
       default:
-        return "fas fa-car";
+        return "fas fa-car"; // Icona di default per categorie non riconosciute
     }
   };
 
+  // ========================================================================================================================
+  // =========================================GESTIONE STATI DI CARICAMENTO ED ERRORE========================================
+  // ========================================================================================================================
+
+  // Mostra un messaggio di caricamento mentre i dati vengono recuperati dal server
   if (loading) return <p>Caricamento...</p>;
+
+  // Mostra un messaggio di errore se qualcosa è andato storto nel caricamento
   if (error) return <p>Errore: {error}</p>;
 
   return (
     <div className="bg-orange-50 pt-16">
       <CarCarousel />
-
+      {/* ========================================================================================================================
+                                                SEZIONE "PERCHÉ SCEGLIERE NOI"
+                                     Presenta i vantaggi dell'azienda con testo descrittivo
+                                            e immagini decorative di auto ai lati
+  =========================================================================================================================*/}
       <section className="relative w-full bg-gradient-to-t from-orange-200 via-white to-orange-50 px-6 pt-28 pb-75 overflow-hidden">
         <div className="max-w-5xl mx-auto text-center z-10 relative">
           <h2 className="text-5xl font-bold text-gray-800 mb-8">
@@ -130,6 +179,7 @@ export default function Home() {
           </p>
         </div>
 
+        {/* Immagini decorative di auto posizionate ai lati */}
         <img
           src="/auto_senza_sfondo.png"
           alt="Auto in esposizione"
@@ -142,8 +192,14 @@ export default function Home() {
         />
       </section>
 
+      {/* ========================================================================================================================
+                                                     SEZIONE CATALOGO AUTO
+                                       Contiene tutti i controlli per filtrare, cercare
+                                        e ordinare le auto, più la griglia di risultati
+  =========================================================================================================================*/}
       <section className="relative bg-gradient-to-b from-orange-200 via-white to-orange-50 py-20 min-h-screen">
         <div className="max-w-7xl mx-auto px-6">
+          {/* Intestazione della sezione catalogo */}
           <div className="text-center mb-8">
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">
               🚗 Auto in{" "}
@@ -155,79 +211,16 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Search & Sort Section */}
-          <div className="flex flex-wrap gap-6 items-start w-full mb-8">
-            {/* SearchBar */}
-            <div className="flex-1 min-w-[280px]">
-              <SearchBar
-                onSearch={handleSearch}
-                totalCars={cars.length}
-                filteredCount={filteredCars.length}
-              />
-            </div>
-
-            {/* Sort Buttons */}
-            <div className="flex-1 min-w-[280px]">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center sm:text-left">
-                Ordina per nome
-              </h3>
-              <div className="flex flex-wrap justify-center sm:justify-start gap-3 mb-4">
-                <button
-                  onClick={resetSort}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    sortBy === "none"
-                      ? "bg-orange-500 text-white shadow-lg"
-                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
-                  }`}
-                >
-                  <i className="fas fa-list"></i>
-                  Nessun ordine
-                </button>
-                <button
-                  onClick={handleSortAZ}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    sortBy === "title" && sortOrder === "asc"
-                      ? "bg-orange-500 text-white shadow-lg"
-                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
-                  }`}
-                >
-                  <i className="fas fa-sort-alpha-down"></i>
-                  Nome (A-Z)
-                </button>
-                <button
-                  onClick={handleSortZA}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    sortBy === "title" && sortOrder === "desc"
-                      ? "bg-orange-500 text-white shadow-lg"
-                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
-                  }`}
-                >
-                  <i className="fas fa-sort-alpha-up"></i>
-                  Nome (Z-A)
-                </button>
-              </div>
-              {sortBy === "title" && (
-                <p className="text-sm text-gray-600 text-center sm:text-left">
-                  <i className="fas fa-info-circle text-orange-500 mr-1"></i>
-                  Auto ordinate per{" "}
-                  <span className="font-semibold text-orange-600">nome</span> in
-                  ordine
-                  <span className="font-semibold text-orange-600">
-                    {sortOrder === "asc"
-                      ? " crescente (A-Z)"
-                      : " decrescente (Z-A)"}
-                  </span>
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* Category Filter */}
+          {/* ========================================================================================================================
+                                                     FILTRI PER CATEGORIA
+                                         Mostra pulsanti per filtrare per tipo di auto
+  =========================================================================================================================*/}
           <div className="mb-8">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
               Filtra per categoria
             </h3>
             <div className="flex flex-wrap justify-center gap-3 mb-6">
+              {/* Pulsante "Tutte" per mostrare tutte le categorie */}
               <button
                 onClick={() => handleCategoryChange("all")}
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
@@ -239,6 +232,8 @@ export default function Home() {
                 <i className="fas fa-th-large"></i>
                 Tutte ({cars.length})
               </button>
+
+              {/* Genera un pulsante per ogni categoria trovata */}
               {categories.map((category) => {
                 const categoryCount = cars.filter(
                   (car) => car.category === category
@@ -263,9 +258,14 @@ export default function Home() {
             </div>
           </div>
 
+          {/* ========================================================================================================================
+                                                     CONTATORE RISULTATI
+                                        Mostra quante auto sono attualmente visibili
+  =========================================================================================================================*/}
           <div className="text-center mb-6">
             <p className="text-gray-600">
               {selectedCategory === "all" && !searchTerm ? (
+                // Caso: nessun filtro attivo, mostra tutte le auto
                 <>
                   <span className="font-semibold text-orange-600">
                     {filteredCars.length}
@@ -273,6 +273,7 @@ export default function Home() {
                   auto disponibili
                 </>
               ) : (
+                // Caso: filtri attivi, mostra risultati filtrati
                 <>
                   <span className="font-semibold text-orange-600">
                     {filteredCars.length}
@@ -293,7 +294,89 @@ export default function Home() {
             </p>
           </div>
 
+          {/* ========================================================================================================================
+                                                    SEZIONE RICERCA E ORDINAMENTO
+                                       Contiene la barra di ricerca e i pulsanti di ordinamento
+  =========================================================================================================================*/}
+          <div className="flex flex-wrap gap-6 items-start w-full mb-8">
+            {/* Barra di ricerca */}
+            <div className="flex-1 min-w-[280px]">
+              <SearchBar
+                onSearch={handleSearch}
+                totalCars={cars.length}
+                filteredCount={filteredCars.length}
+              />
+            </div>
+
+            {/* Controlli per l'ordinamento */}
+            <div className="flex-1 min-w-[280px]">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center sm:text-left">
+                Ordina per nome
+              </h3>
+              <div className="flex flex-wrap justify-center sm:justify-start gap-3 mb-4">
+                {/* Pulsante per rimuovere ordinamento */}
+                <button
+                  onClick={resetSort}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    sortBy === "none"
+                      ? "bg-orange-500 text-white shadow-lg"
+                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                  }`}
+                >
+                  <i className="fas fa-list"></i>
+                  Nessun ordine
+                </button>
+
+                {/* Pulsante per ordinamento A-Z */}
+                <button
+                  onClick={handleSortAZ}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    sortBy === "title" && sortOrder === "asc"
+                      ? "bg-orange-500 text-white shadow-lg"
+                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                  }`}
+                >
+                  <i className="fas fa-sort-alpha-down"></i>
+                  Nome (A-Z)
+                </button>
+
+                {/* Pulsante per ordinamento Z-A */}
+                <button
+                  onClick={handleSortZA}
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    sortBy === "title" && sortOrder === "desc"
+                      ? "bg-orange-500 text-white shadow-lg"
+                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                  }`}
+                >
+                  <i className="fas fa-sort-alpha-up"></i>
+                  Nome (Z-A)
+                </button>
+              </div>
+
+              {/* Messaggio informativo quando è attivo l'ordinamento */}
+              {sortBy === "title" && (
+                <p className="text-sm text-gray-600 text-center sm:text-left">
+                  <i className="fas fa-info-circle text-orange-500 mr-1"></i>
+                  Auto ordinate per{" "}
+                  <span className="font-semibold text-orange-600">nome</span> in
+                  ordine
+                  <span className="font-semibold text-orange-600">
+                    {sortOrder === "asc"
+                      ? " crescente (A-Z)"
+                      : " decrescente (Z-A)"}
+                  </span>
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* ========================================================================================================================
+                                                  RISULTATI DELLA RICERCA
+                                  Mostra le auto filtrate o un messaggio di "nessun risultato"
+  =========================================================================================================================*/}
           {filteredCars.length === 0 ? (
+            // Caso: nessuna auto trovata con i filtri correnti
             <div className="text-center py-12">
               <svg
                 className="h-16 w-16 text-gray-300 mx-auto mb-4"
@@ -308,6 +391,8 @@ export default function Home() {
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 />
               </svg>
+
+              {/* Messaggio di errore personalizzato in base ai filtri attivi */}
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
                 {searchTerm
                   ? `Nessun risultato per "${searchTerm}"`
@@ -322,6 +407,8 @@ export default function Home() {
                   ? "Al momento non ci sono auto da mostrare."
                   : "Prova a selezionare una categoria diversa."}
               </p>
+
+              {/* Pulsanti per resettare i filtri attivi */}
               {(searchTerm || selectedCategory !== "all") && (
                 <div className="mt-4 space-x-3">
                   {searchTerm && (
@@ -344,12 +431,14 @@ export default function Home() {
               )}
             </div>
           ) : (
+            // Caso: ci sono auto da mostrare - griglia di ProductCard
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 animate-fade-in">
               {filteredCars.map((car, index) => (
                 <div
                   key={car.id}
                   className="animate-slide-up"
                   style={{
+                    // Animazione sfalsata per ogni card
                     animationDelay: `${index * 0.05}s`,
                     animationFillMode: "both",
                   }}
