@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchCars } from "../services/api";
 import ProductCard from "../components/ProductCard";
 import CarCarousel from "../components/CarCarousel";
+import SearchBar from "../components/SearchBar";
 
 export default function Home() {
   const [cars, setCars] = useState([]);
@@ -10,6 +11,7 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   // Stati per l'ordinamento - ora solo per titolo
   const [sortBy, setSortBy] = useState("none"); // "none", "title"
@@ -29,9 +31,16 @@ export default function Home() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Filter and sort cars when category selection or sorting changes
+  // Filter and sort cars when category selection, search term, or sorting changes
   useEffect(() => {
     let result = cars;
+
+    // Apply search filter first
+    if (searchTerm.trim()) {
+      result = result.filter((car) =>
+        car.title.toLowerCase().includes(searchTerm.toLowerCase().trim())
+      );
+    }
 
     // Apply category filter
     if (selectedCategory !== "all") {
@@ -53,10 +62,14 @@ export default function Home() {
     }
 
     setFilteredCars(result);
-  }, [selectedCategory, cars, sortBy, sortOrder]);
+  }, [selectedCategory, cars, sortBy, sortOrder, searchTerm]);
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
+  };
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
   };
 
   const resetSort = () => {
@@ -140,6 +153,13 @@ export default function Home() {
               scelte per te.
             </p>
           </div>
+
+          {/* Search Bar Section */}
+          <SearchBar 
+            onSearch={handleSearch}
+            totalCars={cars.length}
+            filteredCount={filteredCars.length}
+          />
 
           {/* Category Filter Section */}
           <div className="mb-8">
@@ -253,7 +273,7 @@ export default function Home() {
 
           <div className="text-center mb-6">
             <p className="text-gray-600">
-              {selectedCategory === "all" ? (
+              {selectedCategory === "all" && !searchTerm ? (
                 <>
                   <span className="font-semibold text-orange-600">
                     {filteredCars.length}
@@ -265,10 +285,15 @@ export default function Home() {
                   <span className="font-semibold text-orange-600">
                     {filteredCars.length}
                   </span>{" "}
-                  auto nella categoria{" "}
-                  <span className="font-semibold text-orange-600">
-                    {selectedCategory}
-                  </span>
+                  auto {searchTerm && `con "${searchTerm}"`} 
+                  {selectedCategory !== "all" && (
+                    <>
+                      {" "}nella categoria{" "}
+                      <span className="font-semibold text-orange-600">
+                        {selectedCategory}
+                      </span>
+                    </>
+                  )}
                 </>
               )}
             </p>
@@ -290,22 +315,42 @@ export default function Home() {
                 />
               </svg>
               <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                {selectedCategory === "all"
-                  ? "Nessun risultato disponibile"
-                  : `Nessuna auto trovata nella categoria "${selectedCategory}"`}
+                {searchTerm ? (
+                  <>Nessun risultato per "{searchTerm}"</>
+                ) : selectedCategory === "all" ? (
+                  "Nessun risultato disponibile"
+                ) : (
+                  `Nessuna auto trovata nella categoria "${selectedCategory}"`
+                )}
               </h3>
               <p className="text-gray-500">
-                {selectedCategory === "all"
-                  ? "Al momento non ci sono auto da mostrare."
-                  : "Prova a selezionare una categoria diversa."}
+                {searchTerm ? (
+                  "Prova a modificare i termini di ricerca o usa filtri diversi."
+                ) : selectedCategory === "all" ? (
+                  "Al momento non ci sono auto da mostrare."
+                ) : (
+                  "Prova a selezionare una categoria diversa."
+                )}
               </p>
-              {selectedCategory !== "all" && (
-                <button
-                  onClick={() => handleCategoryChange("all")}
-                  className="mt-4 inline-block bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-full transition-colors duration-200"
-                >
-                  Mostra tutte le auto
-                </button>
+              {(searchTerm || selectedCategory !== "all") && (
+                <div className="mt-4 space-x-3">
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm("")}
+                      className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-full transition-colors duration-200"
+                    >
+                      Cancella ricerca
+                    </button>
+                  )}
+                  {selectedCategory !== "all" && (
+                    <button
+                      onClick={() => handleCategoryChange("all")}
+                      className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-full transition-colors duration-200"
+                    >
+                      Mostra tutte le auto
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           ) : (
