@@ -1,4 +1,4 @@
-import { useFavorites } from "../contexts/FavoritesContext";
+import { useFavorites } from "../../contexts/FavoritesContext";
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ car }) {

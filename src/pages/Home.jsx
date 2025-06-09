@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { fetchCars } from "../services/api";
-import ProductCard from "../components/ProductCard";
-import CarCarousel from "../components/CarCarousel";
-import SearchBar from "../components/SearchBar";
+import ProductCard from "../components/home/ProductCard";
+import CarCarousel from "../components/home/CarCarousel";
+import SearchBar from "../components/home/SearchBar";
 
 export default function Home() {
   // ========================================================================================================================
@@ -259,42 +259,6 @@ export default function Home() {
           </div>
 
           {/* ========================================================================================================================
-                                                     CONTATORE RISULTATI
-                                        Mostra quante auto sono attualmente visibili
-  =========================================================================================================================*/}
-          <div className="text-center mb-6">
-            <p className="text-gray-600">
-              {selectedCategory === "all" && !searchTerm ? (
-                // Caso: nessun filtro attivo, mostra tutte le auto
-                <>
-                  <span className="font-semibold text-orange-600">
-                    {filteredCars.length}
-                  </span>{" "}
-                  auto disponibili
-                </>
-              ) : (
-                // Caso: filtri attivi, mostra risultati filtrati
-                <>
-                  <span className="font-semibold text-orange-600">
-                    {filteredCars.length}
-                  </span>{" "}
-                  auto
-                  {searchTerm && ` con "${searchTerm}"`}
-                  {selectedCategory !== "all" && (
-                    <>
-                      {" "}
-                      nella categoria{" "}
-                      <span className="font-semibold text-orange-600">
-                        {selectedCategory}
-                      </span>
-                    </>
-                  )}
-                </>
-              )}
-            </p>
-          </div>
-
-          {/* ========================================================================================================================
                                                     SEZIONE RICERCA E ORDINAMENTO
                                        Contiene la barra di ricerca e i pulsanti di ordinamento
   =========================================================================================================================*/}
@@ -370,7 +334,42 @@ export default function Home() {
               )}
             </div>
           </div>
-
+          {/* ========================================================================================================================
+                                                     CONTATORE RISULTATI
+                                        Mostra quante auto sono attualmente visibili
+  =========================================================================================================================*/}
+          <div className="text-center mb-6">
+            <p className="text-gray-600">
+              {selectedCategory === "all" && !searchTerm ? (
+                // Caso: nessun filtro attivo, mostra tutte le auto
+                <>
+                  <span className="font-semibold text-orange-600">
+                    {filteredCars.length}
+                  </span>{" "}
+                  auto disponibili
+                </>
+              ) : (
+                // Caso: filtri attivi, mostra risultati filtrati
+                <>
+                  <span className="font-semibold text-orange-600">
+                    {filteredCars.length}
+                  </span>{" "}
+                  auto
+                  {searchTerm && ` con "${searchTerm}"`}
+                  {selectedCategory !== "all" && (
+                    <>
+                      {" "}
+                      nella categoria{" "}
+                      <span className="font-semibold text-orange-600">
+                        {selectedCategory}
+                      </span>
+                    </>
+                  )}
+                </>
+              )}
+            </p>
+          </div>
+          ds
           {/* ========================================================================================================================
                                                   RISULTATI DELLA RICERCA
                                   Mostra le auto filtrate o un messaggio di "nessun risultato"

@@ -1,5 +1,5 @@
 import { useFavorites } from "../contexts/FavoritesContext";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/home/ProductCard";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
