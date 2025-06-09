@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function ChiSiamo() {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -132,7 +134,7 @@ export default function ChiSiamo() {
               <div className="bg-gray-200 w-32 h-32 rounded-full mx-auto mb-6 flex items-center justify-center">
                 <i className="fas fa-user text-4xl text-gray-600"></i>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Marco Rossi</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Alessandro Frisone</h3>
               <p className="text-orange-600 font-semibold mb-3">Fondatore & CEO</p>
               <p className="text-gray-700">
                 20+ anni nel settore automotive. Esperto in valutazioni e negoziazioni, 
@@ -144,7 +146,7 @@ export default function ChiSiamo() {
               <div className="bg-gray-200 w-32 h-32 rounded-full mx-auto mb-6 flex items-center justify-center">
                 <i className="fas fa-user text-4xl text-gray-600"></i>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Laura Bianchi</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Stella Iucci</h3>
               <p className="text-orange-600 font-semibold mb-3">Responsabile Vendite</p>
               <p className="text-gray-700">
                 Specializzata in consulenza clienti e finanziamenti. Laura ti aiuterà a trovare 
@@ -156,59 +158,11 @@ export default function ChiSiamo() {
               <div className="bg-gray-200 w-32 h-32 rounded-full mx-auto mb-6 flex items-center justify-center">
                 <i className="fas fa-user text-4xl text-gray-600"></i>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Giuseppe Verdi</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Stefania Cenciotti</h3>
               <p className="text-orange-600 font-semibold mb-3">Responsabile Tecnico</p>
               <p className="text-gray-700">
                 Meccanico esperto con certificazioni ufficiali. Giuseppe supervisiona tutti 
                 i controlli tecnici e garantisce la qualità di ogni veicolo.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* I Nostri Servizi */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              I Nostri Servizi
-            </h2>
-            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              Un servizio completo per accompagnarti in ogni fase dell'acquisto
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white rounded-lg p-6 shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-              <i className="fas fa-search text-3xl text-orange-600 mb-4"></i>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Ricerca Personalizzata</h3>
-              <p className="text-gray-700 text-sm">
-                Ti aiutiamo a trovare l'auto perfetta per le tue esigenze specifiche
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-              <i className="fas fa-tools text-3xl text-orange-600 mb-4"></i>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Controlli Tecnici</h3>
-              <p className="text-gray-700 text-sm">
-                Ispezioni complete e certificate su ogni veicolo prima della vendita
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-              <i className="fas fa-credit-card text-3xl text-orange-600 mb-4"></i>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Finanziamenti</h3>
-              <p className="text-gray-700 text-sm">
-                Soluzioni di finanziamento flessibili con tassi competitivi
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-              <i className="fas fa-exchange-alt text-3xl text-orange-600 mb-4"></i>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Permute</h3>
-              <p className="text-gray-700 text-sm">
-                Valutazione gratuita della tua auto usata per permute vantaggiose
               </p>
             </div>
           </div>
@@ -315,8 +269,10 @@ export default function ChiSiamo() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center gap-2">
+              <Link to="/">
               <i className="fas fa-car"></i>
               Scopri le Nostre Auto
+              </Link>
             </button>
             <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-orange-600 transition-colors duration-200 flex items-center justify-center gap-2">
               <i className="fas fa-phone"></i>
