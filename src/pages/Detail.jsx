@@ -17,11 +17,10 @@ export default function Detail() {
     loadCar();
   }, [id]);
 
-  // Proteggi l'accesso a car.id
   const isCarFavorite = car ? isFavorite(car.id) : false;
 
   const handleFavoriteClick = () => {
-    if (!car) return; // opzionale: evita azioni premature
+    if (!car) return;
     if (isCarFavorite) {
       removeFromFavorites(car.id);
     } else {
@@ -34,20 +33,18 @@ export default function Detail() {
     setIsExpanded(newValue);
 
     if (!newValue) {
-      // Se stai chiudendo, scrolla verso l'alto
       setTimeout(() => {
         window.scrollTo({
-          top: 0, // posizione a cui tornare (puoi metterla a 0 o regolare)
+          top: 0,
           behavior: "smooth",
         });
-      }, 100); // attende un po’ per non interferire con la chiusura
+      }, 100);
       return;
     }
 
-    // Se stai aprendo, scrolla in basso ma non troppo
     setTimeout(() => {
       window.scrollTo({
-        top: 600, // verso il basso ma con margine
+        top: 600,
         behavior: "smooth",
       });
     }, 200);
@@ -55,204 +52,249 @@ export default function Detail() {
 
   if (!car) {
     return (
-      <div className="flex justify-center items-center py-20">
-        <span className="text-orange-600 font-semibold">
-          Caricamento auto...
-        </span>
+      <div className="min-h-screen flex justify-center items-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Caricamento dettagli veicolo...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-auto mx-auto mt-10 space-y-8 px-4">
-      {/* Sezione Call To Action */}
-      <div className="max-w-6xl mx-auto">
-        <section className="animate-pulse bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-2xl shadow-md p-8 flex flex-col md:flex-row items-center justify-between">
-          <h2 className="text-2xl font-semibold mb-4 md:mb-0 text-center md:text-left">
-            Interessato a {car.title}?
-          </h2>
-          <div className="flex flex-col md:flex-row items-center gap-4">
-            <button className="px-6 py-3 rounded-full bg-white text-orange-600 font-semibold shadow hover:bg-orange-100 transition-all duration-300 ease-in-out">
-              Prenota Test Drive
-            </button>
-            <button className="px-6 py-3 rounded-full bg-orange-700 hover:bg-orange-800 font-semibold shadow transition-all duration-300 ease-in-out">
-              Contatta il Venditore
-            </button>
-          </div>
-        </section>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header con breadcrumb */}
+      <div className="bg-white border-b">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <nav className="text-sm text-gray-500">
+            <span>Auto</span> <span className="mx-2">›</span>
+            <span>{car.brand}</span> <span className="mx-2">›</span>
+            <span className="text-gray-900 font-medium">{car.model}</span>
+          </nav>
+        </div>
       </div>
 
-      {/* Card principale con immagine e dettagli */}
-      <div className="max-w-12xl bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden w-full mb-24">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-          {/* Immagine a sinistra */}
-          {car.imageUrl ? (
-            <img
-              src={car.imageUrl}
-              alt={car.title}
-              className="w-full h-full object-cover md:h-auto"
-            />
-          ) : (
-            <div className="bg-gray-100 h-64 flex items-center justify-center text-gray-400">
-              Nessuna immagine
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        {/* Sezione principale */}
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+          {/* Header del veicolo */}
+          <div className="border-b bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <h1 className="text-3xl font-bold mb-2">{car.title}</h1>
+                <p className="text-blue-100 text-lg">{car.brand} {car.model} • Anno {car.year}</p>
+              </div>
+              <div className="mt-4 lg:mt-0">
+                <div className="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
+                  <p className="text-blue-100 text-sm font-medium">Prezzo</p>
+                  <p className="text-3xl font-bold">€ {car.price.toLocaleString("it-IT")}</p>
+                </div>
+              </div>
             </div>
-          )}
+          </div>
 
-          {/* Dettagli a destra */}
-          <div className="p-6 flex flex-col justify-between relative">
-            {/* Prezzo in alto a destra */}
-            <div className="absolute top-6 right-6">
-              <span className="bg-orange-100 text-orange-600 text-3xl font-extrabold px-5 py-3 rounded-xl shadow-lg">
-                € {car.price.toLocaleString("it-IT")}
-              </span>
+          {/* Contenuto principale */}
+          <div className="grid grid-cols-1 xl:grid-cols-5 gap-8 p-8">
+            {/* Immagine principale */}
+            <div className="xl:col-span-3">
+              {car.imageUrl ? (
+                <div className="relative">
+                  <img
+                    src={car.imageUrl}
+                    alt={car.title}
+                    className="w-full h-80 xl:h-96 object-cover rounded-lg"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <button
+                      onClick={handleFavoriteClick}
+                      className={`p-3 rounded-full shadow-lg transition-all ${
+                        isCarFavorite
+                          ? "bg-red-500 text-white hover:bg-red-600"
+                          : "bg-white text-gray-600 hover:text-red-500"
+                      }`}
+                    >
+                      <i className={`${isCarFavorite ? "fas" : "far"} fa-heart text-lg`}></i>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="w-full h-80 xl:h-96 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div className="text-center text-gray-400">
+                    <i className="fas fa-car text-4xl mb-4"></i>
+                    <p>Immagine non disponibile</p>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <h1 className="text-3xl font-bold text-orange-600 mb-6 text-center md:text-left mt-20 md:mt-0">
-              {car.title}
-            </h1>
+            {/* Pannello informazioni rapide */}
+            <div className="xl:col-span-2 space-y-6">
+              {/* Caratteristiche principali */}
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Caratteristiche Principali</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Categoria</span>
+                    <span className="font-semibold bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                      {car.category}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Chilometraggio</span>
+                    <span className="font-semibold">{car.km.toLocaleString("it-IT")} km</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Carburante</span>
+                    <span className="font-semibold">{car.fuelType}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Trasmissione</span>
+                    <span className="font-semibold">{car.transmission}</span>
+                  </div>
+                </div>
+              </div>
 
-            <ul className="space-y-3 text-sm sm:text-base text-gray-700">
-              <li className="flex justify-between border-b pb-2 border-gray-200">
-                <span className="font-semibold text-gray-600">Categoria:</span>
-                <span className="text-orange-500">{car.category}</span>
-              </li>
-              <li className="flex justify-between border-b pb-2 border-gray-200">
-                <span className="font-semibold text-gray-600">Marca:</span>
-                <span>{car.brand}</span>
-              </li>
-              <li className="flex justify-between border-b pb-2 border-gray-200">
-                <span className="font-semibold text-gray-600">Modello:</span>
-                <span>{car.model}</span>
-              </li>
-              <li className="flex justify-between border-b pb-2 border-gray-200">
-                <span className="font-semibold text-gray-600">Anno:</span>
-                <span>{car.year}</span>
-              </li>
-              <li className="flex justify-between border-b pb-2 border-gray-200">
-                <span className="font-semibold text-gray-600">Chilometri:</span>
-                <span>{car.km.toLocaleString("it-IT")} km</span>
-              </li>
-              <li className="flex justify-between border-b pb-2 border-gray-200">
-                <span className="font-semibold text-gray-600">Carburante:</span>
-                <span>{car.fuelType}</span>
-              </li>
-              <li className="flex justify-between border-b pb-2 border-gray-200">
-                <span className="font-semibold text-gray-600">Cambio:</span>
-                <span>{car.transmission}</span>
-              </li>
-              {car.color && (
-                <li className="flex justify-between border-b pb-2 border-gray-200">
-                  <span className="font-semibold text-gray-600">Colore:</span>
-                  <span>{car.color}</span>
-                </li>
-              )}
-              {car.vin && (
-                <li className="flex justify-between border-b pb-2 border-gray-200">
-                  <span className="font-semibold text-gray-600">VIN:</span>
-                  <span>{car.vin}</span>
-                </li>
-              )}
-            </ul>
-
-            <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
-              {/* Bottone "Scopri di più" */}
-              <button
-                onClick={toggleExpanded}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-orange-600 text-white font-semibold rounded-full hover:bg-orange-700 transition-all duration-300 ease-in-out transform hover:scale-105 shadow-lg"
-              >
-                {isExpanded ? "Mostra meno" : "Scopri di più"}
-                <i
-                  className={`fas fa-chevron-${
-                    isExpanded ? "up" : "down"
-                  } transition-transform duration-300`}
-                ></i>
-              </button>
-
-              {/* Bottone "Preferiti" con icona a destra */}
-              <button
-                onClick={handleFavoriteClick}
-                className={`inline-flex items-center justify-center gap-2 px-6 py-3 font-semibold rounded-full transition-all duration-300 transform shadow-lg
-      ${
-        isCarFavorite
-          ? "bg-white text-orange-600 border border-orange-600 hover:bg-orange-50"
-          : "bg-orange-600 text-white hover:bg-orange-700"
-      } hover:scale-105`}
-              >
-                {isCarFavorite
-                  ? "Rimuovi dai preferiti"
-                  : "Aggiungi ai preferiti"}
-                <i
-                  className={`${
-                    isCarFavorite ? "fas fa-heart-broken" : "far fa-heart"
-                  } text-lg`}
-                ></i>
-              </button>
+              {/* Azioni */}
+              <div className="space-y-3">
+                <button className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                  <i className="fas fa-calendar-alt"></i>
+                  Prenota Test Drive
+                </button>
+                <button className="w-full border-2 border-blue-600 text-blue-600 py-4 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center gap-2">
+                  <i className="fas fa-phone"></i>
+                  Contatta il Venditore
+                </button>
+                <button
+                  onClick={toggleExpanded}
+                  className="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
+                >
+                  {isExpanded ? "Mostra meno dettagli" : "Mostra tutti i dettagli"}
+                  <i className={`fas fa-chevron-${isExpanded ? "up" : "down"}`}></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Sezioni espandibili - Descrizione e Punti Chiave */}
+        {/* Sezione dettagli completi (espandibile) */}
         <div
-          className={`transition-all duration-500 ease-in-out overflow-hidden ${
+          className={`transition-all duration-700 ease-in-out overflow-hidden ${
             isExpanded ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="flex flex-col lg:flex-row gap-8 px-4 lg:px-12 py-12">
-            {/* Punti Chiave */}
-            <section className="bg-white border-t border-gray-200 py-12 px-6 flex-1 rounded-2xl">
-              <div className="max-w-full">
-                <h2 className="text-3xl font-extrabold text-orange-600 mb-10 text-center tracking-tight">
-                  Punti Chiave
-                </h2>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
-                  {[
-                    {
-                      label: "Potenza",
-                      value: car.horsepower ? `${car.horsepower} HP` : "--",
-                    },
-                    {
-                      label: "Cilindrata",
-                      value: car.displacement ? `${car.displacement} cc` : "--",
-                    },
-                    { label: "Porte", value: car.doors ?? "--" },
-                    { label: "Posti", value: car.seats ?? "--" },
-                    {
-                      label: "Consumo",
-                      value: car.consumption ? `${car.consumption} km/l` : "--",
-                    },
-                    {
-                      label: "Classe Emissioni",
-                      value: car.emissionClass ?? "--",
-                    },
-                  ].map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex flex-col items-center justify-center p-6 bg-orange-50 border border-orange-100 rounded-xl shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <span className="text-2xl font-bold text-orange-600">
-                        {item.value}
-                      </span>
-                      <span className="text-sm text-gray-600 mt-1 tracking-wide">
-                        {item.label}
-                      </span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            {/* Specifiche tecniche complete */}
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <i className="fas fa-cogs text-white"></i>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900">Specifiche Tecniche</h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="border-l-4 border-blue-600 pl-4">
+                    <p className="text-sm text-gray-500 font-medium">MARCA E MODELLO</p>
+                    <p className="text-lg font-semibold text-gray-900">{car.brand} {car.model}</p>
+                  </div>
+                  <div className="border-l-4 border-blue-600 pl-4">
+                    <p className="text-sm text-gray-500 font-medium">ANNO DI IMMATRICOLAZIONE</p>
+                    <p className="text-lg font-semibold text-gray-900">{car.year}</p>
+                  </div>
+                  {car.color && (
+                    <div className="border-l-4 border-blue-600 pl-4">
+                      <p className="text-sm text-gray-500 font-medium">COLORE</p>
+                      <p className="text-lg font-semibold text-gray-900">{car.color}</p>
                     </div>
-                  ))}
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  <div className="border-l-4 border-green-500 pl-4">
+                    <p className="text-sm text-gray-500 font-medium">POTENZA</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {car.horsepower ? `${car.horsepower} HP` : "Non specificata"}
+                    </p>
+                  </div>
+                  <div className="border-l-4 border-green-500 pl-4">
+                    <p className="text-sm text-gray-500 font-medium">CILINDRATA</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {car.displacement ? `${car.displacement} cc` : "Non specificata"}
+                    </p>
+                  </div>
+                  <div className="border-l-4 border-green-500 pl-4">
+                    <p className="text-sm text-gray-500 font-medium">EMISSIONI</p>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {car.emissionClass || "Non specificate"}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </section>
 
-            {/* Descrizione */}
-            <section className="bg-[#fdfdfc] border-t border-gray-200 py-14 px-6 md:px-12 rounded-2xl flex-1">
-              <div className="max-w-full text-left">
-                <h2 className="text-3xl font-semibold text-orange-500 mb-6 text-center">
-                  Descrizione
-                </h2>
-                <p className="text-gray-800 text-lg leading-8 tracking-normal font-light text-center">
+              {car.vin && (
+                <div className="mt-8 pt-6 border-t">
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <p className="text-sm text-gray-500 font-medium mb-1">NUMERO DI TELAIO (VIN)</p>
+                    <p className="font-mono text-sm text-gray-900">{car.vin}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Comfort e dotazioni */}
+            <div className="bg-white rounded-xl shadow-lg p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+                  <i className="fas fa-star text-white"></i>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900">Comfort e Dotazioni</h2>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                {[
+                  { label: "Porte", value: car.doors || "N/D", icon: "fas fa-door-open" },
+                  { label: "Posti", value: car.seats || "N/D", icon: "fas fa-users" },
+                  { label: "Consumo", value: car.consumption ? `${car.consumption} km/l` : "N/D", icon: "fas fa-gas-pump" },
+                  { label: "Categoria", value: car.category, icon: "fas fa-tag" },
+                ].map((item, index) => (
+                  <div key={index} className="bg-gray-50 rounded-lg p-4 text-center">
+                    <i className={`${item.icon} text-2xl text-blue-600 mb-2`}></i>
+                    <p className="text-lg font-bold text-gray-900">{item.value}</p>
+                    <p className="text-sm text-gray-500">{item.label}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="border-t pt-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Descrizione</h3>
+                <p className="text-gray-700 leading-relaxed">
                   {car.description ||
-                    "Un'auto pensata per chi cerca comfort, prestazioni ed eleganza. Linee scolpite, interni curati nei minimi dettagli e un motore che garantisce reattività in ogni condizione. Perfetta per la città ma anche per i lunghi viaggi."}
+                    "Questa vettura rappresenta l'eccellenza nell'automotive, combinando prestazioni superiori con il massimo comfort. Ideale per chi cerca un veicolo affidabile, elegante e tecnologicamente avanzato. Ogni dettaglio è stato curato per offrire un'esperienza di guida unica e soddisfacente."}
                 </p>
               </div>
-            </section>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer con CTA */}
+        <div className="bg-white rounded-xl shadow-lg p-8">
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+              Interessato a questo veicolo?
+            </h3>
+            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+              I nostri consulenti sono a tua disposizione per fornirti tutte le informazioni necessarie 
+              e organizzare una prova su strada senza impegno.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <button className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                Contattaci Ora
+              </button>
+              <button className="flex-1 border-2 border-blue-600 text-blue-600 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                Richiedi Info
+              </button>
+            </div>
           </div>
         </div>
       </div>
