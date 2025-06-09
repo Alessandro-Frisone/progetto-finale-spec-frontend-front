@@ -44,7 +44,7 @@ export default function Detail() {
 
     setTimeout(() => {
       window.scrollTo({
-        top: 600,
+        top: 900,
         behavior: "smooth",
       });
     }, 200);
@@ -54,7 +54,7 @@ export default function Detail() {
     return (
       <div className="min-h-screen flex justify-center items-center bg-gray-50">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
           <p className="text-gray-600 font-medium">Caricamento dettagli veicolo...</p>
         </div>
       </div>
@@ -63,30 +63,19 @@ export default function Detail() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header con breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <nav className="text-sm text-gray-500">
-            <span>Auto</span> <span className="mx-2">›</span>
-            <span>{car.brand}</span> <span className="mx-2">›</span>
-            <span className="text-gray-900 font-medium">{car.model}</span>
-          </nav>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 py-8">
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Sezione principale */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
           {/* Header del veicolo */}
-          <div className="border-b bg-gradient-to-r from-blue-600 to-blue-700 text-white p-8">
+          <div className="border-b bg-gradient-to-r from-orange-600 to-orange-700 text-white p-8">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
               <div>
                 <h1 className="text-3xl font-bold mb-2">{car.title}</h1>
-                <p className="text-blue-100 text-lg">{car.brand} {car.model} • Anno {car.year}</p>
+                <p className="text-orange-100 text-lg">{car.brand} {car.model} • Anno {car.year}</p>
               </div>
               <div className="mt-4 lg:mt-0">
                 <div className="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
-                  <p className="text-blue-100 text-sm font-medium">Prezzo</p>
+                  <p className="text-orange-100 text-sm font-medium">Prezzo</p>
                   <p className="text-3xl font-bold">€ {car.price.toLocaleString("it-IT")}</p>
                 </div>
               </div>
@@ -109,8 +98,8 @@ export default function Detail() {
                       onClick={handleFavoriteClick}
                       className={`p-3 rounded-full shadow-lg transition-all ${
                         isCarFavorite
-                          ? "bg-red-500 text-white hover:bg-red-600"
-                          : "bg-white text-gray-600 hover:text-red-500"
+                          ? "bg-orange-600 text-white hover:bg-orange-700"
+                          : "bg-white text-gray-600 hover:text-orange-600"
                       }`}
                     >
                       <i className={`${isCarFavorite ? "fas" : "far"} fa-heart text-lg`}></i>
@@ -135,7 +124,7 @@ export default function Detail() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Categoria</span>
-                    <span className="font-semibold bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                    <span className="font-semibold bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">
                       {car.category}
                     </span>
                   </div>
@@ -151,16 +140,28 @@ export default function Detail() {
                     <span className="text-gray-600">Trasmissione</span>
                     <span className="font-semibold">{car.transmission}</span>
                   </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Potenza</span>
+                    <span className="font-semibold">{car.horsepower} HP</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Posti</span>
+                    <span className="font-semibold">{car.seats}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Porte</span>
+                    <span className="font-semibold">{car.doors}</span>
+                  </div>
                 </div>
               </div>
 
               {/* Azioni */}
               <div className="space-y-3">
-                <button className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                <button className="w-full bg-orange-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors flex items-center justify-center gap-2">
                   <i className="fas fa-calendar-alt"></i>
                   Prenota Test Drive
                 </button>
-                <button className="w-full border-2 border-blue-600 text-blue-600 py-4 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center gap-2">
+                <button className="w-full border-2 border-orange-600 text-orange-600 py-4 px-6 rounded-lg font-semibold hover:bg-orange-50 transition-colors flex items-center justify-center gap-2">
                   <i className="fas fa-phone"></i>
                   Contatta il Venditore
                 </button>
@@ -186,7 +187,7 @@ export default function Detail() {
             {/* Specifiche tecniche complete */}
             <div className="bg-white rounded-xl shadow-lg p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center">
                   <i className="fas fa-cogs text-white"></i>
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900">Specifiche Tecniche</h2>
@@ -194,40 +195,48 @@ export default function Detail() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <div className="border-l-4 border-blue-600 pl-4">
+                  <div className="border-l-4 border-orange-600 pl-4">
                     <p className="text-sm text-gray-500 font-medium">MARCA E MODELLO</p>
                     <p className="text-lg font-semibold text-gray-900">{car.brand} {car.model}</p>
                   </div>
-                  <div className="border-l-4 border-blue-600 pl-4">
+                  <div className="border-l-4 border-orange-600 pl-4">
                     <p className="text-sm text-gray-500 font-medium">ANNO DI IMMATRICOLAZIONE</p>
                     <p className="text-lg font-semibold text-gray-900">{car.year}</p>
                   </div>
-                  {car.color && (
-                    <div className="border-l-4 border-blue-600 pl-4">
-                      <p className="text-sm text-gray-500 font-medium">COLORE</p>
-                      <p className="text-lg font-semibold text-gray-900">{car.color}</p>
-                    </div>
-                  )}
+                  <div className="border-l-4 border-orange-600 pl-4">
+                    <p className="text-sm text-gray-500 font-medium">COLORE</p>
+                    <p className="text-lg font-semibold text-gray-900">{car.color || "Non specificato"}</p>
+                  </div>
+                  <div className="border-l-4 border-orange-600 pl-4">
+                    <p className="text-sm text-gray-500 font-medium">CARBURANTE</p>
+                    <p className="text-lg font-semibold text-gray-900">{car.fuelType}</p>
+                  </div>
+                  <div className="border-l-4 border-orange-600 pl-4">
+                    <p className="text-sm text-gray-500 font-medium">TRASMISSIONE</p>
+                    <p className="text-lg font-semibold text-gray-900">{car.transmission}</p>
+                  </div>
                 </div>
 
                 <div className="space-y-4">
-                  <div className="border-l-4 border-green-500 pl-4">
+                  <div className="border-l-4 border-amber-500 pl-4">
                     <p className="text-sm text-gray-500 font-medium">POTENZA</p>
-                    <p className="text-lg font-semibold text-gray-900">
-                      {car.horsepower ? `${car.horsepower} HP` : "Non specificata"}
-                    </p>
+                    <p className="text-lg font-semibold text-gray-900">{car.horsepower} HP</p>
                   </div>
-                  <div className="border-l-4 border-green-500 pl-4">
+                  <div className="border-l-4 border-amber-500 pl-4">
                     <p className="text-sm text-gray-500 font-medium">CILINDRATA</p>
-                    <p className="text-lg font-semibold text-gray-900">
-                      {car.displacement ? `${car.displacement} cc` : "Non specificata"}
-                    </p>
+                    <p className="text-lg font-semibold text-gray-900">{car.displacement} cc</p>
                   </div>
-                  <div className="border-l-4 border-green-500 pl-4">
+                  <div className="border-l-4 border-amber-500 pl-4">
                     <p className="text-sm text-gray-500 font-medium">EMISSIONI</p>
-                    <p className="text-lg font-semibold text-gray-900">
-                      {car.emissionClass || "Non specificate"}
-                    </p>
+                    <p className="text-lg font-semibold text-gray-900">{car.emissionClass}</p>
+                  </div>
+                  <div className="border-l-4 border-amber-500 pl-4">
+                    <p className="text-sm text-gray-500 font-medium">CONSUMO</p>
+                    <p className="text-lg font-semibold text-gray-900">{car.consumption} km/l</p>
+                  </div>
+                  <div className="border-l-4 border-amber-500 pl-4">
+                    <p className="text-sm text-gray-500 font-medium">CHILOMETRAGGIO</p>
+                    <p className="text-lg font-semibold text-gray-900">{car.km.toLocaleString("it-IT")} km</p>
                   </div>
                 </div>
               </div>
@@ -245,7 +254,7 @@ export default function Detail() {
             {/* Comfort e dotazioni */}
             <div className="bg-white rounded-xl shadow-lg p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 bg-green-600 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
                   <i className="fas fa-star text-white"></i>
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900">Comfort e Dotazioni</h2>
@@ -253,13 +262,13 @@ export default function Detail() {
 
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {[
-                  { label: "Porte", value: car.doors || "N/D", icon: "fas fa-door-open" },
-                  { label: "Posti", value: car.seats || "N/D", icon: "fas fa-users" },
-                  { label: "Consumo", value: car.consumption ? `${car.consumption} km/l` : "N/D", icon: "fas fa-gas-pump" },
+                  { label: "Porte", value: car.doors, icon: "fas fa-door-open" },
+                  { label: "Posti", value: car.seats, icon: "fas fa-users" },
+                  { label: "Consumo", value: `${car.consumption} km/l`, icon: "fas fa-gas-pump" },
                   { label: "Categoria", value: car.category, icon: "fas fa-tag" },
                 ].map((item, index) => (
                   <div key={index} className="bg-gray-50 rounded-lg p-4 text-center">
-                    <i className={`${item.icon} text-2xl text-blue-600 mb-2`}></i>
+                    <i className={`${item.icon} text-2xl text-orange-600 mb-2`}></i>
                     <p className="text-lg font-bold text-gray-900">{item.value}</p>
                     <p className="text-sm text-gray-500">{item.label}</p>
                   </div>
@@ -269,10 +278,11 @@ export default function Detail() {
               <div className="border-t pt-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Descrizione</h3>
                 <p className="text-gray-700 leading-relaxed">
-                  {car.description ||
-                    "Questa vettura rappresenta l'eccellenza nell'automotive, combinando prestazioni superiori con il massimo comfort. Ideale per chi cerca un veicolo affidabile, elegante e tecnologicamente avanzato. Ogni dettaglio è stato curato per offrire un'esperienza di guida unica e soddisfacente."}
+                  {car.description}
                 </p>
               </div>
+
+              
             </div>
           </div>
         </div>
@@ -288,10 +298,10 @@ export default function Detail() {
               e organizzare una prova su strada senza impegno.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <button className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+              <button className="flex-1 bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors">
                 Contattaci Ora
               </button>
-              <button className="flex-1 border-2 border-blue-600 text-blue-600 py-3 px-6 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+              <button className="flex-1 border-2 border-orange-600 text-orange-600 py-3 px-6 rounded-lg font-semibold hover:bg-orange-50 transition-colors">
                 Richiedi Info
               </button>
             </div>
