@@ -210,7 +210,6 @@ export default function Home() {
               scelte per te.
             </p>
           </div>
-
           {/* ========================================================================================================================
                                                      FILTRI PER CATEGORIA
                                          Mostra pulsanti per filtrare per tipo di auto
@@ -257,14 +256,13 @@ export default function Home() {
               })}
             </div>
           </div>
-
           {/* ========================================================================================================================
                                                     SEZIONE RICERCA E ORDINAMENTO
                                        Contiene la barra di ricerca e i pulsanti di ordinamento
   =========================================================================================================================*/}
-          <div className="flex flex-wrap gap-6 items-start w-full mb-8">
-           {/* Barra di ricerca */}
-            <div className="flex-1 min-w-[280px]">
+          <div className="flex flex-col md:flex-row flex-wrap gap-8 items-start w-full mb-10">
+            {/* Barra di ricerca */}
+            <div className="w-full md:flex-1 min-w-[280px]">
               <SearchBar
                 onSearch={handleSearch}
                 totalCars={cars.length}
@@ -274,65 +272,51 @@ export default function Home() {
             </div>
 
             {/* Controlli per l'ordinamento */}
-            <div className="flex-1 min-w-[280px]">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center sm:text-left">
+            <div className="w-full md:flex-1 min-w-[280px]">
+              <h3 className="text-lg font-semibold text-gray-800 mb-5 text-center">
                 Ordina per nome
               </h3>
-              <div className="flex flex-wrap justify-center sm:justify-start gap-3 mb-4">
-                {/* Pulsante per rimuovere ordinamento */}
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Nessun ordine */}
                 <button
                   onClick={resetSort}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 shadow-sm ${
                     sortBy === "none"
-                      ? "bg-orange-500 text-white shadow-lg"
-                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                      ? "bg-orange-500 text-white shadow-md"
+                      : "bg-white text-gray-800 border border-gray-300 hover:bg-orange-100 hover:border-orange-400"
                   }`}
                 >
-                  <i className="fas fa-list"></i>
+                  <i className="fas fa-list" />
                   Nessun ordine
                 </button>
 
-                {/* Pulsante per ordinamento A-Z */}
+                {/* Nome (A-Z) */}
                 <button
                   onClick={handleSortAZ}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 shadow-sm ${
                     sortBy === "title" && sortOrder === "asc"
-                      ? "bg-orange-500 text-white shadow-lg"
-                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                      ? "bg-orange-500 text-white shadow-md"
+                      : "bg-white text-gray-800 border border-gray-300 hover:bg-orange-100 hover:border-orange-400"
                   }`}
                 >
-                  <i className="fas fa-sort-alpha-down"></i>
+                  <i className="fas fa-sort-alpha-down" />
                   Nome (A-Z)
                 </button>
 
-                {/* Pulsante per ordinamento Z-A */}
+                {/* Nome (Z-A) */}
                 <button
                   onClick={handleSortZA}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 shadow-sm ${
                     sortBy === "title" && sortOrder === "desc"
-                      ? "bg-orange-500 text-white shadow-lg"
-                      : "bg-white text-gray-700 border border-gray-300 hover:bg-orange-50 hover:border-orange-300"
+                      ? "bg-orange-500 text-white shadow-md"
+                      : "bg-white text-gray-800 border border-gray-300 hover:bg-orange-100 hover:border-orange-400"
                   }`}
                 >
-                  <i className="fas fa-sort-alpha-up"></i>
+                  <i className="fas fa-sort-alpha-up" />
                   Nome (Z-A)
                 </button>
               </div>
-
-              {/* Messaggio informativo quando è attivo l'ordinamento */}
-              {sortBy === "title" && (
-                <p className="text-sm text-gray-600 text-center sm:text-left">
-                  <i className="fas fa-info-circle text-orange-500 mr-1"></i>
-                  Auto ordinate per{" "}
-                  <span className="font-semibold text-orange-600">nome</span> in
-                  ordine
-                  <span className="font-semibold text-orange-600">
-                    {sortOrder === "asc"
-                      ? " crescente (A-Z)"
-                      : " decrescente (Z-A)"}
-                  </span>
-                </p>
-              )}
             </div>
           </div>
           {/* ========================================================================================================================
