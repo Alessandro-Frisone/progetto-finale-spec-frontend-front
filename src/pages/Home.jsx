@@ -260,7 +260,7 @@ export default function Home() {
                                                     SEZIONE RICERCA E ORDINAMENTO
                                        Contiene la barra di ricerca e i pulsanti di ordinamento
   =========================================================================================================================*/}
-          <div className="flex flex-col md:flex-row flex-wrap gap-8 items-start w-full mb-10">
+          <div className="flex flex-col md:flex-row flex-wrap gap-8 items-start w-full">
             {/* Barra di ricerca */}
             <div className="w-full md:flex-1 min-w-[280px]">
               <SearchBar
@@ -273,7 +273,7 @@ export default function Home() {
 
             {/* Controlli per l'ordinamento */}
             <div className="w-full md:flex-1 min-w-[280px]">
-              <h3 className="text-lg font-semibold text-gray-800 mb-5 text-center">
+              <h3 className="text-lg font-semibold text-gray-800 mb-5 text-center mt-2">
                 Ordina per nome
               </h3>
 
@@ -354,7 +354,6 @@ export default function Home() {
               )}
             </p>
           </div>
-          ds
           {/* ========================================================================================================================
                                                   RISULTATI DELLA RICERCA
                                   Mostra le auto filtrate o un messaggio di "nessun risultato"
