@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
 
-export default function SearchBar({ onSearch, totalCars, filteredCount }) {
-  const [searchTerm, setSearchTerm] = useState("");
+export default function SearchBar({ onSearch, totalCars, filteredCount, searchValue = "" }) {
+  const [searchTerm, setSearchTerm] = useState(searchValue);
   const [isFocused, setIsFocused] = useState(false);
+
+  // Effetto per sincronizzare con il valore esterno
+  useEffect(() => {
+    setSearchTerm(searchValue);
+  }, [searchValue]);
 
   // Effetto per chiamare onSearch quando cambia il termine di ricerca
   useEffect(() => {
@@ -71,39 +76,6 @@ export default function SearchBar({ onSearch, totalCars, filteredCount }) {
           </div>
         </div>
       </form>
-
-      {/* Risultati della ricerca */}
-      {searchTerm && (
-        <div className="text-center mt-4">
-          <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-lg px-4 py-2">
-            <i className="fas fa-search text-orange-500"></i>
-            <span className="text-gray-700">
-              {filteredCount > 0 ? (
-                <>
-                  Trovate <span className="font-semibold text-orange-600">{filteredCount}</span> auto 
-                  su <span className="font-semibold">{totalCars}</span> per 
-                  "<span className="font-semibold text-orange-600">{searchTerm}</span>"
-                </>
-              ) : (
-                <>
-                  Nessun risultato per 
-                  "<span className="font-semibold text-orange-600">{searchTerm}</span>"
-                </>
-              )}
-            </span>
-            {searchTerm && (
-              <button
-                onClick={clearSearch}
-                className="ml-2 text-orange-500 hover:text-orange-700 font-medium text-sm underline"
-              >
-                Cancella
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-      
     </div>
   );
 }

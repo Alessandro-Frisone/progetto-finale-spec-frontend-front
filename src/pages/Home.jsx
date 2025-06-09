@@ -263,12 +263,13 @@ export default function Home() {
                                        Contiene la barra di ricerca e i pulsanti di ordinamento
   =========================================================================================================================*/}
           <div className="flex flex-wrap gap-6 items-start w-full mb-8">
-            {/* Barra di ricerca */}
+           {/* Barra di ricerca */}
             <div className="flex-1 min-w-[280px]">
               <SearchBar
                 onSearch={handleSearch}
                 totalCars={cars.length}
                 filteredCount={filteredCars.length}
+                searchValue={searchTerm}
               />
             </div>
 
