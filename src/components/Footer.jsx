@@ -26,7 +26,7 @@ export default function Footer() {
           <ul className="absolute left-1/2 transform -translate-x-1/2 flex flex-wrap justify-center text-sm text-gray-300 gap-4 text-center">
             <li>
               <Link
-                to="/about"
+                to="/ChiSiamo"
                 className="hover:text-white transition-colors duration-200"
               >
                 Chi siamo
@@ -34,7 +34,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                to="/services"
+                to="/Servizi"
                 className="hover:text-white transition-colors duration-200"
               >
                 Servizi
@@ -42,7 +42,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                to="/careers"
+                to="/LavoraConNoi"
                 className="hover:text-white transition-colors duration-200"
               >
                 Lavora con noi
@@ -50,7 +50,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                to="/faq"
+                to="/FAQ"
                 className="hover:text-white transition-colors duration-200"
               >
                 FAQ

@@ -24,7 +24,7 @@ export default function Navbar() {
           to="/favorites"
           className="text-gray-300 hover:text-white font-medium transition-colors duration-200"
         >
-          Favorites
+          Preferiti
         </Link>
       </div>
     </nav>
