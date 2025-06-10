@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function ChiSiamo() {
+
+   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -275,8 +281,10 @@ export default function ChiSiamo() {
               </Link>
             </button>
             <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-orange-600 transition-colors duration-200 flex items-center justify-center gap-2">
+              <Link to="/contattaci">
               <i className="fas fa-phone"></i>
               Contattaci Ora
+              </Link>
             </button>
           </div>
           

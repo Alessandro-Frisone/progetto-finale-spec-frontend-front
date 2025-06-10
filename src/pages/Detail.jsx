@@ -301,9 +301,6 @@ export default function Detail() {
               <button className="flex-1 bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors">
                 Contattaci Ora
               </button>
-              <button className="flex-1 border-2 border-orange-600 text-orange-600 py-3 px-6 rounded-lg font-semibold hover:bg-orange-50 transition-colors">
-                Richiedi Info
-              </button>
             </div>
           </div>
         </div>

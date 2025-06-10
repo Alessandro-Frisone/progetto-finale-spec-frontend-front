@@ -1,4 +1,11 @@
+import { useEffect } from "react";
+
 export default function LavoraConNoi() {
+
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}

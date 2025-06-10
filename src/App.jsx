@@ -9,6 +9,8 @@ import ChiSiamo from "./pages/footer/ChiSiamo";
 import Servizi from "./pages/footer/Servizi";
 import LavoraConNoi from "./pages/footer/LavoraConNoi";
 import FAQ from "./pages/footer/FAQ";
+import TerminiEPrivacy from "./pages/footer/Termini&Privacy";
+import Contattaci from "./pages/footer/Contattaci";
 
 export default function App() {
   return (
@@ -23,6 +25,8 @@ export default function App() {
             <Route path="/Servizi" element={<Servizi />} />
             <Route path="/LavoraConNoi" element={<LavoraConNoi />} />
             <Route path="/FAQ" element={<FAQ />} />
+            <Route path="/Termini&Privacy" element={<TerminiEPrivacy />} />
+            <Route path="/Contattaci" element={<Contattaci />} />
           </Route>
         </Routes>
       </FavoritesProvider>

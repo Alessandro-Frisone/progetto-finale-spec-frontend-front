@@ -1,4 +1,11 @@
+import { useEffect } from "react";
+
 export default function Servizi() {
+
+  useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -38,7 +45,7 @@ export default function Servizi() {
                 <h3 className="text-2xl font-bold text-gray-900">Vendita Auto Usate</h3>
               </div>
               <p className="text-gray-700 mb-6 leading-relaxed">
-                Oltre 200 auto sempre disponibili nel nostro showroom. Ogni veicolo è accuratamente 
+                Oltre 50 auto sempre disponibili nel nostro showroom. Ogni veicolo è accuratamente 
                 selezionato, controllato e certificato dai nostri esperti meccanici.
               </p>
               <ul className="space-y-3">
@@ -245,7 +252,7 @@ export default function Servizi() {
               <p className="text-gray-700 text-sm mb-4">
                 Consegniamo la tua auto direttamente a casa tua in tutta Italia
               </p>
-              <span className="text-orange-600 font-semibold">Da €50</span>
+              <span className="text-orange-600 font-semibold">Da €150</span>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-300">
@@ -254,7 +261,7 @@ export default function Servizi() {
               <p className="text-gray-700 text-sm mb-4">
                 Estendi la garanzia fino a 24 o 36 mesi per maggiore tranquillità
               </p>
-              <span className="text-orange-600 font-semibold">Da €200</span>
+              <span className="text-orange-600 font-semibold">Da €300</span>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-300">
