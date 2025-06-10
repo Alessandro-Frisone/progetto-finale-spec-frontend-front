@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchCarById } from "../services/api";
 import { useFavorites } from "../contexts/FavoritesContext";
@@ -298,8 +298,11 @@ export default function Detail() {
               e organizzare una prova su strada senza impegno.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              
               <button className="flex-1 bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors">
+               <Link to="/contattaci">
                 Contattaci Ora
+              </Link>
               </button>
             </div>
           </div>

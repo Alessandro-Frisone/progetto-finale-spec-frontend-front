@@ -191,6 +191,7 @@ export default function Home() {
           className="absolute top-32 right-0 w-[45%] max-w-none object-contain pointer-events-none select-none z-0"
         />
       </section>
+    
 
       {/* ========================================================================================================================
                                                      SEZIONE CATALOGO AUTO
