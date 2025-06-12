@@ -36,13 +36,13 @@ export default function ProductCard({ car }) {
   };
 
   return (
-    <div className="group relative w-full max-w-md mx-auto bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-orange-200">
+    <div className="group relative w-full max-w-md mx-auto bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-orange-200 h-96 flex flex-col">
       
       {/* Orange gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-orange-100/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
       
       {/* Header section with favorite button */}
-      <div className="relative px-8 pt-8 pb-6 bg-gradient-to-r from-orange-50 to-orange-100/50 border-b border-orange-100">
+      <div className="relative px-8 pt-8 pb-6 bg-gradient-to-r from-orange-50 to-orange-100/50 border-b border-orange-100 flex-shrink-0">
         <button
           onClick={handleFavoriteClick}
           aria-label={
@@ -50,7 +50,7 @@ export default function ProductCard({ car }) {
           }
           className={`absolute top-6 right-6 p-3 rounded-full transition-all duration-300 hover:scale-110 ${
             isCarFavorite
-              ? "text-red-600 bg-red-50 hover:bg-red-100 shadow-lg"
+              ? "text-orange-600 bg-orange-50 hover:bg-orange-100 shadow-lg"
               : "text-orange-400 hover:text-orange-600 hover:bg-orange-50 shadow-md"
           }`}
         >
@@ -65,38 +65,38 @@ export default function ProductCard({ car }) {
       </div>
 
       {/* Content section */}
-      
-        <div className="px-8 py-8 space-y-6">
-          
-          {/* Category badge */}
+      <div className="px-8 py-8 flex-1 flex flex-col justify-between">
+        
+        {/* Category badge - centrata */}
+        <div className="flex justify-center mb-6">
           <div className="inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:from-orange-600 hover:to-orange-700 group-hover:scale-105">
             <i className={`${getCategoryIcon(car.category)} text-orange-100 text-base`}></i>
             <span className="font-semibold text-sm uppercase tracking-wider">{car.category}</span>
           </div>
+        </div>
 
-          {/* Decorative section */}
-          <div className="space-y-4">
-            {/* Orange accent bars */}
-            <div className="flex items-center gap-3">
-              <div className="h-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full flex-1"></div>
-              <div className="w-3 h-3 bg-orange-500 rounded-full shadow-md"></div>
-              <div className="h-1 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full flex-1"></div>
-            </div>
-            
-            {/* Call to action */}
-            <div className="text-center">
-              <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-50 to-orange-100 text-orange-700 rounded-lg border border-orange-200 hover:bg-gradient-to-r hover:from-orange-100 hover:to-orange-200 transition-all duration-300 group-hover:shadow-md">
-                <Link to={`/detail/${car.id}`} className="block relative z-10">
+        {/* Decorative section */}
+        <div className="space-y-4">
+          {/* Orange accent bars */}
+          <div className="flex items-center gap-3">
+            <div className="h-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full flex-1"></div>
+            <div className="w-3 h-3 bg-orange-500 rounded-full shadow-md"></div>
+            <div className="h-1 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full flex-1"></div>
+          </div>
+          
+          {/* Call to action */}
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-50 to-orange-100 text-orange-700 rounded-lg border border-orange-200 hover:bg-gradient-to-r hover:from-orange-100 hover:to-orange-200 transition-all duration-300 group-hover:shadow-md">
+              <Link to={`/detail/${car.id}`} className="block relative z-10">
                 <span className="text-sm font-medium uppercase tracking-widest">
                   Visualizza Dettagli
                 </span>
                 <i className="fas fa-arrow-right text-orange-600 text-xs ml-1 group-hover:translate-x-1 transition-transform duration-300"></i>
-                </Link>
-              </div>
+              </Link>
             </div>
           </div>
         </div>
-      
+      </div>
 
       {/* Bottom orange accent line */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600"></div>
