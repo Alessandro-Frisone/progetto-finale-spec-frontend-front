@@ -3,7 +3,8 @@ import { useComparator } from "../contexts/ComparatorContext";
 import { Link } from "react-router-dom";
 
 export default function ComparatorBar() {
-  const { selectedCars, removeFromComparator, clearComparator } = useComparator();
+  const { selectedCars, removeFromComparator, clearComparator } =
+    useComparator();
 
   if (selectedCars.length === 0) return null;
 
@@ -11,7 +12,6 @@ export default function ComparatorBar() {
     <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-2xl z-40 border-t-4 border-blue-500">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          
           {/* Selected cars display */}
           <div className="flex items-center space-x-6">
             <div className="flex items-center gap-2">
@@ -20,10 +20,13 @@ export default function ComparatorBar() {
                 Comparatore ({selectedCars.length}/2)
               </span>
             </div>
-            
+
             <div className="flex space-x-4">
               {selectedCars.map((car, index) => (
-                <div key={car.id} className="flex items-center bg-blue-500/30 rounded-lg px-4 py-2 border border-blue-400/30">
+                <div
+                  key={car.id}
+                  className="flex items-center bg-blue-500/30 rounded-lg px-4 py-2 border border-blue-400/30"
+                >
                   <span className="font-medium text-sm mr-3 max-w-32 truncate">
                     {car.title}
                   </span>
@@ -36,7 +39,7 @@ export default function ComparatorBar() {
                   </button>
                 </div>
               ))}
-              
+
               {/* Placeholder for second car */}
               {selectedCars.length === 1 && (
                 <div className="flex items-center bg-blue-500/20 rounded-lg px-4 py-2 border-2 border-dashed border-blue-400/50">
@@ -59,7 +62,7 @@ export default function ComparatorBar() {
                 Confronta
               </Link>
             )}
-            
+
             <button
               onClick={clearComparator}
               className="bg-blue-500/30 text-white px-4 py-2 rounded-full hover:bg-blue-500/50 transition-all duration-200 border border-blue-400/30 flex items-center gap-2"
