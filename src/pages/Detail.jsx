@@ -2,12 +2,14 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchCarById } from "../services/api";
 import { useFavorites } from "../contexts/FavoritesContext";
+import { useNotification } from "../contexts/NotificationContext";
 
 export default function Detail() {
   const { id } = useParams();
   const [car, setCar] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  const { addToFavorites: notifyFavoriteAdd, removeFromFavorites: notifyFavoriteRemove } = useNotification();
 
   useEffect(() => {
     async function loadCar() {
@@ -21,10 +23,13 @@ export default function Detail() {
 
   const handleFavoriteClick = () => {
     if (!car) return;
+    
     if (isCarFavorite) {
       removeFromFavorites(car.id);
+      notifyFavoriteRemove(`${car.brand} ${car.model} è stato rimosso dai tuoi preferiti`);
     } else {
       addToFavorites(car);
+      notifyFavoriteAdd(`${car.brand} ${car.model} è stato aggiunto ai tuoi preferiti`);
     }
   };
 
@@ -49,7 +54,6 @@ export default function Detail() {
       });
     }, 200);
   };
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -286,8 +290,6 @@ export default function Detail() {
                   {car.description}
                 </p>
               </div>
-
-              
             </div>
           </div>
         </div>
@@ -303,7 +305,6 @@ export default function Detail() {
               e organizzare una prova su strada senza impegno.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              
               <button className="flex-1 bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors">
                <Link to="/contattaci">
                 Contattaci Ora
