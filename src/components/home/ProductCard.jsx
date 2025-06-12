@@ -1,9 +1,14 @@
+// src/components/home/ProductCard.jsx (aggiornato)
 import { useFavorites } from "../../contexts/FavoritesContext";
+import { useComparator } from "../../contexts/ComparatorContext";
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ car }) {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  const { addToComparator, removeFromComparator, isInComparator, canAddMore } = useComparator();
+  
   const isCarFavorite = isFavorite(car.id);
+  const isCarInComparator = isInComparator(car.id);
 
   const handleFavoriteClick = (e) => {
     e.preventDefault();
@@ -12,6 +17,16 @@ export default function ProductCard({ car }) {
       removeFromFavorites(car.id);
     } else {
       addToFavorites(car);
+    }
+  };
+
+  const handleComparatorClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isCarInComparator) {
+      removeFromComparator(car.id);
+    } else {
+      addToComparator(car);
     }
   };
 
@@ -41,8 +56,10 @@ export default function ProductCard({ car }) {
       {/* Orange gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-orange-100/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
       
-      {/* Header section with favorite button */}
+      {/* Header section with buttons */}
       <div className="relative px-8 pt-8 pb-6 bg-gradient-to-r from-orange-50 to-orange-100/50 border-b border-orange-100 flex-shrink-0">
+        
+        {/* Favorite button */}
         <button
           onClick={handleFavoriteClick}
           aria-label={
@@ -57,8 +74,26 @@ export default function ProductCard({ car }) {
           <i className={`${isCarFavorite ? "fas fa-heart" : "far fa-heart"} text-xl`}></i>
         </button>
 
+        {/* Comparator checkbox */}
+        <button
+          onClick={handleComparatorClick}
+          disabled={!canAddMore && !isCarInComparator}
+          aria-label={
+            isCarInComparator ? "Rimuovi dal comparatore" : "Aggiungi al comparatore"
+          }
+          className={`absolute top-6 right-20 p-3 rounded-full transition-all duration-300 hover:scale-110 ${
+            isCarInComparator
+              ? "text-blue-600 bg-blue-50 hover:bg-blue-100 shadow-lg"
+              : canAddMore
+              ? "text-blue-400 hover:text-blue-600 hover:bg-blue-50 shadow-md"
+              : "text-gray-300 cursor-not-allowed"
+          }`}
+        >
+          <i className={`${isCarInComparator ? "fas fa-check-square" : "far fa-square"} text-xl`}></i>
+        </button>
+
         <Link to={`/detail/${car.id}`} className="block">
-          <h2 className="text-2xl font-bold text-gray-900 leading-tight pr-16 hover:text-orange-700 transition-colors duration-300 group-hover:text-orange-800">
+          <h2 className="text-2xl font-bold text-gray-900 leading-tight pr-28 hover:text-orange-700 transition-colors duration-300 group-hover:text-orange-800">
             {car.title}
           </h2>
         </Link>
