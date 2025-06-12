@@ -1,12 +1,14 @@
-// src/components/home/ProductCard.jsx (completamente ridisegnato)
+// src/components/home/ProductCard.jsx (con notifiche)
 import { useFavorites } from "../../contexts/FavoritesContext";
 import { useComparator } from "../../contexts/ComparatorContext";
+import { useNotification } from "../../contexts/NotificationContext";
 import { Link } from "react-router-dom";
 
 export default function ProductCard({ car }) {
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
   const { addToComparator, removeFromComparator, isInComparator, canAddMore } =
     useComparator();
+  const { addNotification } = useNotification();
 
   const isCarFavorite = isFavorite(car.id);
   const isCarInComparator = isInComparator(car.id);
@@ -16,8 +18,10 @@ export default function ProductCard({ car }) {
     e.stopPropagation();
     if (isCarFavorite) {
       removeFromFavorites(car.id);
+      addNotification(`${car.title} rimosso dai preferiti`, 'info');
     } else {
       addToFavorites(car);
+      addNotification(`${car.title} aggiunto ai preferiti!`, 'success');
     }
   };
 
@@ -26,8 +30,12 @@ export default function ProductCard({ car }) {
     e.stopPropagation();
     if (isCarInComparator) {
       removeFromComparator(car.id);
+      addNotification(`${car.title} rimosso dal confronto`, 'info');
     } else if (canAddMore) {
       addToComparator(car);
+      addNotification(`${car.title} aggiunto al confronto!`, 'success');
+    } else {
+      addNotification('Puoi confrontare massimo 2 auto', 'error');
     }
   };
 
