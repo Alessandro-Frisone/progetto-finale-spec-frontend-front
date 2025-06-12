@@ -50,6 +50,11 @@ export default function Detail() {
     }, 200);
   };
 
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   if (!car) {
     return (
       <div className="min-h-screen flex justify-center items-center bg-gray-50">

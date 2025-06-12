@@ -1,4 +1,4 @@
-// src/components/home/ProductCard.jsx (aggiornato)
+// src/components/home/ProductCard.jsx (completamente ridisegnato)
 import { useFavorites } from "../../contexts/FavoritesContext";
 import { useComparator } from "../../contexts/ComparatorContext";
 import { Link } from "react-router-dom";
@@ -26,7 +26,7 @@ export default function ProductCard({ car }) {
     e.stopPropagation();
     if (isCarInComparator) {
       removeFromComparator(car.id);
-    } else {
+    } else if (canAddMore) {
       addToComparator(car);
     }
   };
@@ -52,102 +52,91 @@ export default function ProductCard({ car }) {
   };
 
   return (
-    <div className="group relative w-full max-w-md mx-auto bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:border-orange-200 h-96 flex flex-col">
-      {/* Orange gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-50/30 to-orange-100/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-
-      {/* Header section with buttons */}
-      <div className="relative px-8 pt-8 pb-6 bg-gradient-to-r from-orange-50 to-orange-100/50 border-b border-orange-100 flex-shrink-0">
-        {/* Favorite button */}
+    <div className="group relative w-full max-w-sm mx-auto bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+      {/* Header con gradient nero sfumato */}
+      <div className="relative h-24 bg-gradient-to-r from-gray-900 via-black to-gray-900">
+        {/* Pulsante favoriti */}
         <button
           onClick={handleFavoriteClick}
+          className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 ${
+            isCarFavorite
+              ? "text-orange-500"
+              : "text-white hover:text-orange-300"
+          }`}
           aria-label={
             isCarFavorite ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"
           }
-          className={`absolute top-6 right-6 p-3 rounded-full transition-all duration-300 hover:scale-110 ${
-            isCarFavorite
-              ? "text-orange-600 bg-orange-50 hover:bg-orange-100 shadow-lg"
-              : "text-orange-400 hover:text-orange-600 hover:bg-orange-50 shadow-md"
-          }`}
         >
           <i
             className={`${
               isCarFavorite ? "fas fa-heart" : "far fa-heart"
-            } text-xl`}
+            } text-lg`}
           ></i>
         </button>
 
-        {/* Comparator checkbox */}
-        <button
-          onClick={handleComparatorClick}
-          disabled={!canAddMore && !isCarInComparator}
-          aria-label={
-            isCarInComparator
-              ? "Rimuovi dal comparatore"
-              : "Aggiungi al comparatore"
-          }
-          className={`absolute top-6 right-20 p-3 rounded-full transition-all duration-300 hover:scale-110 ${
-            isCarInComparator
-              ? "text-blue-600 bg-blue-50 hover:bg-blue-100 shadow-lg"
-              : canAddMore
-              ? "text-blue-400 hover:text-blue-600 hover:bg-blue-50 shadow-md"
-              : "text-gray-300 cursor-not-allowed"
-          }`}
-        >
-          <i
-            className={`${
-              isCarInComparator ? "fas fa-check-square" : "far fa-square"
-            } text-xl`}
-          ></i>
-        </button>
-
-        <Link to={`/detail/${car.id}`} className="block">
-          <h2 className="text-2xl font-bold text-gray-900 leading-tight pr-28 hover:text-orange-700 transition-colors duration-300 group-hover:text-orange-800">
+        {/* Titolo centrato nell'header */}
+        <div className="absolute inset-0 flex items-center justify-center px-16">
+          <h2 className="text-xl font-bold text-white text-center leading-tight hover:text-gray-200 transition-colors duration-300">
             {car.title}
           </h2>
-        </Link>
+        </div>
       </div>
 
-      {/* Content section */}
-      <div className="px-8 py-8 flex-1 flex flex-col justify-between">
-        {/* Category badge - centrata */}
-        <div className="flex justify-center mb-6">
-          <div className="inline-flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:from-orange-600 hover:to-orange-700 group-hover:scale-105">
+      {/* Contenuto principale */}
+      <div className="p-6 space-y-6">
+        {/* Badge categoria centrato */}
+        <div className="flex justify-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 text-orange-700 rounded-full border border-orange-200">
             <i
-              className={`${getCategoryIcon(
-                car.category
-              )} text-orange-100 text-base`}
+              className={`${getCategoryIcon(car.category)} text-orange-600`}
             ></i>
-            <span className="font-semibold text-sm uppercase tracking-wider">
-              {car.category}
-            </span>
+            <span className="text-sm font-medium">{car.category}</span>
           </div>
         </div>
 
-        {/* Decorative section */}
-        <div className="space-y-4">
-          {/* Orange accent bars */}
-          <div className="flex items-center gap-3">
-            <div className="h-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full flex-1"></div>
-            <div className="w-3 h-3 bg-orange-500 rounded-full shadow-md"></div>
-            <div className="h-1 bg-gradient-to-r from-orange-600 to-orange-400 rounded-full flex-1"></div>
-          </div>
+        {/* Separatore decorativo */}
+        <div className="flex items-center justify-center gap-3">
+          <div className="w-12 h-0.5 bg-gradient-to-r from-transparent to-orange-300"></div>
+          <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+          <div className="w-12 h-0.5 bg-gradient-to-l from-transparent to-orange-300"></div>
+        </div>
 
-          {/* Call to action */}
-          <div className="text-center">
-            <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-50 to-orange-100 text-orange-700 rounded-lg border border-orange-200 hover:bg-gradient-to-r hover:from-orange-100 hover:to-orange-200 transition-all duration-300 group-hover:shadow-md">
-              <Link to={`/detail/${car.id}`} className="block relative z-10">
-                <span className="text-sm font-medium uppercase tracking-widest">
-                  Visualizza Dettagli
-                </span>
-                <i className="fas fa-arrow-right text-orange-600 text-xs ml-1 group-hover:translate-x-1 transition-transform duration-300"></i>
-              </Link>
-            </div>
-          </div>
+        {/* Azioni */}
+        <div className="space-y-3">
+          {/* Pulsante comparatore */}
+          <button
+            onClick={handleComparatorClick}
+            disabled={!canAddMore && !isCarInComparator}
+            className={`w-full flex items-center justify-center gap-3 py-3 px-4 rounded-lg font-medium transition-all duration-300 ${
+              isCarInComparator
+                ? "bg-gray-800 text-white border border-gray-700 hover:bg-gray-700"
+                : canAddMore
+                ? "bg-gray-50 text-gray-700 border border-gray-200 hover:bg-gray-100 hover:border-gray-300"
+                : "bg-gray-50 text-gray-400 border border-gray-200 cursor-not-allowed opacity-60"
+            }`}
+          >
+            <i
+              className={`fas fa-balance-scale ${
+                isCarInComparator ? "text-orange-400" : "text-gray-500"
+              }`}
+            ></i>
+            <span className="text-sm">
+              {isCarInComparator ? "Nel comparatore" : "Aggiungi al confronto"}
+            </span>
+          </button>
+
+          {/* Pulsante dettagli */}
+          <Link
+            to={`/detail/${car.id}`}
+            className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg font-medium hover:from-orange-600 hover:to-orange-700 transition-all duration-300 hover:shadow-lg group"
+          >
+            <span className="text-sm">Visualizza dettagli</span>
+            <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
+          </Link>
         </div>
       </div>
 
-      {/* Bottom orange accent line */}
+      {/* Accent line in basso */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600"></div>
     </div>
   );
