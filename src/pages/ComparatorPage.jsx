@@ -36,6 +36,34 @@ export default function ComparatorPage() {
     );
   }
 
+  // Funzione per estrarre marca e modello dal titolo
+  const extractBrandAndModel = (title) => {
+    if (!title) return { brand: "Non specificato", model: "Non specificato" };
+    
+    const parts = title.split(' ');
+    if (parts.length >= 2) {
+      return {
+        brand: parts[0],
+        model: parts.slice(1).join(' ')
+      };
+    }
+    return { brand: title, model: "Non specificato" };
+  };
+
+  // Funzione per ottenere il valore sicuro di una proprietà
+  const getSafeValue = (car, key) => {
+    if (key === 'brand') {
+      return extractBrandAndModel(car.title).brand;
+    }
+    if (key === 'model') {
+      return extractBrandAndModel(car.title).model;
+    }
+    
+    // Verifica se la proprietà esiste e non è null/undefined
+    const value = car[key];
+    return value !== null && value !== undefined && value !== '' ? value : null;
+  };
+
   // Configurazione delle categorie di specifiche da confrontare
   const specCategories = [
     {
@@ -75,7 +103,7 @@ export default function ComparatorPage() {
 
   // Funzione per formattare i valori
   const formatValue = (value, format) => {
-    if (value === null || value === undefined) return "Non specificato";
+    if (value === null || value === undefined || value === '') return "Non specificato";
     
     switch (format) {
       case "price":
@@ -93,10 +121,69 @@ export default function ComparatorPage() {
     }
   };
 
+  // Funzione per determinare se un valore è migliore dell'altro
+  const isValueBetter = (value1, value2, key) => {
+    if (value1 === null || value1 === undefined || value1 === '' ||
+        value2 === null || value2 === undefined || value2 === '') {
+      return false;
+    }
+
+    // Per alcuni valori, più alto è meglio
+    const higherIsBetter = ['horsepower', 'year'];
+    // Per altri valori, più basso è meglio
+    const lowerIsBetter = ['price', 'km', 'consumption'];
+
+    if (higherIsBetter.includes(key)) {
+      return parseFloat(value1) > parseFloat(value2);
+    }
+    if (lowerIsBetter.includes(key)) {
+      return parseFloat(value1) < parseFloat(value2);
+    }
+    
+    return false;
+  };
+
   // Estrae i dati delle due auto selezionate
   const car1 = selectedCars[0];
   const car2 = selectedCars[1];
+// Aggiungi questo codice temporaneamente nel ComparatorPage.jsx
+// subito dopo le righe:
+// const car1 = selectedCars[0];
+// const car2 = selectedCars[1];
 
+console.log("Car 1 data:", car1);
+console.log("Car 2 data:", car2);
+
+// Verifica specificamente i campi che non vedi
+console.log("Car 1 details:", {
+  year: car1.year,
+  price: car1.price,
+  fuelType: car1.fuelType,
+  horsepower: car1.horsepower,
+  displacement: car1.displacement,
+  transmission: car1.transmission,
+  consumption: car1.consumption,
+  km: car1.km,
+  doors: car1.doors,
+  seats: car1.seats,
+  color: car1.color,
+  emissionClass: car1.emissionClass
+});
+
+console.log("Car 2 details:", {
+  year: car2.year,
+  price: car2.price,
+  fuelType: car2.fuelType,
+  horsepower: car2.horsepower,
+  displacement: car2.displacement,
+  transmission: car2.transmission,
+  consumption: car2.consumption,
+  km: car2.km,
+  doors: car2.doors,
+  seats: car2.seats,
+  color: car2.color,
+  emissionClass: car2.emissionClass
+});
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-20">
       <div className="container mx-auto px-4">
@@ -174,34 +261,43 @@ export default function ComparatorPage() {
               </div>
               
               {/* Specs Rows */}
-              {category.specs.map((spec, specIndex) => (
-                <div key={specIndex} className="grid grid-cols-1 lg:grid-cols-3 border-b border-gray-100 last:border-b-0">
-                  {/* Spec Label */}
-                  <div className="p-6 bg-gray-50 font-semibold text-gray-700 flex items-center">
-                    {spec.label}
-                  </div>
-                  
-                  {/* Car 1 Value */}
-                  <div className="p-6 flex items-center border-r border-gray-100 lg:border-r-0">
-                    <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                      <span className="text-gray-800 font-medium">
-                        {formatValue(car1[spec.key], spec.format)}
-                      </span>
+              {category.specs.map((spec, specIndex) => {
+                const value1 = getSafeValue(car1, spec.key);
+                const value2 = getSafeValue(car2, spec.key);
+                const isBetter1 = isValueBetter(value1, value2, spec.key);
+                const isBetter2 = isValueBetter(value2, value1, spec.key);
+                
+                return (
+                  <div key={specIndex} className="grid grid-cols-1 lg:grid-cols-3 border-b border-gray-100 last:border-b-0">
+                    {/* Spec Label */}
+                    <div className="p-6 bg-gray-50 font-semibold text-gray-700 flex items-center">
+                      {spec.label}
+                    </div>
+                    
+                    {/* Car 1 Value */}
+                    <div className={`p-6 flex items-center border-r border-gray-100 lg:border-r-0 ${isBetter1 ? 'bg-green-50' : ''}`}>
+                      <div className="flex items-center gap-3">
+                        <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+                        <span className={`text-gray-800 font-medium ${isBetter1 ? 'text-green-700 font-bold' : ''}`}>
+                          {formatValue(value1, spec.format)}
+                          {isBetter1 && <i className="fas fa-trophy text-green-600 ml-2"></i>}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {/* Car 2 Value */}
+                    <div className={`p-6 flex items-center ${isBetter2 ? 'bg-green-50' : ''}`}>
+                      <div className="flex items-center gap-3">
+                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                        <span className={`text-gray-800 font-medium ${isBetter2 ? 'text-green-700 font-bold' : ''}`}>
+                          {formatValue(value2, spec.format)}
+                          {isBetter2 && <i className="fas fa-trophy text-green-600 ml-2"></i>}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                  
-                  {/* Car 2 Value */}
-                  <div className="p-6 flex items-center">
-                    <div className="flex items-center gap-3">
-                      <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                      <span className="text-gray-800 font-medium">
-                        {formatValue(car2[spec.key], spec.format)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           ))}
         </div>
