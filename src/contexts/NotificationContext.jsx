@@ -1,4 +1,4 @@
-// src/contexts/NotificationContext.jsxx
+// src/contexts/NotificationContext.jsx
 import { createContext, useContext, useState } from 'react';
 
 const NotificationContext = createContext();
@@ -6,16 +6,33 @@ const NotificationContext = createContext();
 export function NotificationProvider({ children }) {
   const [notifications, setNotifications] = useState([]);
 
-  const addNotification = (message, type = 'success', category = 'general') => {
+  const addNotification = (message, type = 'added', category = 'general') => {
     const id = Date.now();
     const notification = { id, message, type, category };
     
     setNotifications(prev => [...prev, notification]);
     
-    // Rimuovi automaticamente dopo 4 secondi (più tempo per leggere)
+    // Rimuovi automaticamente dopo 4 secondi
     setTimeout(() => {
       removeNotification(id);
     }, 4000);
+  };
+
+  // Funzioni helper per semplificare l'uso
+  const addToFavorites = (message) => {
+    addNotification(message, 'added', 'favorites');
+  };
+
+  const removeFromFavorites = (message) => {
+    addNotification(message, 'removed', 'favorites');
+  };
+
+  const addToComparator = (message) => {
+    addNotification(message, 'added', 'comparator');
+  };
+
+  const removeFromComparator = (message) => {
+    addNotification(message, 'removed', 'comparator');
   };
 
   const removeNotification = (id) => {
@@ -23,7 +40,15 @@ export function NotificationProvider({ children }) {
   };
 
   return (
-    <NotificationContext.Provider value={{ notifications, addNotification, removeNotification }}>
+    <NotificationContext.Provider value={{ 
+      notifications, 
+      addNotification, 
+      removeNotification,
+      addToFavorites,
+      removeFromFavorites,
+      addToComparator,
+      removeFromComparator
+    }}>
       {children}
     </NotificationContext.Provider>
   );
