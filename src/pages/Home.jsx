@@ -163,62 +163,79 @@ export default function Home() {
 
       {/* ========================================================================================================================
                                                 SEZIONE MINIMAL ELEGANTE
-                                      Transizione semplice e pulita tra carousel e sezione successiva
+                                      Auto a sinistra e testo a destra con layout responsivo
       =========================================================================================================================*/}
-      <section className="w-full bg-gradient-to-t from-orange-50 to-white py-16">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-2xl md:text-5xl font-light text-gray-800 mb-6">
-            La tua prossima auto ti aspetta
-          </h2>
-          <p className="text-2xl text-gray-600 mb-8 leading-loose">
-            Qualità certificata, trasparenza garantita, esperienza consolidata.
-          </p>
-          <div className="flex justify-center items-center gap-8 text-base text-gray-500">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-              <span>2500+ auto vendute</span>
+      <section className="relative w-full bg-gradient-to-t from-orange-50 to-white py-16 overflow-hidden">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            {/* Auto a sinistra */}
+            <div className="w-full lg:w-1/2 flex justify-center lg:justify-start">
+              <img
+                src="/auto_senza_sfondo.png"
+                alt="Auto in esposizione"
+                className="absolute -top-15 left-25 w-[45%] max-w-none object-contain pointer-events-none select-none scale-x-[-1] z-0"
+              />
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-              <span>15 anni di esperienza</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-              <span>Garanzia 24 mesi</span>
+
+            {/* Testo a destra */}
+            <div className="w-full lg:w-1/2 text-center lg:text-center">
+              <h2 className="text-2xl md:text-4xl lg:text-5xl font-light text-gray-800 mb-6">
+                La tua prossima auto ti aspetta
+              </h2>
+              <p className="text-xl lg:text-2xl text-gray-600 mb-8 leading-loose">
+                Qualità certificata, trasparenza garantita, esperienza
+                consolidata.
+              </p>
+              <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row justify-center lg:justify-start items-center gap-4 lg:gap-6 text-base text-gray-500">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <span>2500+ auto vendute</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <span>15 anni di esperienza</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <span>Garanzia 24 mesi</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
+
       {/* ========================================================================================================================
                                                 SEZIONE "PERCHÉ SCEGLIERE NOI"
-                                     Presenta i vantaggi dell'azienda con testo descrittivo
-                                            e immagini decorative di auto ai lati
+                                     Testo a sinistra e auto decorativa a destra
   =========================================================================================================================*/}
-      <section className="relative w-full bg-gradient-to-t from-orange-200 via-white to-orange-50 px-6 pt-24 pb-75 overflow-hidden">
-        <div className="max-w-5xl mx-auto text-center z-10 relative">
-          <h2 className="text-6xl font-light text-gray-800 mb-8">
-            Perché scegliere noi
-          </h2>
-          <p className="text-2xl text-gray-700 leading-loose font-light">
-            Scegliere <strong>AutoDeal</strong> significa affidarsi a un team
-            esperto che mette al primo posto la tua tranquillità. Ogni veicolo è
-            accuratamente controllato e certificato, i prezzi sono tra i più
-            competitivi del mercato e offriamo soluzioni di finanziamento su
-            misura...
-          </p>
-        </div>
+      <section className="relative w-full bg-gradient-to-t from-orange-200 via-white to-orange-50 px-6 pt-24 pb-24 overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+            {/* Testo a sinistra */}
+            <div className="w-full lg:w-1/2 max-w-[60%] text-left z-10 relative -ml-6 lg:-ml-20 pr-12 lg:pr-16">
+              <h2 className="text-4xl lg:text-6xl font-light text-gray-800 mb-8">
+                Perché scegliere noi
+              </h2>
+              <p className="text-xl lg:text-2xl text-gray-700 leading-loose font-light text-center">
+                Scegliere <strong>AutoDeal</strong> significa affidarsi a un
+                team esperto che mette al primo posto la tua tranquillità. Ogni
+                veicolo è accuratamente controllato e certificato, i prezzi sono
+                tra i più competitivi del mercato e offriamo soluzioni di
+                finanziamento su misura per ogni esigenza.
+              </p>
+            </div>
 
-        {/* Immagini decorative */}
-        <img
-          src="/auto_senza_sfondo.png"
-          alt="Auto in esposizione"
-          className="absolute top-32 left-0 w-[45%] max-w-none object-contain pointer-events-none select-none scale-x-[-1] z-0"
-        />
-        <img
-          src="/auto_senza_sfondo.png"
-          alt="Auto in esposizione"
-          className="absolute top-32 right-0 w-[45%] max-w-none object-contain pointer-events-none select-none z-0"
-        />
+            {/* Auto a destra */}
+            <div className="w-full lg:w-1/3 flex justify-center lg:justify-end">
+              <img
+                src="/auto_senza_sfondo.png"
+                alt="Auto in esposizione"
+                className="absolute -top-15 right-25 w-[47%] max-w-none object-contain pointer-events-none select-none z-0"
+              />
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* ========================================================================================================================
@@ -226,7 +243,7 @@ export default function Home() {
                                        Contiene tutti i controlli per filtrare, cercare
                                         e ordinare le auto, più la griglia di risultati
   =========================================================================================================================*/}
-      <section className="relative bg-gradient-to-b from-orange-200 via-white to-orange-50 py-20 min-h-screen">
+      <section className="relative bg-gradient-to-b from-orange-200 via-white to-orange-50  min-h-screen">
         <div className="max-w-7xl mx-auto px-6">
           {/* Intestazione della sezione catalogo */}
           <div className="text-center mb-8">
