@@ -152,15 +152,6 @@ const CarCarousel = () => {
             }}
           />
         </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 right-8 text-white/60 text-sm font-light animate-bounce z-30">
-          <div className="flex flex-col items-center gap-2">
-            <span>Scorri</span>
-            <div className="w-px h-8 bg-white/40"></div>
-            <div className="w-2 h-2 border border-white/40 rounded-full"></div>
-          </div>
-        </div>
       </div>
 
       {/* Effetto Fade Bottom per Transizione Smooth */}

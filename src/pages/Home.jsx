@@ -160,12 +160,15 @@ export default function Home() {
   return (
     <div className="bg-orange-50 ">
       <CarCarousel />
+      <section>
+        <div class="h-10 w-full bg-gradient-to-t from-orange-50 to-white"></div>
+      </section>
       {/* ========================================================================================================================
                                                 SEZIONE "PERCHÉ SCEGLIERE NOI"
                                      Presenta i vantaggi dell'azienda con testo descrittivo
                                             e immagini decorative di auto ai lati
   =========================================================================================================================*/}
-      <section className="relative w-full bg-gradient-to-t from-orange-200 via-white to-orange-50 px-6 pt-28 pb-75 overflow-hidden">
+      <section className="relative w-full bg-gradient-to-t from-orange-200 via-white to-orange-50 px-6 pt-24 pb-75 overflow-hidden">
         <div className="max-w-5xl mx-auto text-center z-10 relative">
           <h2 className="text-5xl font-bold text-gray-800 mb-8">
             Perché scegliere noi
