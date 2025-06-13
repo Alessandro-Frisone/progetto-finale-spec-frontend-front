@@ -160,20 +160,20 @@ export default function Home() {
   return (
     <div className="bg-orange-50 ">
       <CarCarousel />
-      
+
       {/* ========================================================================================================================
                                                 SEZIONE MINIMAL ELEGANTE
                                       Transizione semplice e pulita tra carousel e sezione successiva
       =========================================================================================================================*/}
-      <section className="bg-white py-16">
+      <section className="w-full bg-gradient-to-t from-orange-50 to-white py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-light text-gray-800 mb-6">
+          <h2 className="text-2xl md:text-5xl font-light text-gray-800 mb-6">
             La tua prossima auto ti aspetta
           </h2>
-          <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+          <p className="text-2xl text-gray-600 mb-8 leading-loose">
             Qualità certificata, trasparenza garantita, esperienza consolidata.
           </p>
-          <div className="flex justify-center items-center gap-8 text-sm text-gray-500">
+          <div className="flex justify-center items-center gap-8 text-base text-gray-500">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
               <span>2500+ auto vendute</span>
@@ -189,11 +189,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <section>
-        <div class="h-10 w-full bg-gradient-to-t from-orange-50 to-white"></div>
-      </section>
-      
       {/* ========================================================================================================================
                                                 SEZIONE "PERCHÉ SCEGLIERE NOI"
                                      Presenta i vantaggi dell'azienda con testo descrittivo
@@ -201,10 +196,10 @@ export default function Home() {
   =========================================================================================================================*/}
       <section className="relative w-full bg-gradient-to-t from-orange-200 via-white to-orange-50 px-6 pt-24 pb-75 overflow-hidden">
         <div className="max-w-5xl mx-auto text-center z-10 relative">
-          <h2 className="text-5xl font-bold text-gray-800 mb-8">
+          <h2 className="text-6xl font-light text-gray-800 mb-8">
             Perché scegliere noi
           </h2>
-          <p className="text-xl text-gray-700 leading-relaxed">
+          <p className="text-2xl text-gray-700 leading-loose font-light">
             Scegliere <strong>AutoDeal</strong> significa affidarsi a un team
             esperto che mette al primo posto la tua tranquillità. Ogni veicolo è
             accuratamente controllato e certificato, i prezzi sono tra i più
@@ -213,7 +208,7 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Immagini decorative di auto posizionate ai lati */}
+        {/* Immagini decorative */}
         <img
           src="/auto_senza_sfondo.png"
           alt="Auto in esposizione"
@@ -225,7 +220,6 @@ export default function Home() {
           className="absolute top-32 right-0 w-[45%] max-w-none object-contain pointer-events-none select-none z-0"
         />
       </section>
-    
 
       {/* ========================================================================================================================
                                                      SEZIONE CATALOGO AUTO
