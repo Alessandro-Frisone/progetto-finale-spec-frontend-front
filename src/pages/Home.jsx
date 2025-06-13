@@ -231,7 +231,7 @@ export default function Home() {
               <img
                 src="/auto_senza_sfondo.png"
                 alt="Auto in esposizione"
-                className="absolute -top-15 right-25 w-[47%] max-w-none object-contain pointer-events-none select-none z-0"
+                className="absolute -top-0 right-25 w-[47%] max-w-none object-contain pointer-events-none select-none z-0"
               />
             </div>
           </div>
