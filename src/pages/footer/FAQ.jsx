@@ -499,13 +499,13 @@ const FAQ = () => {
             le migliori condizioni di finanziamento.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold">
               📞 Chiamaci: 02-1234567
             </button>
-            <button className="bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-400 transition-colors">
+            <button className="bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold">
               💬 WhatsApp: 347-1234567
             </button>
-            <button className="bg-green-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-400 transition-colors">
+            <button className="bg-green-500 text-white px-8 py-3 rounded-lg font-semibold">
               ✉️ info@autodeal.it
             </button>
           </div>

@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="flex flex-col items-start">
             <Link to="/" className="mb-2">
               <img
-                src="/logo.png"
+                src="/logo_transparent.png"
                 alt="AutoDeal logo"
                 className="h-10 w-auto transition-transform duration-300 ease-in-out hover:scale-110"
               />

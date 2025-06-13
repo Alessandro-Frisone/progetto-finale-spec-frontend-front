@@ -14,7 +14,7 @@ export default function Navbar() {
       <div className="flex items-center gap-4">
         <Link to="/" className="flex items-center gap-2">
           <img
-            src="/logo.png"
+            src="/logo_transparent.png"
             alt="AutoDeal logo"
             className="h-12 w-auto transition-transform duration-300 ease-in-out hover:scale-110"
           />

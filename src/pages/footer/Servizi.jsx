@@ -1,10 +1,10 @@
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function Servizi() {
-
   useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -16,8 +16,9 @@ export default function Servizi() {
               I Nostri Servizi
             </h1>
             <p className="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed">
-              Un servizio completo a 360° per accompagnarti in ogni fase dell'acquisto della tua auto usata. 
-              Dalla ricerca al finanziamento, dalla valutazione alla consegna.
+              Un servizio completo a 360° per accompagnarti in ogni fase
+              dell'acquisto della tua auto usata. Dalla ricerca al
+              finanziamento, dalla valutazione alla consegna.
             </p>
           </div>
         </div>
@@ -31,7 +32,8 @@ export default function Servizi() {
               Servizi Principali
             </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              Tutto quello di cui hai bisogno per acquistare la tua auto in totale serenità
+              Tutto quello di cui hai bisogno per acquistare la tua auto in
+              totale serenità
             </p>
           </div>
 
@@ -42,11 +44,14 @@ export default function Servizi() {
                 <div className="bg-orange-600 w-16 h-16 rounded-full flex items-center justify-center mr-4">
                   <i className="fas fa-car text-2xl text-white"></i>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Vendita Auto Usate</h3>
+                <h3 className="text-2xl font-bold text-gray-900">
+                  Vendita Auto Usate
+                </h3>
               </div>
               <p className="text-gray-700 mb-6 leading-relaxed">
-                Oltre 50 auto sempre disponibili nel nostro showroom. Ogni veicolo è accuratamente 
-                selezionato, controllato e certificato dai nostri esperti meccanici.
+                Oltre 50 auto sempre disponibili nel nostro showroom. Ogni
+                veicolo è accuratamente selezionato, controllato e certificato
+                dai nostri esperti meccanici.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center text-gray-700">
@@ -74,11 +79,14 @@ export default function Servizi() {
                 <div className="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mr-4">
                   <i className="fas fa-credit-card text-2xl text-white"></i>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Finanziamenti</h3>
+                <h3 className="text-2xl font-bold text-gray-900">
+                  Finanziamenti
+                </h3>
               </div>
               <p className="text-gray-700 mb-6 leading-relaxed">
-                Soluzioni di finanziamento personalizzate con i migliori istituti di credito. 
-                Tassi competitivi e piani di rimborso flessibili per ogni esigenza.
+                Soluzioni di finanziamento personalizzate con i migliori
+                istituti di credito. Tassi competitivi e piani di rimborso
+                flessibili per ogni esigenza.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center text-gray-700">
@@ -106,11 +114,14 @@ export default function Servizi() {
                 <div className="bg-green-600 w-16 h-16 rounded-full flex items-center justify-center mr-4">
                   <i className="fas fa-exchange-alt text-2xl text-white"></i>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Permute e Ritiri</h3>
+                <h3 className="text-2xl font-bold text-gray-900">
+                  Permute e Ritiri
+                </h3>
               </div>
               <p className="text-gray-700 mb-6 leading-relaxed">
-                Valutazione gratuita della tua auto usata con quotazione ai prezzi di mercato. 
-                Ritiriamo il tuo veicolo anche se non acquisti da noi.
+                Valutazione gratuita della tua auto usata con quotazione ai
+                prezzi di mercato. Ritiriamo il tuo veicolo anche se non
+                acquisti da noi.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center text-gray-700">
@@ -138,11 +149,14 @@ export default function Servizi() {
                 <div className="bg-purple-600 w-16 h-16 rounded-full flex items-center justify-center mr-4">
                   <i className="fas fa-tools text-2xl text-white"></i>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Assistenza Post-Vendita</h3>
+                <h3 className="text-2xl font-bold text-gray-900">
+                  Assistenza Post-Vendita
+                </h3>
               </div>
               <p className="text-gray-700 mb-6 leading-relaxed">
-                Il nostro servizio non finisce con la vendita. Ti accompagniamo anche dopo 
-                l'acquisto con assistenza dedicata e officina convenzionata.
+                Il nostro servizio non finisce con la vendita. Ti accompagniamo
+                anche dopo l'acquisto con assistenza dedicata e officina
+                convenzionata.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center text-gray-700">
@@ -175,7 +189,8 @@ export default function Servizi() {
               Come Funziona l'Acquisto
             </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              Un processo semplice e trasparente in 5 step per la tua tranquillità
+              Un processo semplice e trasparente in 5 step per la tua
+              tranquillità
             </p>
           </div>
 
@@ -186,7 +201,8 @@ export default function Servizi() {
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">Scelta</h3>
               <p className="text-gray-700 text-sm">
-                Naviga il nostro catalogo online o vieni in showroom per scegliere la tua auto ideale
+                Naviga il nostro catalogo online o vieni in showroom per
+                scegliere la tua auto ideale
               </p>
             </div>
 
@@ -194,9 +210,12 @@ export default function Servizi() {
               <div className="bg-orange-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
                 2
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Test Drive</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                Test Drive
+              </h3>
               <p className="text-gray-700 text-sm">
-                Prova l'auto su strada per verificare che sia perfetta per le tue esigenze
+                Prova l'auto su strada per verificare che sia perfetta per le
+                tue esigenze
               </p>
             </div>
 
@@ -204,9 +223,12 @@ export default function Servizi() {
               <div className="bg-orange-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
                 3
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Valutazione</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                Valutazione
+              </h3>
               <p className="text-gray-700 text-sm">
-                Se hai un'auto da permutare, la valutiamo gratuitamente al miglior prezzo
+                Se hai un'auto da permutare, la valutiamo gratuitamente al
+                miglior prezzo
               </p>
             </div>
 
@@ -214,7 +236,9 @@ export default function Servizi() {
               <div className="bg-orange-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-bold text-xl">
                 4
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Finanziamento</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                Finanziamento
+              </h3>
               <p className="text-gray-700 text-sm">
                 Scegliamo insieme la soluzione di pagamento più adatta a te
               </p>
@@ -226,7 +250,8 @@ export default function Servizi() {
               </div>
               <h3 className="text-lg font-bold text-gray-900 mb-3">Consegna</h3>
               <p className="text-gray-700 text-sm">
-                Completiamo le pratiche e ti consegniamo la tua nuova auto con garanzia
+                Completiamo le pratiche e ti consegniamo la tua nuova auto con
+                garanzia
               </p>
             </div>
           </div>
@@ -248,7 +273,9 @@ export default function Servizi() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-300">
               <i className="fas fa-shipping-fast text-3xl text-orange-600 mb-4"></i>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Consegna a Domicilio</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                Consegna a Domicilio
+              </h3>
               <p className="text-gray-700 text-sm mb-4">
                 Consegniamo la tua auto direttamente a casa tua in tutta Italia
               </p>
@@ -257,29 +284,41 @@ export default function Servizi() {
 
             <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-300">
               <i className="fas fa-certificate text-3xl text-orange-600 mb-4"></i>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Estensione Garanzia</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                Estensione Garanzia
+              </h3>
               <p className="text-gray-700 text-sm mb-4">
-                Estendi la garanzia fino a 24 o 36 mesi per maggiore tranquillità
+                Estendi la garanzia fino a 24 o 36 mesi per maggiore
+                tranquillità
               </p>
               <span className="text-orange-600 font-semibold">Da €300</span>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-300">
               <i className="fas fa-car-crash text-3xl text-orange-600 mb-4"></i>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Assicurazione</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                Assicurazione
+              </h3>
               <p className="text-gray-700 text-sm mb-4">
                 Polizze assicurative vantaggiose con le migliori compagnie
               </p>
-              <span className="text-orange-600 font-semibold">Preventivo gratuito</span>
+              <span className="text-orange-600 font-semibold">
+                Preventivo gratuito
+              </span>
             </div>
 
             <div className="bg-gray-50 rounded-xl p-6 text-center hover:shadow-lg transition-shadow duration-300">
               <i className="fas fa-paint-brush text-3xl text-orange-600 mb-4"></i>
-              <h3 className="text-lg font-bold text-gray-900 mb-3">Carrozzeria</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-3">
+                Carrozzeria
+              </h3>
               <p className="text-gray-700 text-sm mb-4">
-                Riparazioni carrozzeria e ritocchi estetici presso la nostra officina
+                Riparazioni carrozzeria e ritocchi estetici presso la nostra
+                officina
               </p>
-              <span className="text-orange-600 font-semibold">Su preventivo</span>
+              <span className="text-orange-600 font-semibold">
+                Su preventivo
+              </span>
             </div>
           </div>
         </div>
@@ -293,7 +332,8 @@ export default function Servizi() {
               Cosa Dicono i Nostri Clienti
             </h2>
             <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-              La soddisfazione dei nostri clienti è la nostra migliore pubblicità
+              La soddisfazione dei nostri clienti è la nostra migliore
+              pubblicità
             </p>
           </div>
 
@@ -309,8 +349,9 @@ export default function Servizi() {
                 </div>
               </div>
               <p className="text-gray-700 mb-4 italic">
-                "Servizio eccellente! Ho trovato l'auto perfetta e il team mi ha seguito 
-                in ogni fase dell'acquisto. Consiglio assolutamente AutoDeal."
+                "Servizio eccellente! Ho trovato l'auto perfetta e il team mi ha
+                seguito in ogni fase dell'acquisto. Consiglio assolutamente
+                AutoDeal."
               </p>
               <div className="flex items-center">
                 <div className="bg-gray-300 w-10 h-10 rounded-full flex items-center justify-center mr-3">
@@ -334,8 +375,8 @@ export default function Servizi() {
                 </div>
               </div>
               <p className="text-gray-700 mb-4 italic">
-                "Professionalità e trasparenza al 100%. Auto in perfette condizioni 
-                e finanziamento vantaggioso. Tornerò sicuramente!"
+                "Professionalità e trasparenza al 100%. Auto in perfette
+                condizioni e finanziamento vantaggioso. Tornerò sicuramente!"
               </p>
               <div className="flex items-center">
                 <div className="bg-gray-300 w-10 h-10 rounded-full flex items-center justify-center mr-3">
@@ -359,7 +400,7 @@ export default function Servizi() {
                 </div>
               </div>
               <p className="text-gray-700 mb-4 italic">
-                "Esperienza fantastica dall'inizio alla fine. Staff competente, 
+                "Esperienza fantastica dall'inizio alla fine. Staff competente,
                 prezzi onesti e servizio post-vendita impeccabile."
               </p>
               <div className="flex items-center">
@@ -383,18 +424,23 @@ export default function Servizi() {
             Hai Bisogno di Maggiori Informazioni?
           </h2>
           <p className="text-xl mb-8 leading-relaxed">
-            I nostri esperti sono a tua disposizione per qualsiasi domanda sui nostri servizi. 
-            Contattaci per una consulenza personalizzata e senza impegno.
+            I nostri esperti sono a tua disposizione per qualsiasi domanda sui
+            nostri servizi. Contattaci per una consulenza personalizzata e senza
+            impegno.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center gap-2">
-              <i className="fas fa-phone"></i>
-              Chiamaci Ora
-            </button>
-            <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-orange-600 transition-colors duration-200 flex items-center justify-center gap-2">
-              <i className="fas fa-envelope"></i>
-              Scrivici
-            </button>
+            <Link to="/contattaci">
+              <button className="bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 flex items-center justify-center gap-2">
+                <i className="fas fa-phone"></i>
+                Chiamaci Ora
+              </button>
+            </Link>
+            <Link to="/contattaci">
+              <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-orange-600 transition-colors duration-200 flex items-center justify-center gap-2">
+                <i className="fas fa-envelope"></i>
+                Scrivici
+              </button>
+            </Link>
           </div>
         </div>
       </section>
