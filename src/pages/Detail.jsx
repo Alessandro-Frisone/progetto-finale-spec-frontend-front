@@ -187,16 +187,18 @@ export default function Detail() {
 
               {/* Azioni */}
               <div className="space-y-3">
-                <button className="w-full bg-orange-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors flex items-center justify-center gap-2">
-                  <i className="fas fa-calendar-alt"></i>
-                  Prenota Test Drive
-                </button>
-                <button className="w-full border-2 border-orange-600 text-orange-600 py-4 px-6 rounded-lg font-semibold hover:bg-orange-50 transition-colors flex items-center justify-center gap-2">
-                  <Link to="/contattaci">
+                <Link to="/contattaci">
+                  <button className="w-full bg-orange-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors flex items-center justify-center gap-2 mb-3">
+                    <i className="fas fa-calendar-alt"></i>
+                    Prenota Test Drive
+                  </button>
+                </Link>
+                <Link to="/contattaci">
+                  <button className="w-full border-2 border-orange-600 text-orange-600 py-4 px-6 rounded-lg font-semibold hover:bg-orange-50 transition-colors flex items-center justify-center gap-2 mb-3">
                     <i className="fas fa-phone mr-2"></i>
                     Contatta il Venditore
-                  </Link>
-                </button>
+                  </button>
+                </Link>
                 <button
                   onClick={toggleExpanded}
                   className="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"

@@ -158,7 +158,7 @@ export default function Home() {
   if (error) return <p>Errore: {error}</p>;
 
   return (
-    <div className="bg-orange-50 pt-16">
+    <div className="bg-orange-50 ">
       <CarCarousel />
       {/* ========================================================================================================================
                                                 SEZIONE "PERCHÉ SCEGLIERE NOI"
