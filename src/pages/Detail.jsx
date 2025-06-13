@@ -80,7 +80,7 @@ export default function Detail() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-200">
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Sezione principale */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
