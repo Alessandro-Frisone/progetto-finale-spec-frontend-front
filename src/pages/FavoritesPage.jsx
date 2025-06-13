@@ -1,7 +1,7 @@
 import { useFavorites } from "../contexts/FavoritesContext";
 import ProductCard from "../components/home/ProductCard";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function FavoritesPage() {
   const { favorites, clearAllFavorites } = useFavorites();
@@ -19,6 +19,10 @@ export default function FavoritesPage() {
   const cancelClearAll = () => {
     setShowModal(false);
   };
+
+ useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
