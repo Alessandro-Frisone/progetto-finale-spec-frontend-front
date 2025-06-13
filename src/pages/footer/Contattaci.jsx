@@ -64,6 +64,12 @@ const StarIcon = ({ className, ...props }) => (
   </svg>
 );
 
+const KeyIcon = ({ className, ...props }) => (
+  <svg className={className} {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+  </svg>
+);
+
 export default function Contattaci() {
   const [formData, setFormData] = useState({
     nome: '',
@@ -72,7 +78,14 @@ export default function Contattaci() {
     telefono: '',
     messaggio: '',
     interesseAuto: '',
-    dataContatto: ''
+    dataContatto: '',
+    tipoRichiesta: 'informazioni',
+    // Campi specifici per test drive
+    dataTestDrive: '',
+    orarioTestDrive: '',
+    modelloTestDrive: '',
+    esperienza: '',
+    patente: true
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,10 +93,10 @@ export default function Contattaci() {
   const [hoveredService, setHoveredService] = useState(null);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
@@ -107,7 +120,13 @@ export default function Contattaci() {
         telefono: '',
         messaggio: '',
         interesseAuto: '',
-        dataContatto: ''
+        dataContatto: '',
+        tipoRichiesta: 'informazioni',
+        dataTestDrive: '',
+        orarioTestDrive: '',
+        modelloTestDrive: '',
+        esperienza: '',
+        patente: true
       });
     }, 3000);
   };
@@ -134,6 +153,24 @@ export default function Contattaci() {
       icon: CalendarIcon,
       colore: "bg-purple-500"
     }
+  ];
+
+  const modelliDisponibili = [
+    'Alfa Romeo Giulia',
+    'Audi A3',
+    'BMW Serie 3',
+    'Fiat 500X',
+    'Ford Focus',
+    'Mercedes Classe A',
+    'Peugeot 308',
+    'Renault Clio',
+    'Toyota Yaris',
+    'Volkswagen Golf'
+  ];
+
+  const orariDisponibili = [
+    '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
+    '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30'
   ];
 
   useEffect(() => {
@@ -181,11 +218,78 @@ export default function Contattaci() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-green-600 mb-2">Messaggio Inviato!</h3>
-                <p className="text-gray-600">Ti contatteremo presto per offrirti la migliore soluzione.</p>
+                <h3 className="text-xl font-semibold text-green-600 mb-2">
+                  {formData.tipoRichiesta === 'test-drive' ? 'Test Drive Prenotato!' : 'Messaggio Inviato!'}
+                </h3>
+                <p className="text-gray-600">
+                  {formData.tipoRichiesta === 'test-drive' 
+                    ? 'La tua prenotazione per il test drive è stata confermata. Ti contatteremo per confermare i dettagli.'
+                    : 'Ti contatteremo presto per offrirti la migliore soluzione.'
+                  }
+                </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Tipo di richiesta */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-3">Tipo di richiesta *</label>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div 
+                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                        formData.tipoRichiesta === 'informazioni' 
+                          ? 'border-orange-500 bg-orange-50' 
+                          : 'border-gray-200 hover:border-orange-300'
+                      }`}
+                      onClick={() => setFormData(prev => ({...prev, tipoRichiesta: 'informazioni'}))}
+                    >
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          name="tipoRichiesta"
+                          value="informazioni"
+                          checked={formData.tipoRichiesta === 'informazioni'}
+                          onChange={handleInputChange}
+                          className="text-orange-600"
+                        />
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <MessageCircleIcon className="w-5 h-5 text-orange-600" />
+                            <span className="font-semibold text-gray-800">Informazioni Generali</span>
+                          </div>
+                          <p className="text-sm text-gray-600 mt-1">Richiedi informazioni sui nostri servizi</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div 
+                      className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
+                        formData.tipoRichiesta === 'test-drive' 
+                          ? 'border-orange-500 bg-orange-50' 
+                          : 'border-gray-200 hover:border-orange-300'
+                      }`}
+                      onClick={() => setFormData(prev => ({...prev, tipoRichiesta: 'test-drive'}))}
+                    >
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="radio"
+                          name="tipoRichiesta"
+                          value="test-drive"
+                          checked={formData.tipoRichiesta === 'test-drive'}
+                          onChange={handleInputChange}
+                          className="text-orange-600"
+                        />
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <KeyIcon className="w-5 h-5 text-orange-600" />
+                            <span className="font-semibold text-gray-800">Prenota Test Drive</span>
+                          </div>
+                          <p className="text-sm text-gray-600 mt-1">Prova gratuitamente un'auto</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-700 mb-2">Nome *</label>
@@ -227,74 +331,191 @@ export default function Contattaci() {
                     />
                   </div>
                   <div className="group">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Telefono</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Telefono *</label>
                     <input
                       type="tel"
                       name="telefono"
                       value={formData.telefono}
                       onChange={handleInputChange}
+                      required
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300"
                       placeholder="+39 123 456 7890"
                     />
                   </div>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="group">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Tipo di auto interessata</label>
-                    <select
-                      name="interesseAuto"
-                      value={formData.interesseAuto}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300"
-                    >
-                      <option value="">Seleziona categoria</option>
-                      <option value="city-car">City Car</option>
-                      <option value="berlina">Berlina</option>
-                      <option value="suv">SUV</option>
-                      <option value="station-wagon">Station Wagon</option>
-                      <option value="monovolume">Monovolume</option>
-                      <option value="sportiva">Sportiva</option>
-                    </select>
-                  </div>
-                  <div className="group">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Preferenza contatto</label>
-                    <input
-                      type="date"
-                      name="dataContatto"
-                      value={formData.dataContatto}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300"
-                    />
-                  </div>
-                </div>
+                {/* Campi condizionali per test drive */}
+                {formData.tipoRichiesta === 'test-drive' ? (
+                  <>
+                    <div className="bg-orange-50 p-6 rounded-lg border border-orange-200">
+                      <h3 className="text-lg font-semibold text-orange-800 mb-4 flex items-center gap-2">
+                        <KeyIcon className="w-5 h-5" />
+                        Dettagli Test Drive
+                      </h3>
+                      
+                      <div className="grid md:grid-cols-2 gap-4 mb-4">
+                        <div className="group">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Modello di interesse *</label>
+                          <select
+                            name="modelloTestDrive"
+                            value={formData.modelloTestDrive}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300"
+                          >
+                            <option value="">Seleziona il modello</option>
+                            {modelliDisponibili.map(modello => (
+                              <option key={modello} value={modello}>{modello}</option>
+                            ))}
+                          </select>
+                        </div>
+                        
+                        <div className="group">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Data preferita *</label>
+                          <input
+                            type="date"
+                            name="dataTestDrive"
+                            value={formData.dataTestDrive}
+                            onChange={handleInputChange}
+                            required
+                            min={new Date().toISOString().split('T')[0]}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-4 mb-4">
+                        <div className="group">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Orario preferito *</label>
+                          <select
+                            name="orarioTestDrive"
+                            value={formData.orarioTestDrive}
+                            onChange={handleInputChange}
+                            required
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300"
+                          >
+                            <option value="">Seleziona l'orario</option>
+                            {orariDisponibili.map(orario => (
+                              <option key={orario} value={orario}>{orario}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className="group">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Esperienza di guida</label>
+                          <select
+                            name="esperienza"
+                            value={formData.esperienza}
+                            onChange={handleInputChange}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300"
+                          >
+                            <option value="">Seleziona esperienza</option>
+                            <option value="principiante">Principiante (0-2 anni)</option>
+                            <option value="intermedio">Intermedio (3-10 anni)</option>
+                            <option value="esperto">Esperto (oltre 10 anni)</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 mb-4">
+                        <input
+                          type="checkbox"
+                          name="patente"
+                          checked={formData.patente}
+                          onChange={handleInputChange}
+                          className="w-4 h-4 text-orange-600 rounded focus:ring-orange-500"
+                        />
+                        <label className="text-sm text-gray-700">
+                          Confermo di essere in possesso di patente di guida valida *
+                        </label>
+                      </div>
+
+                      <div className="bg-orange-100 p-4 rounded-lg">
+                        <h4 className="font-semibold text-orange-800 mb-2">📋 Informazioni importanti:</h4>
+                        <ul className="text-sm text-orange-700 space-y-1">
+                          <li>• È richiesta la patente di guida valida</li>
+                          <li>• Durata test drive: circa 30 minuti</li>
+                          <li>• Accompagnato da nostro consulente esperto</li>
+                          <li>• Completamente gratuito e senza impegno</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <div className="group">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Tipo di auto interessata</label>
+                        <select
+                          name="interesseAuto"
+                          value={formData.interesseAuto}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300"
+                        >
+                          <option value="">Seleziona categoria</option>
+                          <option value="city-car">City Car</option>
+                          <option value="berlina">Berlina</option>
+                          <option value="suv">SUV</option>
+                          <option value="station-wagon">Station Wagon</option>
+                          <option value="monovolume">Monovolume</option>
+                          <option value="sportiva">Sportiva</option>
+                        </select>
+                      </div>
+                      <div className="group">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Preferenza contatto</label>
+                        <input
+                          type="date"
+                          name="dataContatto"
+                          value={formData.dataContatto}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
 
                 <div className="group">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Messaggio</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    {formData.tipoRichiesta === 'test-drive' ? 'Note aggiuntive' : 'Messaggio'}
+                  </label>
                   <textarea
                     name="messaggio"
                     value={formData.messaggio}
                     onChange={handleInputChange}
                     rows="4"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300 resize-none"
-                    placeholder="Descrivici le tue esigenze o facci delle domande..."
+                    placeholder={
+                      formData.tipoRichiesta === 'test-drive' 
+                        ? "Eventuali richieste particolari o domande sul test drive..."
+                        : "Descrivici le tue esigenze o facci delle domande..."
+                    }
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || (formData.tipoRichiesta === 'test-drive' && !formData.patente)}
                   className="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-orange-700 hover:to-red-700 focus:outline-none focus:ring-4 focus:ring-orange-300 transition-all duration-200 transform hover:scale-105 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                 >
                   {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      Invio in corso...
+                      {formData.tipoRichiesta === 'test-drive' ? 'Prenotazione in corso...' : 'Invio in corso...'}
                     </>
                   ) : (
                     <>
-                      <SendIcon className="w-5 h-5" />
-                      Invia Messaggio
+                      {formData.tipoRichiesta === 'test-drive' ? (
+                        <>
+                          <KeyIcon className="w-5 h-5" />
+                          Prenota Test Drive
+                        </>
+                      ) : (
+                        <>
+                          <SendIcon className="w-5 h-5" />
+                          Invia Messaggio
+                        </>
+                      )}
                     </>
                   )}
                 </button>
