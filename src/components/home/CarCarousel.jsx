@@ -47,7 +47,7 @@ const CarCarousel = () => {
   
   const scrollToNext = () => {
     window.scrollTo({
-      top: window.innerHeight *1.9,
+      top: window.innerHeight *1.8,
       behavior: 'smooth'
     });
   };
