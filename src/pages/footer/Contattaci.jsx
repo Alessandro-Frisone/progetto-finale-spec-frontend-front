@@ -669,7 +669,8 @@ export default function Contattaci() {
                           <option value="suv">SUV</option>
                           <option value="station-wagon">Station Wagon</option>
                           <option value="monovolume">Monovolume</option>
-                          <option value="sportiva">Sportiva</option>
+                          <option value="sportiva">Cabrio</option>
+                          <option value="Coupé">Coupé</option>
                         </select>
                       </div>
                       <div className="group">
@@ -913,7 +914,7 @@ export default function Contattaci() {
                           Vieni a Trovarci
                         </h3>
                         <p className="text-orange-100 mb-4">
-                          Il nostro showroom di 2000 mq con oltre 150 auto
+                          Il nostro showroom di 2000 mq con oltre 50 auto
                           esposte ti aspetta nel cuore di Milano
                         </p>
 
@@ -940,19 +941,14 @@ export default function Contattaci() {
                             </div>
                           </div>
                         </div>
-
-                        <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                          <button className="bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2">
-                            <MapPinIcon className="w-5 h-5" />
-                            Apri Maps
-                          </button>
-                          <button className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-orange-600 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2">
-                            <CalendarIcon className="w-5 h-5" />
-                            Prenota Visita
-                          </button>
-                        </div>
                       </div>
                     </div>
+                  </div>
+                  <div className="mt-6 flex flex-col items-center justify-center">
+                    <button className="bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2">
+                      <MapPinIcon className="w-5 h-5" />
+                      Apri Maps
+                    </button>
                   </div>
                 </div>
 
