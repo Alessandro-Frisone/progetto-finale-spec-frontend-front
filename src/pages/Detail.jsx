@@ -9,7 +9,7 @@ export default function Detail() {
   const { id } = useParams(); // Hook per ottenere parametri dalla URL (React Router)
   const [car, setCar] = useState(null); // Stato locale per memorizzare i dati dell'auto
   const [isExpanded, setIsExpanded] = useState(false); // Stato per gestire l'espansione dei dettagli
-  
+
   // CUSTOM HOOKS PER CONTESTI
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites(); // Context per gestire i preferiti
   const {
@@ -92,20 +92,45 @@ export default function Detail() {
     );
   }
 
- 
   return (
-    <div className="min-h-screen bg-gray-200">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 py-8">
-        
+        {/* =============================================
+            NAVIGATION HEADER - Professional home button
+            ============================================= */}
+        <div className="mb-4">
+          <div className="flex items-center justify-between">
+            <Link
+              to="/"
+              className="group inline-flex items-center gap-3 bg-white text-gray-700 px-6 py-3 rounded-lg border border-gray-200 hover:border-orange-300 hover:shadow-md transition-all duration-200 font-medium"
+            >
+              <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center group-hover:bg-orange-200 transition-colors">
+                <i className="fas fa-home text-orange-600 text-sm"></i>
+              </div>
+              <span>Torna alla Homepage</span>
+            </Link>
+
+            {/* navigation */}
+            <nav className="hidden md:flex items-center text-sm text-gray-500">
+              <Link to="/" className="hover:text-orange-600 transition-colors">
+                Home
+              </Link>
+
+              <i className="fas fa-chevron-right mx-2 text-xs"></i>
+              <span className="text-gray-900 font-medium">
+                Dettaglio Veicolo
+              </span>
+            </nav>
+          </div>
+        </div>
+
         {/* =============================================
             SEZIONE 1: CARD PRINCIPALE DEL VEICOLO
             ============================================= */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
-          
           {/* HEADER DEL VEICOLO - Titolo e prezzo */}
           <div className="border-b bg-gradient-to-r from-orange-600 to-orange-700 text-white p-8">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-              
               {/* Informazioni principali */}
               <div>
                 <h1 className="text-3xl font-bold mb-2">{car.title}</h1>
@@ -113,7 +138,7 @@ export default function Detail() {
                   {car.brand} {car.model} • Anno {car.year}
                 </p>
               </div>
-              
+
               {/* Box prezzo */}
               <div className="mt-4 lg:mt-0">
                 <div className="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
@@ -128,7 +153,6 @@ export default function Detail() {
 
           {/* CONTENUTO PRINCIPALE - Grid layout responsive */}
           <div className="grid grid-cols-1 xl:grid-cols-5 gap-8 p-8">
-            
             {/* COLONNA SINISTRA: Immagine principale (3/5 della larghezza) */}
             <div className="xl:col-span-3">
               {car.imageUrl ? (
@@ -139,7 +163,7 @@ export default function Detail() {
                     alt={car.title}
                     className="w-full h-80 xl:h-96 object-cover rounded-lg"
                   />
-                  
+
                   {/* Pulsante preferiti posizionato assolutamente */}
                   <div className="absolute top-4 right-4">
                     <button
@@ -171,7 +195,6 @@ export default function Detail() {
 
             {/* COLONNA DESTRA: Pannello informazioni (2/5 della larghezza) */}
             <div className="xl:col-span-2 space-y-6">
-              
               {/* CARATTERISTICHE PRINCIPALI - Lista key-value */}
               <div className="bg-gray-50 rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -229,7 +252,7 @@ export default function Detail() {
                     Contatta il Venditore
                   </button>
                 </Link>
-                
+
                 {/* Pulsante per espandere/contrarre dettagli */}
                 <button
                   onClick={toggleExpanded}
@@ -256,10 +279,8 @@ export default function Detail() {
           }`}
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            
             {/* SPECIFICHE TECNICHE COMPLETE */}
             <div className="bg-white rounded-xl shadow-lg p-8">
-              
               {/* Header con icona */}
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center">
@@ -272,7 +293,6 @@ export default function Detail() {
 
               {/* Grid a due colonne per le specifiche */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                
                 {/* Prima colonna - Informazioni generali */}
                 <div className="space-y-4">
                   <div className="border-l-4 border-orange-600 pl-4">
@@ -371,7 +391,6 @@ export default function Detail() {
 
             {/* COMFORT E DOTAZIONI */}
             <div className="bg-white rounded-xl shadow-lg p-8">
-              
               {/* Header con icona */}
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
@@ -444,7 +463,7 @@ export default function Detail() {
               informazioni necessarie e organizzare una prova su strada senza
               impegno.
             </p>
-            
+
             {/* Container responsivo per i pulsanti */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <button className="flex-1 bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors">
