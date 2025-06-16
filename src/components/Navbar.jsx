@@ -2,10 +2,36 @@
 import { Link, useLocation } from "react-router-dom";
 import { useComparator } from "../contexts/ComparatorContext";
 
+/**
+ * Componente Navbar - Barra di navigazione principale dell'applicazione
+ * 
+ * Caratteristiche principali:
+ * - Barra fissa in alto con effetto glassmorphism
+ * - Logo cliccabile che riporta alla home
+ * - Menu di navigazione con evidenziazione della pagina attiva
+ * - Badge dinamico sul comparatore che mostra il numero di auto selezionate
+ * - Design responsive e animazioni fluide
+ */
+
 export default function Navbar() {
+ // ====================================================================
+  // HOOKS E CONTEXT
+  // ====================================================================
+  
+  // Ottiene le auto selezionate dal context del comparatore
   const { selectedCars } = useComparator();
+  
+  // Hook per ottenere informazioni sulla route corrente
   const location = useLocation();
 
+  // ====================================================================
+  // UTILITY FUNCTIONS
+  // ====================================================================
+  
+  /**
+   * Determina se il path specificato corrisponde alla route attiva
+   * Utilizzato per applicare lo styling alla voce di menu attiva
+   */
   const isActive = (path) => location.pathname === path;
 
   return (

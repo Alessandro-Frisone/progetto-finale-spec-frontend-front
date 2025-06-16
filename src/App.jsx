@@ -1,4 +1,4 @@
-// src/App.jsx (con sistema di notifiche integrato)
+// src/App.jsx 
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
 import { ComparatorProvider } from "./contexts/ComparatorContext";

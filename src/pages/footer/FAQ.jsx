@@ -3,16 +3,26 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const FAQ = () => {
+  // ===== HOOKS DI STATO =====
+  // useState per gestire stato locale del componente
+  // openSections: oggetto che traccia quali sezioni FAQ sono aperte/chiuse
   const [openSections, setOpenSections] = useState({});
+  
+  // activeCategory: stringa che indica quale categoria è attualmente selezionata
   const [activeCategory, setActiveCategory] = useState("generale");
 
+  // ===== FUNZIONI DI GESTIONE EVENTI =====
+  // Funzione per toggle (aprire/chiudere) una sezione FAQ
+  // Utilizza il pattern di aggiornamento funzionale dello stato
   const toggleSection = (sectionId) => {
     setOpenSections((prev) => ({
-      ...prev,
-      [sectionId]: !prev[sectionId],
+      ...prev, // Spread operator per mantenere i valori esistenti
+      [sectionId]: !prev[sectionId], // Inverte il valore booleano della sezione specifica
     }));
   };
 
+  // ===== COMPONENTI ICONA (JSX inline) =====
+  // Componenti funzionali che ritornano JSX per le icone SVG
   const ChevronDown = () => (
     <svg
       className="w-5 h-5"
@@ -153,10 +163,13 @@ const FAQ = () => {
     </svg>
   );
 
+  // ===== STRUTTURA DATI COMPLESSA =====
+  // Oggetto che contiene tutte le categorie FAQ
+  // Ogni categoria ha: title, icon (componente React), questions (array di oggetti)
   const faqCategories = {
     generale: {
       title: "Domande Generali",
-      icon: <CarIcon />,
+      icon: <CarIcon />, // JSX element come valore
       questions: [
         {
           id: "chi-siamo",
@@ -318,7 +331,7 @@ const FAQ = () => {
           id: "passaggio-proprieta",
           question: "Vi occupate del passaggio di proprietà?",
           answer:
-            "Certamente! Ci occupiamo di tutte le pratiche: passaggio di proprietà, aggiornamento carte di circolazione, verifiche PRA, comunicazioni di vendita, e pratiche assicurative. Il servizio è incluso nel prezzo di vendita. Normalmente i documenti sono pronti in 7-10 giorni lavorativi.",
+            "Certamente! Ci occupiamo di tutte le pratiche: passaggio di proprietà, aggiornamento carte di circolazioni, verifiche PRA, comunicazioni di vendita, e pratiche assicurative. Il servizio è incluso nel prezzo di vendita. Normalmente i documenti sono pronti in 7-10 giorni lavorativi.",
         },
         {
           id: "bollo-auto",
@@ -378,17 +391,23 @@ const FAQ = () => {
     },
   };
 
+  // ===== COMPONENTE FIGLIO =====
+  // Componente che riceve props dal componente padre
+  // Props: question, answer, isOpen, onToggle
   const FAQItem = ({ question, answer, isOpen, onToggle }) => (
     <div className="border border-gray-200 rounded-lg mb-4 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+      {/* BOTTONE CLICKABLE con event handler */}
       <button
-        onClick={onToggle}
+        onClick={onToggle} // Event handler passato come prop
         className="w-full px-6 py-4 text-left bg-white hover:bg-gray-50 flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset"
       >
         <span className="font-medium text-gray-900 pr-4">{question}</span>
         <span className="flex-shrink-0 text-blue-600">
+          {/* RENDERING CONDIZIONALE: mostra icona diversa basata su isOpen */}
           {isOpen ? <ChevronUp /> : <ChevronDown />}
         </span>
       </button>
+      {/* RENDERING CONDIZIONALE: mostra contenuto solo se isOpen è true */}
       {isOpen && (
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
           <p className="text-gray-700 leading-relaxed">{answer}</p>
@@ -397,9 +416,12 @@ const FAQ = () => {
     </div>
   );
 
+  // ===== HOOK useEffect =====
+  // useEffect con array di dipendenze vuoto [] = eseguito solo al mount del componente
+  // Equivalente a componentDidMount nelle classi
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo(0, 0); // Scroll to top quando il componente si monta
+  }, []); // Array vuoto = esegui solo una volta al mount
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white py-12">

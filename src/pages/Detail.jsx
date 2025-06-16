@@ -5,34 +5,42 @@ import { useFavorites } from "../contexts/FavoritesContext";
 import { useNotification } from "../contexts/NotificationContext";
 
 export default function Detail() {
-  const { id } = useParams();
-  const [car, setCar] = useState(null);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+  // HOOKS E STATO DEL COMPONENTE
+  const { id } = useParams(); // Hook per ottenere parametri dalla URL (React Router)
+  const [car, setCar] = useState(null); // Stato locale per memorizzare i dati dell'auto
+  const [isExpanded, setIsExpanded] = useState(false); // Stato per gestire l'espansione dei dettagli
+  
+  // CUSTOM HOOKS PER CONTESTI
+  const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites(); // Context per gestire i preferiti
   const {
-    addToFavorites: notifyFavoriteAdd,
+    addToFavorites: notifyFavoriteAdd, // Rinominato per evitare conflitti
     removeFromFavorites: notifyFavoriteRemove,
-  } = useNotification();
+  } = useNotification(); // Context per le notifiche
 
+  // EFFECT HOOK PER IL CARICAMENTO INIZIALE
   useEffect(() => {
     async function loadCar() {
-      const data = await fetchCarById(id);
-      setCar(data);
+      const data = await fetchCarById(id); // Chiamata API asincrona
+      setCar(data); // Aggiornamento dello stato
     }
     loadCar();
-  }, [id]);
+  }, [id]); // Dipendenza: si riesegue quando cambia l'ID
 
-  const isCarFavorite = car ? isFavorite(car.id) : false;
+  // LOGICA DI BUSINESS
+  const isCarFavorite = car ? isFavorite(car.id) : false; // Verifica se l'auto è nei preferiti
 
+  // EVENT HANDLERS
   const handleFavoriteClick = () => {
-    if (!car) return;
+    if (!car) return; // Guard clause per sicurezza
 
     if (isCarFavorite) {
+      // Rimozione dai preferiti
       removeFromFavorites(car.id);
       notifyFavoriteRemove(
         `${car.brand} ${car.model} è stato rimosso dai tuoi preferiti`
       );
     } else {
+      // Aggiunta ai preferiti
       addToFavorites(car);
       notifyFavoriteAdd(
         `${car.brand} ${car.model} è stato aggiunto ai tuoi preferiti`
@@ -44,7 +52,9 @@ export default function Detail() {
     const newValue = !isExpanded;
     setIsExpanded(newValue);
 
+    // GESTIONE DELLO SCROLL CONDIZIONALE
     if (!newValue) {
+      // Se si chiude la sezione, scroll verso l'alto
       setTimeout(() => {
         window.scrollTo({
           top: 0,
@@ -54,6 +64,7 @@ export default function Detail() {
       return;
     }
 
+    // Se si apre la sezione, scroll verso i dettagli
     setTimeout(() => {
       window.scrollTo({
         top: 900,
@@ -62,10 +73,12 @@ export default function Detail() {
     }, 200);
   };
 
+  // EFFECT PER SCROLL INIZIALE
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); // Reset scroll position al caricamento
   }, []);
 
+  // CONDITIONAL RENDERING - Loading State
   if (!car) {
     return (
       <div className="min-h-screen flex justify-center items-center bg-gray-50">
@@ -79,20 +92,29 @@ export default function Detail() {
     );
   }
 
+ 
   return (
     <div className="min-h-screen bg-gray-200">
       <div className="max-w-7xl mx-auto px-6 py-8">
-        {/* Sezione principale */}
+        
+        {/* =============================================
+            SEZIONE 1: CARD PRINCIPALE DEL VEICOLO
+            ============================================= */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
-          {/* Header del veicolo */}
+          
+          {/* HEADER DEL VEICOLO - Titolo e prezzo */}
           <div className="border-b bg-gradient-to-r from-orange-600 to-orange-700 text-white p-8">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+              
+              {/* Informazioni principali */}
               <div>
                 <h1 className="text-3xl font-bold mb-2">{car.title}</h1>
                 <p className="text-orange-100 text-lg">
                   {car.brand} {car.model} • Anno {car.year}
                 </p>
               </div>
+              
+              {/* Box prezzo */}
               <div className="mt-4 lg:mt-0">
                 <div className="bg-white/10 backdrop-blur rounded-lg px-6 py-4">
                   <p className="text-orange-100 text-sm font-medium">Prezzo</p>
@@ -104,17 +126,21 @@ export default function Detail() {
             </div>
           </div>
 
-          {/* Contenuto principale */}
+          {/* CONTENUTO PRINCIPALE - Grid layout responsive */}
           <div className="grid grid-cols-1 xl:grid-cols-5 gap-8 p-8">
-            {/* Immagine principale */}
+            
+            {/* COLONNA SINISTRA: Immagine principale (3/5 della larghezza) */}
             <div className="xl:col-span-3">
               {car.imageUrl ? (
                 <div className="relative">
+                  {/* Immagine con aspect ratio controllato */}
                   <img
                     src={car.imageUrl}
                     alt={car.title}
                     className="w-full h-80 xl:h-96 object-cover rounded-lg"
                   />
+                  
+                  {/* Pulsante preferiti posizionato assolutamente */}
                   <div className="absolute top-4 right-4">
                     <button
                       onClick={handleFavoriteClick}
@@ -133,6 +159,7 @@ export default function Detail() {
                   </div>
                 </div>
               ) : (
+                // Placeholder per immagini mancanti
                 <div className="w-full h-80 xl:h-96 bg-gray-100 rounded-lg flex items-center justify-center">
                   <div className="text-center text-gray-400">
                     <i className="fas fa-car text-4xl mb-4"></i>
@@ -142,14 +169,16 @@ export default function Detail() {
               )}
             </div>
 
-            {/* Pannello informazioni rapide */}
+            {/* COLONNA DESTRA: Pannello informazioni (2/5 della larghezza) */}
             <div className="xl:col-span-2 space-y-6">
-              {/* Caratteristiche principali */}
+              
+              {/* CARATTERISTICHE PRINCIPALI - Lista key-value */}
               <div className="bg-gray-50 rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   Caratteristiche Principali
                 </h3>
                 <div className="space-y-3">
+                  {/* Pattern ripetuto per ogni caratteristica */}
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Categoria</span>
                     <span className="font-semibold bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">
@@ -185,8 +214,9 @@ export default function Detail() {
                 </div>
               </div>
 
-              {/* Azioni */}
+              {/* SEZIONE AZIONI - Call-to-Action buttons */}
               <div className="space-y-3">
+                {/* Link wrapper per navigazione */}
                 <Link to="/contattaci">
                   <button className="w-full bg-orange-600 text-white py-4 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors flex items-center justify-center gap-2 mb-3">
                     <i className="fas fa-calendar-alt"></i>
@@ -199,6 +229,8 @@ export default function Detail() {
                     Contatta il Venditore
                   </button>
                 </Link>
+                
+                {/* Pulsante per espandere/contrarre dettagli */}
                 <button
                   onClick={toggleExpanded}
                   className="w-full bg-gray-100 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
@@ -215,15 +247,20 @@ export default function Detail() {
           </div>
         </div>
 
-        {/* Sezione dettagli completi (espandibile) */}
+        {/* =============================================
+            SEZIONE 2: DETTAGLI ESPANDIBILI (CONDITIONAL RENDERING)
+            ============================================= */}
         <div
           className={`transition-all duration-700 ease-in-out overflow-hidden ${
             isExpanded ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
           }`}
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {/* Specifiche tecniche complete */}
+            
+            {/* SPECIFICHE TECNICHE COMPLETE */}
             <div className="bg-white rounded-xl shadow-lg p-8">
+              
+              {/* Header con icona */}
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center">
                   <i className="fas fa-cogs text-white"></i>
@@ -233,7 +270,10 @@ export default function Detail() {
                 </h2>
               </div>
 
+              {/* Grid a due colonne per le specifiche */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                
+                {/* Prima colonna - Informazioni generali */}
                 <div className="space-y-4">
                   <div className="border-l-4 border-orange-600 pl-4">
                     <p className="text-sm text-gray-500 font-medium">
@@ -275,6 +315,7 @@ export default function Detail() {
                   </div>
                 </div>
 
+                {/* Seconda colonna - Specifiche tecniche */}
                 <div className="space-y-4">
                   <div className="border-l-4 border-amber-500 pl-4">
                     <p className="text-sm text-gray-500 font-medium">POTENZA</p>
@@ -315,6 +356,7 @@ export default function Detail() {
                 </div>
               </div>
 
+              {/* Sezione VIN (conditional rendering) */}
               {car.vin && (
                 <div className="mt-8 pt-6 border-t">
                   <div className="bg-gray-50 rounded-lg p-4">
@@ -327,8 +369,10 @@ export default function Detail() {
               )}
             </div>
 
-            {/* Comfort e dotazioni */}
+            {/* COMFORT E DOTAZIONI */}
             <div className="bg-white rounded-xl shadow-lg p-8">
+              
+              {/* Header con icona */}
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center">
                   <i className="fas fa-star text-white"></i>
@@ -338,6 +382,7 @@ export default function Detail() {
                 </h2>
               </div>
 
+              {/* Grid di card informative */}
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {[
                   {
@@ -357,6 +402,7 @@ export default function Detail() {
                     icon: "fas fa-tag",
                   },
                 ].map((item, index) => (
+                  // Mapping di array per generare cards dinamicamente
                   <div
                     key={index}
                     className="bg-gray-50 rounded-lg p-4 text-center"
@@ -372,6 +418,7 @@ export default function Detail() {
                 ))}
               </div>
 
+              {/* Sezione descrizione */}
               <div className="border-t pt-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   Descrizione
@@ -384,7 +431,9 @@ export default function Detail() {
           </div>
         </div>
 
-        {/* Footer con CTA */}
+        {/* =============================================
+            SEZIONE 3: FOOTER CON CALL-TO-ACTION FINALE
+            ============================================= */}
         <div className="bg-white rounded-xl shadow-lg p-8">
           <div className="text-center">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">
@@ -395,6 +444,8 @@ export default function Detail() {
               informazioni necessarie e organizzare una prova su strada senza
               impegno.
             </p>
+            
+            {/* Container responsivo per i pulsanti */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <button className="flex-1 bg-orange-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-700 transition-colors">
                 <Link to="/contattaci">Contattaci Ora</Link>

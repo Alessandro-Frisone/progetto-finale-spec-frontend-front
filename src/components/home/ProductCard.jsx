@@ -1,69 +1,148 @@
-// src/components/home/ProductCard.jsx (con notifiche)
-import { useFavorites } from "../../contexts/FavoritesContext";
-import { useComparator } from "../../contexts/ComparatorContext";
-import { useNotification } from "../../contexts/NotificationContext";
+/**
+ * CUSTOM HOOKS (Context API)
+ * Questi hooks forniscono accesso ai Context globali dell'applicazione
+ */
+import { useFavorites } from "../../contexts/FavoritesContext"; // Gestione preferiti
+import { useComparator } from "../../contexts/ComparatorContext"; // Sistema confronto auto
+import { useNotification } from "../../contexts/NotificationContext"; // Sistema notifiche
 import { Link } from "react-router-dom";
 
+// =====================================
+// COMPONENTE PRINCIPALE
+// =====================================
+
+/**
+ * ProductCard Component
+ *   - car.id: identificativo univoco
+ *   - car.title: nome/modello dell'auto
+ *   - car.category: categoria (SUV, Berlina, etc.)
+ */
 export default function ProductCard({ car }) {
+  // =====================================
+  // ESTRAZIONE FUNZIONI DAI CONTEXT
+  // =====================================
+
+  /**
+   * FAVORITES CONTEXT
+   * - addToFavorites: aggiunge auto ai preferiti
+   * - removeFromFavorites: rimuove auto dai preferiti
+   * - isFavorite: verifica se un'auto è nei preferiti
+   */
   const { addToFavorites, removeFromFavorites, isFavorite } = useFavorites();
+
+  /**
+   * COMPARATOR CONTEXT
+   * - addToComparator: aggiunge auto al confronto
+   * - removeFromComparator: rimuove auto dal confronto
+   * - isInComparator: verifica se auto è nel confronto
+   * - canAddMore: verifica se si possono aggiungere altre auto (limite: 2)
+   */
   const { addToComparator, removeFromComparator, isInComparator, canAddMore } =
     useComparator();
+
+  /**
+   * NOTIFICATION CONTEXT
+   * - addNotification: mostra notifica all'utente
+   *   Parametri: (messaggio, tipo) dove tipo può essere 'success', 'error', 'info'
+   */
   const { addNotification } = useNotification();
 
-  const isCarFavorite = isFavorite(car.id);
-  const isCarInComparator = isInComparator(car.id);
+  // =====================================
+  // STATO DERIVATO
+  // =====================================
 
+  /**
+   * Calcola lo stato corrente dell'auto nei vari sistemi
+   * Questi valori sono "derivati" dai Context e si aggiornano automaticamente
+   */
+  const isCarFavorite = isFavorite(car.id); // È nei preferiti?
+  const isCarInComparator = isInComparator(car.id); // È nel confronto?
+
+  // =====================================
+  // EVENT HANDLERS
+  // =====================================
+
+  /**
+   * GESTORE CLICK FAVORITI
+   * Logica:
+   * 1. Previene comportamenti di default (Link wrapper)
+   * 2. Ferma la propagazione dell'evento
+   * 3. Toggle: aggiunge o rimuove dai preferiti
+   * 4. Mostra notifica appropriata
+   */
   const handleFavoriteClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    e.preventDefault(); // Impedisce navigazione Link
+    e.stopPropagation(); // Ferma bubbling evento (serve per impedire che un evento si "trasmetta" agli elementi genitori)
+
     if (isCarFavorite) {
+      // Auto già nei preferiti → RIMUOVI
       removeFromFavorites(car.id);
-      addNotification(`${car.title} rimosso dai preferiti`, 'info');
+      addNotification(`${car.title} rimosso dai preferiti`, "info");
     } else {
+      // Auto non nei preferiti → AGGIUNGI
       addToFavorites(car);
-      addNotification(`${car.title} aggiunto ai preferiti!`, 'success');
+      addNotification(`${car.title} aggiunto ai preferiti!`, "success");
     }
   };
 
+  /**
+   * GESTORE CLICK COMPARATORE
+   * Logica più complessa:
+   * 1. Se auto già nel confronto → rimuovi
+   * 2. Se non nel confronto E si può aggiungere → aggiungi
+   * 3. Se limite raggiunto → mostra errore
+   */
   const handleComparatorClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
     if (isCarInComparator) {
+      // CASO 1: Auto già nel confronto → rimuovi
       removeFromComparator(car.id);
-      addNotification(`${car.title} rimosso dal confronto`, 'info');
+      addNotification(`${car.title} rimosso dal confronto`, "info");
     } else if (canAddMore) {
+      // CASO 2: Auto non nel confronto E posso aggiungere → aggiungi
       addToComparator(car);
-      addNotification(`${car.title} aggiunto al confronto!`, 'success');
+      addNotification(`${car.title} aggiunto al confronto!`, "success");
     } else {
-      addNotification('Puoi confrontare massimo 2 auto', 'error');
+      // CASO 3: Limite raggiunto → errore
+      addNotification("Puoi confrontare massimo 2 auto", "error");
     }
   };
 
-  // Logica per scegliere l'icona in base alla categoria
+  // =====================================
+  // UTILITY FUNCTIONS
+  // =====================================
+
+  /**
+   * FUNZIONE PER ICONE CATEGORIA
+   * Pattern: Switch statement per mappare categorie → icone
+   * Fallback: icona generica se categoria non riconosciuta
+   */
   const getCategoryIcon = (category) => {
     switch (category.toLowerCase()) {
       case "suv":
-        return "fas fa-car";
+        return "fas fa-car"; // Icona auto generica per SUV
       case "berlina":
-        return "fas fa-car-side";
+        return "fas fa-car-side"; // per berlina
       case "coupé":
-        return "fas fa-car-alt";
+        return "fas fa-car-alt"; // Variante per coupé
       case "station wagon":
-        return "fas fa-shuttle-van";
+        return "fas fa-shuttle-van"; // Van per station wagon
       case "cabrio":
-        return "fas fa-wind";
+        return "fas fa-wind"; // Vento per cabrio
       case "plug-in hybrid":
-        return "fas fa-charging-station";
+        return "fas fa-charging-station"; // Stazione ricarica per ibrida
       default:
-        return "fas fa-car";
+        return "fas fa-car"; // Fallback generico
     }
   };
 
   return (
     <div className="group relative w-full max-w-sm mx-auto bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-      {/* Header con gradient nero sfumato */}
+      {/* ---------- Header con titolo e pulsante preferiti ---------- */}
       <div className="relative h-24 bg-gradient-to-r from-gray-900 via-black to-gray-900">
-        {/* Pulsante favoriti */}
+        {/* Pulsante per aggiungere/rimuovere dai preferiti */}
         <button
           onClick={handleFavoriteClick}
           className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 z-10 ${
@@ -82,7 +161,7 @@ export default function ProductCard({ car }) {
           ></i>
         </button>
 
-        {/* Titolo centrato nell'header */}
+        {/* Titolo dell'auto */}
         <div className="absolute inset-0 flex items-center justify-center px-16">
           <h2 className="text-xl font-bold text-white text-center leading-tight hover:text-gray-200 transition-colors duration-300">
             {car.title}
@@ -90,9 +169,9 @@ export default function ProductCard({ car }) {
         </div>
       </div>
 
-      {/* Contenuto principale */}
+      {/* ---------- Corpo principale della card ---------- */}
       <div className="p-6 space-y-6">
-        {/* Badge categoria centrato */}
+        {/* Categoria dell'auto con icona */}
         <div className="flex justify-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 text-orange-700 rounded-full border border-orange-200">
             <i
@@ -102,16 +181,16 @@ export default function ProductCard({ car }) {
           </div>
         </div>
 
-        {/* Separatore decorativo */}
+        {/* Decorazione con linee e punto centrale */}
         <div className="flex items-center justify-center gap-3">
           <div className="w-12 h-0.5 bg-gradient-to-r from-transparent to-orange-300"></div>
           <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
           <div className="w-12 h-0.5 bg-gradient-to-l from-transparent to-orange-300"></div>
         </div>
 
-        {/* Azioni */}
+        {/* ---------- Pulsanti: confronto e dettagli ---------- */}
         <div className="space-y-3">
-          {/* Pulsante comparatore */}
+          {/* Pulsante per aggiungere/rimuovere dal comparatore */}
           <button
             onClick={handleComparatorClick}
             disabled={!canAddMore && !isCarInComparator}
@@ -133,7 +212,7 @@ export default function ProductCard({ car }) {
             </span>
           </button>
 
-          {/* Pulsante dettagli */}
+          {/* Link ai dettagli dell'auto */}
           <Link
             to={`/detail/${car.id}`}
             className="w-full flex items-center justify-center gap-3 py-3 px-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-lg font-medium hover:from-orange-600 hover:to-orange-700 transition-all duration-300 hover:shadow-lg group"
@@ -144,7 +223,7 @@ export default function ProductCard({ car }) {
         </div>
       </div>
 
-      {/* Accent line in basso */}
+      {/* ---------- Linea decorativa inferiore ---------- */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600"></div>
     </div>
   );

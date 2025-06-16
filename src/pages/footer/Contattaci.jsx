@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { fetchCars } from "../../services/api";
 
-// Componenti SVG personalizzati
+// ============================================================================
+// COMPONENTI SVG PERSONALIZZATI
+// ============================================================================
+// Questi sono componenti funzionali che renderizzano icone SVG personalizzate
+// Ogni componente accetta props come className e altri attributi HTML
+// Utilizzo del destructuring per estrarre className e spread operator per il resto
 const PhoneIcon = ({ className, ...props }) => (
   <svg
     className={className}
@@ -15,6 +20,7 @@ const PhoneIcon = ({ className, ...props }) => (
       strokeLinejoin="round"
       strokeWidth="2"
       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+      // d => definisce la forma del disegno (è come un tracciato di disegno)
     />
   </svg>
 );
@@ -164,7 +170,18 @@ const KeyIcon = ({ className, ...props }) => (
   </svg>
 );
 
+// ============================================================================
+// COMPONENTE PRINCIPALE CONTATTACI
+// ============================================================================
+// Componente funzionale che gestisce un form di contatto con logica condizionale
+// per informazioni generali o prenotazione test drive
 export default function Contattaci() {
+  // ============================================================================
+  // GESTIONE DELLO STATO CON USESTATE HOOK
+  // ============================================================================
+  
+  // Stato principale del form - oggetto con tutti i campi del modulo
+  // Utilizzo di un singolo oggetto stato per gestire tutti i campi del form
   const [formData, setFormData] = useState({
     nome: "",
     cognome: "",
@@ -173,8 +190,8 @@ export default function Contattaci() {
     messaggio: "",
     interesseAuto: "",
     dataContatto: "",
-    tipoRichiesta: "informazioni",
-    // Campi specifici per test drive
+    tipoRichiesta: "informazioni", // Valore predefinito
+    // Campi specifici per test drive (renderizzazione condizionale)
     dataTestDrive: "",
     orarioTestDrive: "",
     modelloTestDrive: "",
@@ -182,55 +199,72 @@ export default function Contattaci() {
     patente: true,
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [hoveredService, setHoveredService] = useState(null);
+  // Stati per la gestione dell'interfaccia utente
+  const [isSubmitting, setIsSubmitting] = useState(false); // Loading state durante invio
+  const [isSubmitted, setIsSubmitted] = useState(false);   // Conferma invio completato
+  const [hoveredService, setHoveredService] = useState(null); // Hover effects
 
-  // Nuovo stato per le auto dal backend
-  const [availableCars, setAvailableCars] = useState([]);
-  const [isLoadingCars, setIsLoadingCars] = useState(true);
-  const [carsError, setCarsError] = useState(null);
+  // Stati per la gestione delle auto dal backend (chiamata API)
+  const [availableCars, setAvailableCars] = useState([]); // Array delle auto disponibili
+  const [isLoadingCars, setIsLoadingCars] = useState(true); // Loading state per API
+  const [carsError, setCarsError] = useState(null); // Gestione errori API
 
-  // Carica le auto dal backend
+  // ============================================================================
+  // USEEFFECT HOOK PER SIDE EFFECTS
+  // ============================================================================
+  
+  // useEffect per caricare le auto dal backend al mount del componente
+  // Dependency array vuoto [] significa che si esegue solo al primo render
   useEffect(() => {
     const loadCars = async () => {
       try {
-        setIsLoadingCars(true);
-        setCarsError(null);
-        const cars = await fetchCars();
-        setAvailableCars(cars);
+        setIsLoadingCars(true);  // Attiva loading state
+        setCarsError(null);      // Reset errori precedenti
+        const cars = await fetchCars(); // Chiamata API asincrona
+        setAvailableCars(cars);  // Aggiorna stato con i dati ricevuti
       } catch (error) {
         console.error("Errore nel caricamento delle auto:", error);
         setCarsError("Errore nel caricamento dei modelli disponibili");
       } finally {
-        setIsLoadingCars(false);
+        setIsLoadingCars(false); // Disattiva loading indipendentemente dall'esito
       }
     };
 
-    loadCars();
-  }, []);
+    loadCars(); // Esegui la funzione
+  }, []); // Dependency array vuoto - esegui solo al mount
 
+  // ============================================================================
+  // GESTORI DI EVENTI (EVENT HANDLERS)
+  // ============================================================================
+  
+  // Gestore per i cambiamenti negli input del form
+  // Utilizza destructuring per estrarre le proprietà dell'event target
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+    // Aggiorna lo stato usando il pattern di merge con lo spread operator
+    // Per checkbox usa 'checked', per altri input usa 'value'
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
   };
 
+  // Gestore per l'invio del form
+  // Previene il comportamento predefinito e gestisce l'invio asincrono
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    e.preventDefault(); // Previene il reload della pagina
+    setIsSubmitting(true); // Attiva lo stato di caricamento
 
-    // Simula invio form
+    // Simula una chiamata API con Promise e setTimeout
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    setIsSubmitting(false); // Disattiva loading
+    setIsSubmitted(true);   // Mostra messaggio di conferma
 
-    // Reset dopo 3 secondi
+    // Reset automatico del form dopo 3 secondi
     setTimeout(() => {
       setIsSubmitted(false);
+      // Reset completo dello stato del form ai valori iniziali
       setFormData({
         nome: "",
         cognome: "",
@@ -249,6 +283,11 @@ export default function Contattaci() {
     }, 3000);
   };
 
+  // ============================================================================
+  // DATI STATICI E CONFIGURAZIONE
+  // ============================================================================
+  
+  // Array di oggetti per i servizi offerti - dati statici
   const servizi = [
     {
       id: 1,
@@ -273,31 +312,24 @@ export default function Contattaci() {
     },
   ];
 
+  // Array di orari disponibili per il test drive
   const orariDisponibili = [
-    "09:00",
-    "09:30",
-    "10:00",
-    "10:30",
-    "11:00",
-    "11:30",
-    "14:00",
-    "14:30",
-    "15:00",
-    "15:30",
-    "16:00",
-    "16:30",
-    "17:00",
-    "17:30",
+    "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+    "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30",
   ];
 
+  // ============================================================================
+  // FUNZIONI UTILITY
+  // ============================================================================
+  
   // Funzione per formattare il nome dell'auto per la select
+  // Gestisce diversi possibili formati di dati dell'API
   const formatCarName = (car) => {
-    // Assumendo che l'oggetto car abbia proprietà come brand, model, year
-    // Adatta questa funzione in base alla struttura dei tuoi dati
+    // Controllo condizionale delle proprietà dell'oggetto car
     if (car.brand && car.model) {
       return `${car.brand} ${car.model}${car.year ? ` (${car.year})` : ""}`;
     }
-    // Fallback se la struttura è diversa
+    // Fallback con operatore OR per diversi possibili nomi di proprietà
     return (
       car.name ||
       car.title ||
@@ -306,15 +338,26 @@ export default function Contattaci() {
     );
   };
 
+  // useEffect per scroll to top al mount del componente
+  // Migliora l'UX riportando la vista in cima alla pagina
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  // ============================================================================
+  // RENDER DEL COMPONENTE - STRUTTURA JSX
+  // ============================================================================
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-orange-50">
-      {/* Header dinamico */}
+      
+      {/* ========================================================================
+          SEZIONE HEADER/HERO - Intestazione della pagina
+      ======================================================================== */}
       <div className="bg-gradient-to-r from-orange-600 via-orange-700 to-red-700 text-white py-16 relative overflow-hidden">
+        {/* Overlay scuro per migliorare la leggibilità del testo */}
         <div className="absolute inset-0 bg-black opacity-20"></div>
+        
+        {/* Elementi decorativi animati */}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="animate-pulse absolute top-10 right-20 w-32 h-32 bg-white opacity-10 rounded-full"></div>
           <div
@@ -322,6 +365,8 @@ export default function Contattaci() {
             style={{ animationDelay: "1s" }}
           ></div>
         </div>
+        
+        {/* Contenuto principale dell'header */}
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center">
             <h1 className="text-5xl font-bold mb-4 animate-fadeIn">AUTODEAL</h1>
@@ -335,16 +380,24 @@ export default function Contattaci() {
         </div>
       </div>
 
+      {/* ========================================================================
+          CONTENUTO PRINCIPALE - Layout a due colonne
+      ======================================================================== */}
       <div className="container mx-auto px-6 py-12">
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Form di contatto */}
+          
+          {/* ====================================================================
+              COLONNA SINISTRA - FORM DI CONTATTO
+          ==================================================================== */}
           <div className="bg-white rounded-2xl shadow-xl p-8">
             <h2 className="text-3xl font-bold text-gray-800 mb-6 flex items-center gap-3">
               <SendIcon className="text-orange-600" />
               Contattaci Ora
             </h2>
 
+            {/* RENDERIZZAZIONE CONDIZIONALE - Messaggio di conferma vs Form */}
             {isSubmitted ? (
+              // ---- STATO POST-INVIO: Messaggio di conferma ----
               <div className="text-center py-12">
                 <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse">
                   <svg
@@ -361,6 +414,7 @@ export default function Contattaci() {
                     ></path>
                   </svg>
                 </div>
+                {/* Messaggio dinamico basato sul tipo di richiesta */}
                 <h3 className="text-xl font-semibold text-green-600 mb-2">
                   {formData.tipoRichiesta === "test-drive"
                     ? "Test Drive Prenotato!"
@@ -373,18 +427,22 @@ export default function Contattaci() {
                 </p>
               </div>
             ) : (
+              // ---- FORM ATTIVO ----
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Tipo di richiesta */}
+                
+                {/* SELEZIONE TIPO RICHIESTA - Radio buttons personalizzati */}
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Tipo di richiesta *
                   </label>
                   <div className="grid md:grid-cols-2 gap-4">
+                    
+                    {/* Opzione: Informazioni Generali */}
                     <div
                       className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
                         formData.tipoRichiesta === "informazioni"
-                          ? "border-orange-500 bg-orange-50"
-                          : "border-gray-200 hover:border-orange-300"
+                          ? "border-orange-500 bg-orange-50"  // Stato attivo
+                          : "border-gray-200 hover:border-orange-300" // Stato inattivo
                       }`}
                       onClick={() =>
                         setFormData((prev) => ({
@@ -416,6 +474,7 @@ export default function Contattaci() {
                       </div>
                     </div>
 
+                    {/* Opzione: Test Drive */}
                     <div
                       className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
                         formData.tipoRichiesta === "test-drive"
@@ -454,6 +513,7 @@ export default function Contattaci() {
                   </div>
                 </div>
 
+                {/* CAMPI BASE - Nome e Cognome (Grid Layout) */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -485,6 +545,7 @@ export default function Contattaci() {
                   </div>
                 </div>
 
+                {/* CAMPI CONTATTO - Email e Telefono */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="group">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -516,8 +577,9 @@ export default function Contattaci() {
                   </div>
                 </div>
 
-                {/* Campi condizionali per test drive */}
+                {/* RENDERIZZAZIONE CONDIZIONALE - Campi specifici per tipo richiesta */}
                 {formData.tipoRichiesta === "test-drive" ? (
+                  // ---- SEZIONE TEST DRIVE - Campi aggiuntivi ----
                   <>
                     <div className="bg-orange-50 p-6 rounded-lg border border-orange-200">
                       <h3 className="text-lg font-semibold text-orange-800 mb-4 flex items-center gap-2">
@@ -525,17 +587,19 @@ export default function Contattaci() {
                         Dettagli Test Drive
                       </h3>
 
+                      {/* Modello e Data */}
                       <div className="grid md:grid-cols-2 gap-4 mb-4">
                         <div className="group">
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             Modello di interesse *
                           </label>
+                          {/* Select dinamica popolata dall'API */}
                           <select
                             name="modelloTestDrive"
                             value={formData.modelloTestDrive}
                             onChange={handleInputChange}
                             required
-                            disabled={isLoadingCars}
+                            disabled={isLoadingCars} // Disabilita durante il caricamento
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             <option value="">
@@ -543,17 +607,20 @@ export default function Contattaci() {
                                 ? "Caricamento modelli..."
                                 : "Seleziona il modello"}
                             </option>
+                            {/* Gestione errori API */}
                             {carsError && (
                               <option value="" disabled>
                                 {carsError}
                               </option>
                             )}
+                            {/* Map dell'array di auto per creare le opzioni */}
                             {availableCars.map((car) => (
                               <option key={car.id} value={car.id}>
                                 {formatCarName(car)}
                               </option>
                             ))}
                           </select>
+                          {/* Messaggio di errore condizionale */}
                           {carsError && (
                             <p className="text-red-500 text-sm mt-1">
                               {carsError}. Riprova più tardi o contattaci
@@ -566,23 +633,26 @@ export default function Contattaci() {
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             Data preferita *
                           </label>
+                          {/* Input date con validazione min (data odierna) */}
                           <input
                             type="date"
                             name="dataTestDrive"
                             value={formData.dataTestDrive}
                             onChange={handleInputChange}
                             required
-                            min={new Date().toISOString().split("T")[0]}
+                            min={new Date().toISOString().split("T")[0]} // Impedisce date passate
                             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 group-hover:border-orange-300"
                           />
                         </div>
                       </div>
 
+                      {/* Orario ed Esperienza */}
                       <div className="grid md:grid-cols-2 gap-4 mb-4">
                         <div className="group">
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             Orario preferito *
                           </label>
+                          {/* Select popolata da array statico */}
                           <select
                             name="orarioTestDrive"
                             value={formData.orarioTestDrive}
@@ -623,6 +693,7 @@ export default function Contattaci() {
                         </div>
                       </div>
 
+                      {/* Checkbox Patente */}
                       <div className="flex items-center gap-3 mb-4">
                         <input
                           type="checkbox"
