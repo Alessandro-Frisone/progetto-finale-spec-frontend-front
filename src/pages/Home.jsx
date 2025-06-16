@@ -461,7 +461,7 @@ export default function Home() {
             </div>
           ) : (
             // Caso: ci sono auto da mostrare - griglia di ProductCard
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 animate-fade-in">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8 animate-fade-in mb-8">
               {filteredCars.map((car, index) => (
                 <div
                   key={car.id}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchCars } from "../../services/api";
 
+
 // ============================================================================
 // COMPONENTI SVG PERSONALIZZATI
 // ============================================================================
@@ -179,7 +180,7 @@ export default function Contattaci() {
   // ============================================================================
   // GESTIONE DELLO STATO CON USESTATE HOOK
   // ============================================================================
-  
+
   // Stato principale del form - oggetto con tutti i campi del modulo
   // Utilizzo di un singolo oggetto stato per gestire tutti i campi del form
   const [formData, setFormData] = useState({
@@ -201,7 +202,7 @@ export default function Contattaci() {
 
   // Stati per la gestione dell'interfaccia utente
   const [isSubmitting, setIsSubmitting] = useState(false); // Loading state durante invio
-  const [isSubmitted, setIsSubmitted] = useState(false);   // Conferma invio completato
+  const [isSubmitted, setIsSubmitted] = useState(false); // Conferma invio completato
   const [hoveredService, setHoveredService] = useState(null); // Hover effects
 
   // Stati per la gestione delle auto dal backend (chiamata API)
@@ -212,16 +213,16 @@ export default function Contattaci() {
   // ============================================================================
   // USEEFFECT HOOK PER SIDE EFFECTS
   // ============================================================================
-  
+
   // useEffect per caricare le auto dal backend al mount del componente
   // Dependency array vuoto [] significa che si esegue solo al primo render
   useEffect(() => {
     const loadCars = async () => {
       try {
-        setIsLoadingCars(true);  // Attiva loading state
-        setCarsError(null);      // Reset errori precedenti
+        setIsLoadingCars(true); // Attiva loading state
+        setCarsError(null); // Reset errori precedenti
         const cars = await fetchCars(); // Chiamata API asincrona
-        setAvailableCars(cars);  // Aggiorna stato con i dati ricevuti
+        setAvailableCars(cars); // Aggiorna stato con i dati ricevuti
       } catch (error) {
         console.error("Errore nel caricamento delle auto:", error);
         setCarsError("Errore nel caricamento dei modelli disponibili");
@@ -236,7 +237,7 @@ export default function Contattaci() {
   // ============================================================================
   // GESTORI DI EVENTI (EVENT HANDLERS)
   // ============================================================================
-  
+
   // Gestore per i cambiamenti negli input del form
   // Utilizza destructuring per estrarre le proprietà dell'event target
   const handleInputChange = (e) => {
@@ -259,7 +260,7 @@ export default function Contattaci() {
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     setIsSubmitting(false); // Disattiva loading
-    setIsSubmitted(true);   // Mostra messaggio di conferma
+    setIsSubmitted(true); // Mostra messaggio di conferma
 
     // Reset automatico del form dopo 3 secondi
     setTimeout(() => {
@@ -286,7 +287,7 @@ export default function Contattaci() {
   // ============================================================================
   // DATI STATICI E CONFIGURAZIONE
   // ============================================================================
-  
+
   // Array di oggetti per i servizi offerti - dati statici
   const servizi = [
     {
@@ -314,14 +315,26 @@ export default function Contattaci() {
 
   // Array di orari disponibili per il test drive
   const orariDisponibili = [
-    "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
-    "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30",
+    "09:00",
+    "09:30",
+    "10:00",
+    "10:30",
+    "11:00",
+    "11:30",
+    "14:00",
+    "14:30",
+    "15:00",
+    "15:30",
+    "16:00",
+    "16:30",
+    "17:00",
+    "17:30",
   ];
 
   // ============================================================================
   // FUNZIONI UTILITY
   // ============================================================================
-  
+
   // Funzione per formattare il nome dell'auto per la select
   // Gestisce diversi possibili formati di dati dell'API
   const formatCarName = (car) => {
@@ -349,14 +362,13 @@ export default function Contattaci() {
   // ============================================================================
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-orange-50">
-      
       {/* ========================================================================
           SEZIONE HEADER/HERO - Intestazione della pagina
       ======================================================================== */}
       <div className="bg-gradient-to-r from-orange-600 via-orange-700 to-red-700 text-white py-16 relative overflow-hidden">
         {/* Overlay scuro per migliorare la leggibilità del testo */}
         <div className="absolute inset-0 bg-black opacity-20"></div>
-        
+
         {/* Elementi decorativi animati */}
         <div className="absolute top-0 left-0 w-full h-full">
           <div className="animate-pulse absolute top-10 right-20 w-32 h-32 bg-white opacity-10 rounded-full"></div>
@@ -365,7 +377,7 @@ export default function Contattaci() {
             style={{ animationDelay: "1s" }}
           ></div>
         </div>
-        
+
         {/* Contenuto principale dell'header */}
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center">
@@ -385,7 +397,6 @@ export default function Contattaci() {
       ======================================================================== */}
       <div className="container mx-auto px-6 py-12">
         <div className="grid lg:grid-cols-2 gap-12">
-          
           {/* ====================================================================
               COLONNA SINISTRA - FORM DI CONTATTO
           ==================================================================== */}
@@ -429,19 +440,17 @@ export default function Contattaci() {
             ) : (
               // ---- FORM ATTIVO ----
               <form onSubmit={handleSubmit} className="space-y-6">
-                
                 {/* SELEZIONE TIPO RICHIESTA - Radio buttons personalizzati */}
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Tipo di richiesta *
                   </label>
                   <div className="grid md:grid-cols-2 gap-4">
-                    
                     {/* Opzione: Informazioni Generali */}
                     <div
                       className={`p-4 border-2 rounded-lg cursor-pointer transition-all duration-200 ${
                         formData.tipoRichiesta === "informazioni"
-                          ? "border-orange-500 bg-orange-50"  // Stato attivo
+                          ? "border-orange-500 bg-orange-50" // Stato attivo
                           : "border-gray-200 hover:border-orange-300" // Stato inattivo
                       }`}
                       onClick={() =>
@@ -1016,9 +1025,16 @@ export default function Contattaci() {
                     </div>
                   </div>
                   <div className="mt-6 flex flex-col items-center justify-center">
-                    <button className="bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2">
-                      <MapPinIcon className="w-5 h-5" />
-                      Apri Maps
+                    <button className="bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-200 transform hover:scale-105 flex items-center justify-center gap-2 min-w-[180px]">
+                      <a
+                        href="https://www.google.it/maps/place/Autodeal+srl/@43.8572711,10.9681416,17z/data=!3m1!4b1!4m6!3m5!1s0x132a61e2d6664ed5:0x60923831335d9aba!8m2!3d43.8572673!4d10.9707165!16s%2Fg%2F11jyk8thw0?hl=it&entry=ttu&g_ep=EgoyMDI1MDYxMS4wIKXMDSoASAFQAw%3D%3D"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2"
+                      >
+                        <MapPinIcon className="w-5 h-5" />
+                        Apri Maps
+                      </a>
                     </button>
                   </div>
                 </div>
